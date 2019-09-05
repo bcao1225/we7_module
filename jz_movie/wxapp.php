@@ -53,6 +53,14 @@ class Jz_movieModuleWxapp extends WeModuleWxapp
     }
 
     /**
+     * 通过openid获取用户信息
+     */
+    public function doPageOpenid_by_user(){
+        global $_GPC;
+        $this->result(0,'获取成功',$this->db->get('web_user',['openid'=>$_GPC['openid']]));
+    }
+
+    /**
      * 通过电影code获取电影
      */
     public function doPageCode_by_movie()
@@ -138,7 +146,7 @@ class Jz_movieModuleWxapp extends WeModuleWxapp
             'nickname' => $_GPC['nickName'],
             'sex' => $_GPC['gender'],
             'create_time' => date('Y-m-d H:i:s', time()),
-            'money' => 50000
+            'experience_of_gold' => 50000
         ]);
 
         $this->result(0, '保存成功', $this->db->get('web_user', ['openid' => $_W['openid']]));
@@ -200,7 +208,7 @@ class Jz_movieModuleWxapp extends WeModuleWxapp
 
         /*将当前用户的体验金减少*/
         $user = $this->get_user($_GPC['web_user_code']);
-        $this->db->update('web_user', ['money' => $user['money'] - $_GPC['money']], ['web_user_code' => $_GPC['web_user_code']]);
+        $this->db->update('web_user', ['experience_of_gold' => $user['experience_of_gold'] - $_GPC['money']], ['web_user_code' => $_GPC['web_user_code']]);
 
         /*将当前电影的募集金额增加*/
         $movie = $this->db->get('movie', ['movie_code' => $user_to_movie['movie_code']]);
@@ -208,7 +216,7 @@ class Jz_movieModuleWxapp extends WeModuleWxapp
         $money1 = (float)$movie['yet_collect'];
         $money2 = (float)$_GPC['money'];
         $movie['yet_collect'] = $money1+$money2;
-   /*     $this->result(0,'123',[$money1,$money2,$movie['yet_collect']]);*/
+        /*$this->result(0,'123',[$money1,$money2,$movie['yet_collect']]);*/
 
         $this->db->query("UPDATE movie SET yet_collect=:yet_collect WHERE movie_code=:movie_code"
             , [
@@ -243,7 +251,7 @@ class Jz_movieModuleWxapp extends WeModuleWxapp
     }
 
     /**
-     * 通过传入nickname获取用户信息
+     * 通过传入web_user_code获取用户信息
      */
     public function get_user($web_user_code = '')
     {
@@ -264,6 +272,4 @@ class Jz_movieModuleWxapp extends WeModuleWxapp
 
         $this->result(0,'获取成功',[$errCode,$data]);
     }
-
-
 }
