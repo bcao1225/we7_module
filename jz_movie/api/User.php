@@ -58,18 +58,24 @@ class User extends Api{
     /**
      * 解密手机号，暂定方法
      */
-    public function doPageDecode_phone(){
-        include_once "wxBizDataCrypt.php";
+    public function decode_phone(){
+        include_once __DIR__."/../decode_phone/wxBizDataCrypt.php";
 
         global $_GPC,$_W;
 
-        $appid = 'wx4732bfa5eef2bf6d';
-
-        $_GPC['encryptedData'] = str_replace('/','',$_GPC['encryptedData']);
-
-        $pc = new WXBizDataCrypt($appid, $_GPC['sessionKey']);
+        $pc = new WXBizDataCrypt($this->appid, $_GPC['sessionKey']);
         $errCode = $pc->decryptData($_GPC['encryptedData'], $_GPC['iv'], $data);
 
-        $this->result(0,'获取成功',[$errCode,$data]);
+        $this->result(0,'获取成功',$data);
+    }
+
+    /**
+     * 传入wx.login获取code，换取session_key
+     */
+    public function get_session_key(){
+        global $_GPC;
+        $url = 'https://api.weixin.qq.com/sns/jscode2session?appid='.$this->appid.'&secret='.$this->app_secret.'&js_code='.$_GPC['code'].'&grant_type=authorization_code';
+        $response = ihttp_get($url);
+        $this->result(0,'获取成功',json_decode($response['content']));
     }
 }

@@ -9,6 +9,9 @@ require_once __DIR__.'/Actor.php';
 defined('IN_IA') or exit('Access Denied');
 
 class Api extends WeModuleWxapp{
+    
+    public $appid = 'wx4732bfa5eef2bf6d';
+    public $app_secret = '7847059d28802e9812770b5561e1d57a';
 
     public $other_database = [
         'host' => '39.104.81.221', //数据库IP或是域名
@@ -37,7 +40,7 @@ class Api extends WeModuleWxapp{
     /**
      * 通过传入web_user_code获取用户信息
      */
-    protected function get_user($web_user_code = '')
+    public function get_user($web_user_code = '')
     {
         return $this->db->get('web_user', ['web_user_code' => $web_user_code]);
     }
