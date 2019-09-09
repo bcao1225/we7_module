@@ -34,28 +34,11 @@ require_once __DIR__.'/Actor.php';
 defined('IN_IA') or exit('Access Denied');
 
 class Api extends WeModuleWxapp{
-
-    private $other_database=[...];
-    public $db;
-
-    public function __construct()
-    {
-        $this->db = new DB($this->other_database);
-    }
-
     public static function instant(){
         global $_GPC;
         $clazz_name = ucfirst($_GPC['clazz']);
         $clazz = new $clazz_name;
         call_user_func([$clazz,$_GPC['do']]);
-    }
-
-    /**
-     * 通过传入web_user_code获取用户信息
-     */
-    protected function get_user($web_user_code = '')
-    {
-        return $this->db->get('web_user', ['web_user_code' => $web_user_code]);
     }
 }
 ```
