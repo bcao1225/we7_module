@@ -1,0 +1,182 @@
+{template 'header'}
+
+<div class="wrapper">
+
+  <div class="row">
+
+    <div class="col-sm-12">
+
+      <section class="panel">
+
+      <header style="height: 50px;" class="panel-heading ">
+        <button style="margin-left: 20px;" class="btn yc-btnadd btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 新增</button>
+      </header>
+
+      <div class="monai-table">
+
+        {if $grouplist}
+
+        <table class="table table-striped">
+
+          <thead>
+
+            <tr role="row">
+
+              <th> 群名称 </th>
+
+              <th> 群简介 </th>
+
+              <th> 二维码 </th>
+
+
+
+              <th> <i class="fa fa-cogs"></i>&nbsp;操作 </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+          
+
+          {loop $grouplist $index $item}
+
+          <tr role="row" class="odd">
+
+            <td>
+              <div class="type-parent">{$item['name']}</div>
+            </td>
+
+            <td>
+              <div class="type-parent">{$item['des']}</div>
+            </td>
+
+            <td>
+              <div class="type-parent">
+                <img src="{php echo tomedia($item['qrcode']);}" height="60" />
+              </div>
+            </td>
+
+
+
+            <td>
+
+              <a href="#" title="编辑" class="btn btn-sm btn-primary bianji" data-id="{$item['id']}"><i class="fa fa-pencil"></i></a>
+
+
+
+              <!-- <a href="{php echo webUrl('slide/index/slide_edit',array('id'=>$item['id']))}" title="编辑" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</a> -->
+
+
+
+              <a href="javascript:vord(0)" data-ajax="" title="删除" data-id="{$item['id']}" class="shanchu btn btn-sm btn-danger" ><i class="fa fa-trash-o"></i></a>
+
+
+
+              <!-- <a href="javascript:vord(0)" data-ajax="{php echo webUrl('slide/index/slide_del',array('id'=>$item['id']))}" title="确认删除？" class="btn btn-sm btn-default btn-ajax"><i class="fa fa-remove"></i>删除</a> -->
+
+              </td>
+
+          </tr>
+
+          {/loop}
+
+            </tbody>
+
+          
+
+        </table>
+
+        {else}
+
+        <div class="monai-table-nodata">暂无群列表信息</div>
+
+        {/if}
+
+        </div>
+
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+
+        <div style="width:100%; height:20px; clear:both"> </div>
+
+      </section>
+
+    </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!--/.row--> 
+
+<script>
+
+    function selectBox(){
+
+        var checkboxis = document.getElementsByName("xuanze[]");  
+
+        for (var i=0; i<checkboxis.length; i++){ 
+
+            checkboxis[i].checked = true; 
+
+        }  
+
+    }
+
+    function fanselectBox(){
+
+        var checkboxis = document.getElementsByName("xuanze[]");  
+
+        for (var i=0; i<checkboxis.length; i++){ 
+
+            checkboxis[i].checked = !checkboxis[i].checked;  
+
+        }  
+
+    } 
+
+</script> 
+<script type="text/javascript">
+    $('.yc-btnadd').on('click',function () {
+        var url = "{php echo webUrl('companyset/group_edit')}&op=add";
+        window.location.href = url;
+    });
+
+
+    $('.bianji').on('click', function(e){
+        var id = $(this).attr('data-id')
+        layer.open({
+            type: 2,
+            title: '群信息',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '800px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=companyset.group_edit&op=edit&id=' + id
+        });
+    });
+    $('.shanchu').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定删除？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('companyset/group_del')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('删除成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('删除失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+</script>
+{template 'footer'}

@@ -1,0 +1,142 @@
+{template 'header'}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="page-toolbar" >
+                                <form action="{php echo webUrl('appoint/index/index')}" method="post" class="form-horizontal" form-jump='1'>
+                                <div class="col-sm-4 pull-right">
+                                    <div class="input-group">
+                                        <div class="input-group-select">
+                                            <select name="status" class="form-control">
+                                                <option value="" selected="">状态</option>
+                                                <option value="2"  {if $status==2}selected="selected"{/if}>已查看</option>
+                                                <option value="1" {if $status==1}selected="selected"{/if}>未查看</option>
+                                            </select>
+                                        </div>
+                                        <input type="text" class=" form-control" name="keyword" value="" placeholder="请输入关键词"> <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="submit"> 搜索</button> </span>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                            <form action="{php echo webUrl('appoint/index/appoint_editall')}" method="post" class="form-horizontal form">
+        <input type="hidden" name="token" value="{$_W['token']}">
+            {if !empty($list)}
+            <table class="table-striped table-bordered table-hover dataTables-example table">
+            <thead class="navbar-inner">
+                <th>ID</th>  
+                <th>{$info['aot1']}</th>
+                {if $info['aot2']!=''}<th>{$info['aot2']}</th>{/if}
+                {if $info['aot3']!=''}<th>{$info['aot3']}</th>{/if}
+                {if $info['aot4']!=''}<th>{$info['aot4']}</th>{/if}
+                <th>预约时间</th>
+                <th>操作</th>
+            </thead>
+            <tbody id="level-list">
+                {loop $list $item}
+                     <tr>
+                        <td>
+                          <div class="type-parent" style="line-height:16px">
+                            <input type="checkbox" name="xuanze[]" value="{$item['id']}">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{php echo $i++;}
+                            </div>
+                            
+                        </td>
+                        <td>
+                            <div class="type-parent">{$item['name']}</div>
+                        </td>
+                        {if $info['aot2']!=''}
+                          <td>
+                              <div class="type-parent">{$item['phone']}</div>
+                          </td>
+                        {/if}
+                        {if $info['aot3']!=''}
+                          <td>
+                              <div class="type-parent">{$item['sex']}</div>
+                          </td>
+                        {/if}
+                        {if $info['aot4']!=''}
+                          <td>
+                              <div class="type-parent">{$item['email']}</div>
+                          </td>
+                        {/if}
+                        <td>
+                            <div class="type-parent"><?php echo date("Y-m-d H:i:s",$item['appoint_time']); ?></div>
+                        </td>
+                        <td >
+                            {if $item['status'] == 1}
+                                <div><button value="{$item['id']}" class="is_sale btn btn-minier btn-danger">未查看</button></div>
+                            {/if}
+                            {if $item['status'] == 2}
+                                <div><button value="{$item['id']}" class="is_sale btn btn-minier btn-yellow">已查看</button></div>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/loop}
+            </tbody>
+              {else}
+              <thead>
+              <tr>
+                  <th colspan="6">暂无数据</th>
+              </tr>
+              </thead>
+              {/if}
+            </table>  
+            </div>  
+            <div style="padding-top: 10px;float: left;">
+              <input type="hidden" value="0" name="piliang" id="piliang" />
+               &nbsp;&nbsp;&nbsp;
+                 <a href="javascript:selectBox(0)" class="btn btn-sm quanxuan"  style="background-color: #FFDEAD;"><i class="fa fa-dot-circle-o"></i>&nbsp;全选</a>
+                 &nbsp;&nbsp;&nbsp;
+                 <a href="javascript:fanselectBox(0)" class="btn btn-sm quanxuan"  style="background-color: #FFDEAD;"><i class="fa fa-dot-circle-o"></i>&nbsp;反选</a>
+                  &nbsp;&nbsp;&nbsp;
+                  <button type="submit" onclick="document.getElementById('piliang').value=1" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i> 批量删除</button>
+                  &nbsp;&nbsp;&nbsp;
+                  <button type="submit" onclick="document.getElementById('piliang').value=2" class="btn btn-sm" style="background-color: #FFDEAD;"><i class="fa fa-edit"></i> 批量查看</button>
+                  &nbsp;&nbsp;&nbsp;
+                  <button type="submit" onclick="document.getElementById('piliang').value=3" class="btn btn-sm"><i class="fa fa-edit"></i> 批量不查看</button>
+            </div>
+            <div style="padding-top: 10px;float: right;">
+                {$pager}
+            </div>
+            <div style="width:100%; height:20px; clear:both">
+                        </div>
+        </form>
+                </div>
+            </div><!--/.row-->
+<script type="text/javascript">
+        $('.is_sale').click(function(){
+            
+            var  obj= $(this);
+            $.post("{php echo webUrl('appoint/index/appoint_ajax_type')}",{id:$(this).val()},function(result){
+             if(result=='2')
+             {
+                 $(obj).attr('class','btn btn-minier btn-yellow');
+                 $(obj).text('已查看');
+             }
+             else
+             {
+                 $(obj).attr('class','btn btn-minier btn-danger');
+                 $(obj).text('未查看');
+             }
+          });
+          
+          return false;
+        });
+    </script>
+    <script>
+  function selectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");  
+        for (var i=0; i<checkboxis.length; i++){ 
+            checkboxis[i].checked = true; 
+        }  
+    }
+  function fanselectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");  
+        for (var i=0; i<checkboxis.length; i++){ 
+            checkboxis[i].checked = !checkboxis[i].checked;  
+        }  
+    } 
+</script>
+    {template 'footer'}

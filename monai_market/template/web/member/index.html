@@ -1,0 +1,320 @@
+{template 'header'}
+
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+      <header style="height: 60px;" class="panel-heading ">
+       <div style="padding-top: -15px;margin-left: -25px;">
+        <div class="col-sm-4">
+        </div>
+            <form action="{php echo webUrl('member/index')}" method="post" class="form-horizontal" form-jump='1'>
+            <div class="col-sm-8  ">
+                <div class="input-group" style="margin-left: 500px">
+                    <select name="status" class="select-width">
+                        <option value="" selected="">店铺类型</option>
+                        <option value="1" {if $status==1}selected="selected"{/if}>认证店铺</option>
+                        <option value="2" {if $status==2}selected="selected"{/if}>未认证店铺</option>
+                    </select>
+                    <input type="text" class="form-control" name="name" value="{$name}" placeholder="请输入用户昵称或手机号搜索">
+                     <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit"> 搜索</button> </span>
+                </div>
+            </div>
+            <style type="text/css">
+                        .form-control{
+                            width: 70% !important;
+                        }
+                    </style>
+        </form>
+       </div>
+      </header>
+      <div class="monai-table">
+        {if $list}
+        <table class="table convert-data-table data-table dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+          <thead>
+            <tr role="row">
+            <th>头像</th>
+            <th>昵称</th>
+            <th>推广员</th>    
+            <th>手机</th>
+            <th>积分</th>
+            <th>发布车辆数</th>
+            <th>认证店铺</th>
+            <th>状态</th>
+            <th>首页是否推荐</th>
+            <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop $list $index $item}
+
+                     <tr>
+
+                         <td>
+
+                            <div class="type-parent">
+
+                                <img src="{php echo tomedia($item['head_image']);}" height="60" style="border-radius: 1000px;" />
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="type-parent">{$item['nickname']}</div>
+
+                        </td>
+                        <!--推广员-->
+                         <td>
+                             {if $item['parent']!=0}
+                                <img width="30" src="{$item['parent']['head_image']}" alt="">
+                                <p style="font-size: 10px">{$item['parent']['nickname']}</p>
+                             {else}
+                                无
+                             {/if}
+                         </td>
+
+                        <td>
+
+                            <div class="type-parent">{$item['phone']}</div>
+
+                        </td>
+
+                         <td>
+                             <div class="type-parent">
+                                 <span class="label label-success weizhang_num{$index}">{$item['weizhang_num']}</span>丨
+                                 <button class="btn btn-default btn-xs" data-toggle="modal" data-target="#save_weizhang_num{$index}">修改</button>
+                             </div>
+                             <!-- Modal -->
+                             <div class="modal fade" id="save_weizhang_num{$index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                         <div class="modal-header">
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                             <h4 class="modal-title" id="myModalLabel">修改积分</h4>
+                                         </div>
+                                         <div class="modal-body">
+                                             <input style="margin: 0;" type="number" class="form-control input_weizhang_num{$index}"
+                                                    value="{$item['weizhang_num']}">
+                                         </div>
+                                         <br>
+                                         <div class="modal-footer">
+                                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                             <button type="button" class="btn btn-primary weizhang_num_save{$index}" data-dismiss="modal">保存</button>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <script>
+                                 /*保存积分*/
+                                 $(function () {
+                                     $(".weizhang_num_save{$index}").click(function () {
+                                         $.ajax({
+                                             url:`{php echo weburl('member/save_integral')}`,
+                                             method:"get",
+                                             data:{
+                                                 uid:"{$item['uid']}",
+                                                 weizhang_num:$(".input_weizhang_num{$index}").val()
+                                             },
+                                             success:(res)=>{
+                                                 console.log(res);
+                                                 $(".weizhang_num{$index}").html(res);
+                                             }
+                                         })
+                                     })
+                                 })
+                             </script>
+                         </td>
+
+                         <td>
+
+                            <div class="type-parent">{$item['chenum']}</div>
+
+                        </td>
+                        <td>
+                            {if $item['is_vip']==1 and $item['end_time']>time()}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-info">&nbsp;已认证&nbsp;</span>
+                                <div style="margin-top: 10px;">到期时间：<?php echo date("Y-m-d H:i:s",$item['end_time']); ?></div>
+                            {else}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-important">&nbsp;未认证&nbsp;</span>
+                            {/if}
+                        </td>
+                        <td>
+                            <div class="type-parent">
+                            {if $item['status']==1}
+                                已拉黑
+                            {else}
+                                正常用户
+                            {/if}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="type-parent">
+                            {if $item['is_recom']==1}
+                                是
+                            {else}
+                                否
+                            {/if}
+                            </div>
+                        </td>
+                        <td style="text-align: left;">
+                            {if $item['status']==1}
+                                <a href="javascript:vord(0)" data-id="{$item['user_id']}" title="确认恢复？" class="huifu btn btn-sm btn-primary"><i class="fa fa-mail-reply"></i>恢复</a>
+                            {else}
+                                <a href="javascript:vord(0)" data-id="{$item['user_id']}" title="确认拉黑？" class="lahei btn btn-sm btn-danger"><i class="fa fa-remove"></i>拉黑</a>
+                            {/if}
+                            {if $item['is_recom']==1}
+                                <a href="javascript:vord(0)" data-id="{$item['user_id']}" title="确认恢复？" class="quxiao btn btn-sm btn-danger"><i class="fa fa-remove"></i>推荐</a>
+                            {else}
+                                <a href="javascript:vord(0)" data-id="{$item['user_id']}" title="确认恢复？" class="tuijian btn btn-sm btn-primary"><i class="fa fa-check"></i>推荐</a>
+                            {/if}
+                            <a href="javascript:vord(0)" data-id="{$item['user_id']}" title="确认恢复？" class="renzheng btn btn-sm btn-primary"><i class="fa fa-check"></i>认证</a>
+                            <div style="height: 10px;"></div>
+                            <a href="{php echo webUrl('member/member_list',array('uid'=>$item['uid']))}" title="确认恢复？" class="btn btn-sm btn-primary">推广员</a>
+                            
+                            <a href="javascript:vord(0)" data-id="{$item['user_id']}" class=" btn btn-sm btn-primary" onclick="nickname_save(this)">编辑</a>
+                            <a href="{php echo webUrl('member/delete').'&uid='.$item['uid']}" class="btn btn-sm btn-danger">删除</a>
+                        </td>
+                    </tr>
+
+                    {/loop}
+
+            </tbody>
+
+        </table>
+
+          {else}
+
+          <div class="monai-table-nodata">暂无会员信息</div>
+
+          {/if}
+
+        </div>
+
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+
+        <div style="width:100%; height:20px; clear:both"> </div>
+
+      </section>
+
+    </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!--/.row--> 
+<script type="text/javascript">
+    $('.renzheng').on('click', function(e){
+        var id = $(this).attr('data-id')
+        layer.open({
+            type: 2,
+            title: '认证',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '300px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=member.know&id=' + id
+        });
+    });
+    $('.lahei').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定拉黑？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('member/member_lahei')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('拉黑成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('拉黑失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+    $('.huifu').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定恢复？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('member/member_huifu')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('恢复成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('恢复失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+    $('.tuijian').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定推荐？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('member/member_tuijian')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('推荐成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('推荐失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+    $('.quxiao').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定取消推荐？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('member/member_quxiao')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('取消推荐成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('取消推荐失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+
+    function nickname_save(e) {
+        var id = $(e).attr('data-id');
+        layer.open({
+            type: 2,
+            title: '编辑昵称',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '200px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=member.nickname_save&id=' + id
+        });
+    }
+</script>
+{template 'footer'}

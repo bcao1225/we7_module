@@ -1,0 +1,72 @@
+{template 'header'}
+<div class="container-fluid content">
+    <div class="row">
+        <!-- start: Content -->
+            <div class="col-md-8 col-md-offset-2">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center col-md-12">
+                            <img  class="img-profile col-md-2 col-md-offset-5" src="{php echo $system['user']['avatar']}?time={php echo time()}">
+                        </div>
+                        <h3 style="line-height: 50px;" class="text-center"><strong>{php echo $user['username']}</strong></h3>
+                        <hr>
+
+                        <div class="row text-center">
+                            <div class="col-xs-4">
+                                <div><strong>{php echo $user['last_visit'] } </strong></div>
+                                <div><small>上次登录时间</small></div>
+                            </div><!--/.col-->
+                            <div class="col-xs-4">
+                                <div><strong>{php echo $user['lastip'] }</strong></div>
+                                <div><small>上次登录IP</small></div>
+                            </div><!--/.col-->
+                            <div class="col-xs-4">
+                                <div><strong>{php echo $user['joindate'] }</strong></div>
+                                <div><small>注册时间</small></div>
+                            </div><!--/.col-->
+                        </div><!--/.row-->
+
+                        <hr>
+
+                        <h4><strong>账户信息</strong></h4>
+
+                        <ul class="profile-details">
+                            <li>
+                                <div><i class="fa  fa-user"></i>用户名</div>
+                                {php echo $user['username']}
+                            </li>
+                        </ul>
+
+                        <hr>
+
+                        <h4><strong>基础信息</strong></h4>
+
+                        <ul class="profile-details">
+                            <li>
+                                <div><i class="fa fa-tablet"></i>生日</div>
+                                {php echo $profile['births']}
+                            </li>
+                            <li>
+                                <div><i class="fa fa-tablet"></i>手机</div>
+                                {php echo $profile['mobile']}
+                            </li>
+                            <li>
+                                <div><i class="fa fa-envelope"></i> E-mail</div>
+                                {php echo $profile['email']}
+                            </li>
+                            <li>
+                                <div><i class="fa fa-map-marker"></i> 地址</div>
+                                {php echo $profile['address']}
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div><!--/.col-->
+
+        <!-- end: Content -->
+    </div><!--/container-->
+    {template 'footer'}

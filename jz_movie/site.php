@@ -9,5 +9,4 @@ defined('IN_IA') or exit('Access Denied');
 
 class Jz_movieModuleSite extends WeModuleSite {
 
-    public $movie = "ims_jz_movie_movie";
 }

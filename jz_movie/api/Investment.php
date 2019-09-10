@@ -23,6 +23,9 @@ class Investment extends Api{
     public function movie_by_investment()
     {
         global $_GPC, $_W;
+        /*将当前form_id保存在指定用户中*/
+        $this->db->update('web_user',['form_id'=>$_GPC['form_id']],['web_user_code'=>$_GPC['web_user_code']]);
+
         $user_to_movie = $this->db->get('web_user_to_movie',
             [
                 'web_user_code' => $_GPC['web_user_code'],
@@ -41,7 +44,7 @@ class Investment extends Api{
                 'movie_code' => $_GPC['movie_code'],
                 'web_user_to_movie' => random(2,true).time() . random(3, true),
                 'money' => $_GPC['money'],
-                'create_time' => date('Y-m-d H:i:s', time()),
+                'create_time' => date('Y-m-d H:i:s', time())
             ]);
         }
 

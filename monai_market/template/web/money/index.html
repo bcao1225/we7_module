@@ -1,0 +1,100 @@
+{template 'header'}
+
+<div class="wrapper">
+
+  <div class="row">
+
+    <div class="col-sm-12">
+      <section class="panel">
+      <header style="height: 60px;" class="panel-heading ">
+        <div style="padding-top: -15px;margin-left: -25px;">
+        <div class="col-sm-4">
+        </div>
+        <form action="{php echo webUrl('money/index')}" method="post" class="form-horizontal" form-jump='1'>
+            <div class="input-group">
+                <div class="col-sm-4 pull-right" style="width:314px">
+                  付款时间
+                  {php echo tpl_form_field_daterange('pay_time',$pay_time);}
+                  </div>
+                  <div class="col-sm-8 pull-right" style="width:200px">
+                  </div>
+                  <span class="input-group-btn">
+                  <button class="btn btn-primary sousuo" type="submit"> 搜索</button> 
+                  </span>
+            </div>
+            <style type="text/css">
+                        .form-control{
+                            width: 70% !important;
+                        }
+                    </style>
+        </form>
+      </header>
+      <div class="monai-table">
+          {if $list}
+        <table class="table convert-data-table data-table dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+          <thead>
+            <tr role="row">
+            <th>会员昵称</th>
+            <th>付款时间</th>
+            <th>付款金额</th>
+            <th>付款类型</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop $list $index $item}
+                     <tr>
+                        <td>
+                            <div class="type-parent">{$item['nickname']}</div>
+                        </td>
+                       <td>
+                             <div class="type-parent"><?php echo date("Y-m-d H:i:s",$item['pay_time']); ?></div>
+                        </td>
+                        <td>
+                            <div class="type-parent">{$item['pay_money']}</div>
+                        </td>
+                        <td>
+                            <div class="type-parent">
+                            {if $item['pay_for']=='0'}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-info">&nbsp;上架&nbsp;</span>
+                            {else if $item['pay_for']==1}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-important">&nbsp;置顶&nbsp;</span>   
+                            {else if $item['pay_for']==2}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-primary" > <a href="javascript:vord(0)" style="color:#fff;" data-id="{$item['user_id']}" title="确认入驻？" class="renzheng">入驻</a></span>
+                            {else if $item['pay_for']==3}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-important" > 违章 </span>
+                            {else if $item['pay_for']==4}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-warming" > 汽配 </span>
+                            {/if}
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
+            </tbody>
+        </table>
+          {else}
+          <div class="monai-table-nodata">暂无资金信息</div>
+          {/if}
+        </div>
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+        <div style="width:100%; height:20px; clear:both"> </div>
+      </section>
+    </div>
+    </form>
+  </div>
+</div>
+<!--/.row-->
+<script>
+    $('.renzheng').on('click', function(e){
+        var id = $(this).attr('data-id')
+        layer.open({
+            type: 2,
+            title: '认证',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '300px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=member.know&id=' + id
+        });
+    });
+</script>
+
+{template 'footer'}

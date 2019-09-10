@@ -3,6 +3,7 @@
 
 * v_prize 抽奖模块，对应小程序前端：[抽奖小程序](https://github.com/qq3245096941/wxapp_prize)
 * jz_movie 江左模拟盘模块，对应小程序前端：[江左模拟盘](https://github.com/qq3245096941/jz_movie_weapp)
+* monai_market 二手车模块，外包项目，没有前端
 
 ***
 #``jz_movie``模块将wxapp文件进行模块划分
@@ -55,3 +56,12 @@ app.util.request({
         }
 ```
 调用``wxapp``文件的``get_investment``方法，这个方法在``investment``类中。
+***
+###json_decode转换字符串问题
+
+```
+$url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appid.'&secret='.$this->app_secret;
+$response = ihttp_get($url);
+$content = json_decode($response['content'],true); //这里后面传入true，将字符串转换成数组
+```
+

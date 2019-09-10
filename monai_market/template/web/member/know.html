@@ -1,0 +1,31 @@
+{template 'header_list'}
+<div class="wrapper">
+    <section class="panel">
+        <header class="panel-heading">
+            认证店铺
+        </header>
+        <hr>
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+        <div class="panel-body" style="padding-bottom: 70px; ">
+                <div class="form-group">
+                    <label for="firstname" class="col-sm-2 control-label">认证店铺到期时间</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_date('end_time',$userinfo['end_time']);}
+                    </div>
+                </div>
+        </div>
+        <footer class="panel-footer">
+            <button type="submit" class="btn btn-sm btn-success tijiao"><i class="fa fa-dot-circle-o"></i> 保存</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+        </footer>
+        </form>
+    </section>
+</div>            
+<script type="text/javascript">
+    $('.tijiao').click(function(){
+        setTimeout(function(){
+              parent.location.reload();
+        },1000)
+    });
+</script>
+{template 'footer'}

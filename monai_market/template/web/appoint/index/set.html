@@ -1,0 +1,61 @@
+{template 'header'}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <form action="{php echo webUrl('appoint/index/set')}" method="post" enctype="multipart/form-data" class="form-horizontal " name="submit">
+                                <input type="hidden" name="token" value="{$_W['token']}">
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">预约图片</label>
+                                    <div class="col-sm-8">
+                                         {php echo tpl_form_field_image2('appointment_img',$result['appointment_img']);}
+                                         <span class="help-block">图片：1080*363像素</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">预约标题</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="notice" name="contact" value="{$result['contact']}" >
+                                        <span class="help-block">预约页面自定义标题，默认为:预/约/体/验</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">预约表单名称1</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="notice" name="aot[]" value="{$result['aot1']}" >
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">预约表单名称2</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="notice" name="aot[]" value="{$result['aot2']}" >
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">预约表单名称3</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="notice" name="aot[]" value="{$result['aot3']}" >
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname" class="col-sm-2 control-label">预约表单名称4</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="notice" name="aot[]" value="{$result['aot4']}" >
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 保存</button>
+                            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+                        </div>
+                        </form>
+                    </div>
+z
+                    </div>
+                </div>
+            </div><!--/.row-->
+    {template 'footer'}

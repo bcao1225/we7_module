@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="#" versionCode="0.8,1.0">
+	<application setting="false">
+		<name><![CDATA[二手车]]></name>
+		<identifie><![CDATA[monai_market]]></identifie>
+		<version><![CDATA[0.0.8]]></version>
+		<type><![CDATA[services]]></type>
+		<ability><![CDATA[二手车]]></ability>
+		<description><![CDATA[二手车信息发布展示平台]]></description>
+        <author><![CDATA[易人宣网络]]></author>
+        <url><![CDATA[http://www.efwww.com]]></url>
+	</application>
+
+	<platform>
+		<subscribes>
+		</subscribes>
+
+		<handles>
+		</handles>
+
+		<rule embed="false" />
+		<card embed="false" />
+		
+		<supports>
+			<item type="wxapp" />
+		</supports>
+	</platform>
+
+	<bindings>
+		<page>
+			<entry title="首页" do="/pages/index/index" state="" direct="false"/>
+		</page>
+	</bindings>
+
+	<permissions>
+	</permissions>
+
+	<install><![CDATA[
+CREATE TABLE IF NOT EXISTS `ims_monai_market_account` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '佣金记录',
+  `uid` int(10) DEFAULT NULL COMMENT '产生消费的uid',
+  `uniacid` int(10) DEFAULT NULL COMMENT '小程序id',
+  `parent_uid` int(10) DEFAULT NULL COMMENT '推广员id',
+  `content` varchar(200) DEFAULT NULL COMMENT '内容',
+  `account` decimal(10,2) DEFAULT NULL COMMENT '消费总金额',
+  `brokerage` decimal(10,2) DEFAULT NULL COMMENT '佣金',
+  `create_time` int(11) DEFAULT NULL COMMENT '消费时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_brand` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '品牌id',
+  `uniacid` int(10) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL COMMENT '品牌名称',
+  `brand_icon` varchar(200) DEFAULT NULL COMMENT '品牌icon',
+  `abc` varchar(20) DEFAULT NULL COMMENT '字母',
+  `sort` int(6) DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_car_detail` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) DEFAULT NULL COMMENT '用户id',
+  `title` varchar(50) DEFAULT NULL COMMENT '副标题',
+  `uniacid` int(10) DEFAULT NULL COMMENT '小程序id',
+  `price` decimal(10,2) DEFAULT NULL COMMENT '价格(单位万)',
+  `agelimit` int(11) DEFAULT '0' COMMENT '相距年限（如：5；表示距离发布5年）',
+  `year` varchar(10) DEFAULT NULL COMMENT '年限',
+  `brand` varchar(20) DEFAULT NULL COMMENT '品牌',
+  `km` decimal(10,2) DEFAULT NULL COMMENT '公里数',
+  `y` varchar(100) DEFAULT '0' COMMENT '选择地址的y轴、经度、longitude',
+  `x` varchar(100) DEFAULT '0' COMMENT '选择地址的x轴、纬度、latitude',
+  `class` int(5) DEFAULT NULL COMMENT '分类（有待商榷）',
+  `class_name` varchar(150) DEFAULT '' COMMENT '分类名称',
+  `name` varchar(50) DEFAULT '',
+  `status` tinyint(4) DEFAULT NULL COMMENT '付款状态 1 未付款 2 已付款 3 已上架',
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
+  `audit_type` tinyint(4) DEFAULT '0' COMMENT '审核状态 0未审核  1审核通过  2审核失败',
+  `district` varchar(6) DEFAULT '兰山区' COMMENT '汽车所在县城',
+  `city` varchar(6) DEFAULT '临沂市' COMMENT '汽车所在城市',
+  `province` varchar(6) DEFAULT '山东省' COMMENT '汽车所在省份',
+  `caraddress` varchar(255) DEFAULT '' COMMENT '汽车所在地址',
+  `username` varchar(100) DEFAULT '' COMMENT '车主姓名',
+  `phone` varchar(18) DEFAULT '' COMMENT '联系电话',
+  `browse` smallint(5) DEFAULT '0' COMMENT '浏览量',
+  `introduce` varchar(255) DEFAULT '' COMMENT '汽车详细介绍/车辆信息',
+  `failure` varchar(255) DEFAULT NULL COMMENT '审核失败原因',
+  `carimg` varchar(255) DEFAULT '' COMMENT '汽车主图',
+  `delete_time` int(11) DEFAULT '0' COMMENT '删除时间',
+  `vehicletime` varchar(255) DEFAULT '2018-05' COMMENT '上牌日期',
+  `insurance` varchar(255) DEFAULT '2018-05-01' COMMENT '保险到期时间',
+  `exhaust` varchar(255) DEFAULT '1.6' COMMENT '排气量',
+  `watchcar` varchar(255) DEFAULT '济宁' COMMENT '看车地点',
+  `gearbox` tinyint(2) DEFAULT '0' COMMENT '变速箱类型：0手自一体，1手动档，2自动挡',
+  `top_time` int(11) DEFAULT '0',
+  `expiry_time` int(11) DEFAULT '0',
+  `qrcode_index` varchar(255) DEFAULT '',
+  `qrcode_time` int(11) DEFAULT '0',
+  `synopsis` varchar(255) DEFAULT NULL COMMENT '车辆简介',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1322 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_class` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '类型id',
+  `uniacid` int(10) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL COMMENT '类型名称',
+  `brand_icon` varchar(200) DEFAULT NULL COMMENT '类型icon',
+  `sort` int(6) DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_ensure` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `uniacid` int(11) DEFAULT NULL COMMENT '小程序id',
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_enter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) DEFAULT NULL,
+  `cycle` int(11) DEFAULT '0' COMMENT '周期 天数',
+  `name` varchar(255) DEFAULT NULL COMMENT '名称',
+  `price` decimal(10,2) DEFAULT '0.00' COMMENT '价格',
+  `status` tinyint(4) DEFAULT '1' COMMENT '状态 1启用 0禁用',
+  `sort` tinyint(4) DEFAULT '5' COMMENT '排序 由大到小',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='入驻期限表';
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uniacid` int(11) NOT NULL DEFAULT '0',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户uid',
+  `car_uid` int(11) NOT NULL DEFAULT '0' COMMENT '发布用户uid',
+  `feedback_type` tinyint(2) DEFAULT '1' COMMENT '1留言 2举报',
+  `content` varchar(200) DEFAULT '' COMMENT '内容',
+  `create_time` int(11) DEFAULT '0' COMMENT '创建时间',
+  `car_info` varchar(100) DEFAULT '' COMMENT '举报时 车辆信息 选项',
+  `car_id` int(11) DEFAULT NULL COMMENT '举报车辆id',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态 0未处理  1已拉黑  2已忽略',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=680 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_finance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uniacid` int(11) DEFAULT '0',
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户uid',
+  `pay_type` tinyint(2) DEFAULT '0' COMMENT '支付类型（0：微信）',
+  `pay_for` tinyint(2) DEFAULT '0' COMMENT '支付原因（0：汽车上架）',
+  `status` tinyint(2) DEFAULT '0' COMMENT '支付状态（0：未支付；1支付成功；2：支付失败）',
+  `pay_by_id` int(11) DEFAULT '0' COMMENT '支付关联id',
+  `pay_by_table` varchar(80) DEFAULT '' COMMENT '支付关联的表',
+  `pay_money` decimal(10,2) DEFAULT '0.00' COMMENT '支付的金额',
+  `order_money` decimal(10,2) DEFAULT '0.00' COMMENT '需支付的订单金额',
+  `pay_time` int(11) DEFAULT '0' COMMENT '支付时间',
+  `create_time` int(11) DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=974 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_follow_logs` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '关注记录',
+  `uniacid` int(10) DEFAULT NULL,
+  `uid` int(10) DEFAULT NULL COMMENT '关注、收藏',
+  `ucar_id` int(10) DEFAULT NULL COMMENT 'type 为1时 是uid 2 是car_id',
+  `type` tinyint(4) DEFAULT NULL COMMENT '1 关注用户 2 收藏商品',
+  `status` tinyint(4) DEFAULT '1' COMMENT '关注状态 1 已关注 2 未关注',
+  `is_follow` tinyint(4) DEFAULT '2' COMMENT '互相关注 1 已互关 2 未互关',
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1115 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_gujia` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) DEFAULT NULL,
+  `img1` varchar(255) DEFAULT NULL COMMENT '图片1',
+  `img2` varchar(255) DEFAULT NULL COMMENT '图2',
+  `img3` varchar(255) DEFAULT NULL COMMENT '图3',
+  `uid` int(11) DEFAULT NULL COMMENT 'uid',
+  `address` varchar(255) DEFAULT NULL COMMENT '卖车地点',
+  `topdate` varchar(100) DEFAULT NULL COMMENT '上牌日期',
+  `cartype` varchar(255) DEFAULT NULL COMMENT '车型',
+  `phone` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `licheng` varchar(20) DEFAULT NULL COMMENT '里程',
+  `time` int(11) DEFAULT '0' COMMENT '创建时间',
+  `state` tinyint(4) DEFAULT '0' COMMENT '估价状态 0查看 1已查看',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=255 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '图片id',
+  `car_id` int(11) DEFAULT NULL COMMENT '汽车id',
+  `uniacid` int(11) DEFAULT NULL COMMENT '小程序id',
+  `product_id` int(11) DEFAULT '0' COMMENT '关联产品id，默认0,',
+  `img_patch` text COMMENT '图片地址',
+  `type` tinyint(2) DEFAULT NULL COMMENT '图片类型 1 轮播 2 产品图片 3汽车介绍图片',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `sort` varchar(10) NOT NULL COMMENT '排序',
+  `car_title` varchar(100) DEFAULT NULL COMMENT '关联汽车名称',
+  `intro` varchar(255) DEFAULT NULL COMMENT '车辆介绍',
+  PRIMARY KEY (`id`,`sort`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7274 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_info` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `uniacid` int(10) DEFAULT NULL,
+  `release_money` decimal(10,2) DEFAULT '0.00' COMMENT '发布买车信息需要的费用',
+  `upload` tinyint(4) DEFAULT '1' COMMENT '前台是否可以上传车辆信息  0不可以  1可以',
+  `audit_status` tinyint(4) DEFAULT '1' COMMENT '是否开启审核  0不开启 1开启',
+  `remind` text COMMENT '交易提醒',
+  `logo` varchar(255) DEFAULT NULL COMMENT '公司logo',
+  `phone` varchar(20) DEFAULT NULL COMMENT '商家电话',
+  `top_money` decimal(10,2) DEFAULT '0.00',
+  `top_cycle` int(11) DEFAULT '0',
+  `recom` tinyint(4) DEFAULT '0',
+  `plate_type` tinyint(4) DEFAULT '1',
+  `sale_logo` varchar(255) DEFAULT '',
+  `flow_set` tinyint(2) DEFAULT '1',
+  `flow_id` varchar(50) DEFAULT '',
+  `head_flow` tinyint(2) DEFAULT '1',
+  `sell_flow` tinyint(2) DEFAULT '1',
+  `store_flow` tinyint(2) DEFAULT '1',
+  `flow_set_id` varchar(50) DEFAULT '',
+  `head_flow_id` varchar(50) DEFAULT '',
+  `map_key` varchar(50) DEFAULT NULL COMMENT '腾讯地图开放平台秘钥',
+  `juhe_appkey` varchar(255) DEFAULT '',
+  `weizhang_num` int(11) DEFAULT '5',
+  `weizhang_money` decimal(10,2) DEFAULT NULL,
+  `area_set` tinyint(1) DEFAULT '2' COMMENT '地区筛选：1开启 2关闭',
+  `consult_set` tinyint(1) DEFAULT '2' COMMENT '免费咨询按钮设置 1开启 2关闭',
+  `evaluate_set` tinyint(1) DEFAULT '2' COMMENT '爱车估价按钮设置 1开始 2关闭',
+  `qipei_open` tinyint(1) DEFAULT '0' COMMENT '汽配功能开关 0关闭 1开启',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_loan` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL COMMENT 'uid',
+  `phone` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `time` int(11) DEFAULT '0' COMMENT '创建时间',
+  `state` tinyint(4) DEFAULT '0' COMMENT '贷款提交状态 0查看 1已查看',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_member` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) DEFAULT NULL COMMENT '小程序id',
+  `uid` int(11) DEFAULT '0' COMMENT '用户id与member表关联',
+  `nickname` varchar(30) NOT NULL DEFAULT '' COMMENT '昵称',
+  `phone` varchar(20) NOT NULL COMMENT '手机',
+  `address` varchar(50) DEFAULT '' COMMENT '发布人地址',
+  `is_vip` tinyint(2) DEFAULT '1' COMMENT '1 是 2 否',
+  `head_image` varchar(255) DEFAULT NULL COMMENT '头像',
+  `wxopenid` varchar(50) DEFAULT NULL COMMENT '公众号openid',
+  `qrcode` varchar(255) DEFAULT '' COMMENT '用户二维码',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间戳',
+  `end_time` int(10) DEFAULT '0' COMMENT '会员到期时间',
+  `status` tinyint(4) DEFAULT '0',
+  `store_img` varchar(255) DEFAULT '',
+  `is_recom` tinyint(4) DEFAULT '0',
+  `is_sale` tinyint(4) DEFAULT '0',
+  `parent_uid` int(10) DEFAULT '0',
+  `balance` decimal(10,2) DEFAULT '0.00',
+  `account` decimal(10,2) DEFAULT '0.00',
+  `qrcode_index` varchar(255) DEFAULT '',
+  `qrcode_time` int(11) DEFAULT '0',
+  `weizhang_num` int(11) DEFAULT '0',
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=9061 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_member_address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '地址id',
+  `uniacid` int(11) NOT NULL COMMENT '小程序id',
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `name` varchar(50) NOT NULL COMMENT '收货人姓名',
+  `tel` varchar(20) NOT NULL COMMENT '电话',
+  `address` varchar(200) NOT NULL COMMENT '详细地址',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收货地址表';
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_notice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告id',
+  `uniacid` int(11) DEFAULT NULL COMMENT '小程序id',
+  `content` varchar(100) DEFAULT NULL COMMENT '公告标题',
+  `type` tinyint(4) DEFAULT '0' COMMENT '跳转类型 0 商家首页 1 专题 2 商品',
+  `target_id` int(11) DEFAULT NULL,
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
+  `desc` text COMMENT '公告详情',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='公告表';
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_part_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL COMMENT '小程序id',
+  `formid` varchar(32) DEFAULT NULL COMMENT '提交表单所生成',
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `car_type` tinyint(2) DEFAULT NULL COMMENT '汽车类型',
+  `car_year` varchar(20) DEFAULT NULL COMMENT '车辆年份',
+  `part_name` varchar(20) DEFAULT NULL COMMENT '配件名称',
+  `part_img` varchar(255) DEFAULT NULL COMMENT '配件照片',
+  `part_type` tinyint(1) DEFAULT '0' COMMENT '配件类型：1原厂全新 2副厂全新 3原车拆件',
+  `user_tel` varchar(11) DEFAULT NULL COMMENT '申请人手机号',
+  `order_sn` varchar(20) DEFAULT NULL COMMENT '订单编号',
+  `part_price` decimal(8,2) DEFAULT '0.00' COMMENT '报价',
+  `receive_name` varchar(10) DEFAULT NULL COMMENT '收货人姓名',
+  `receive_tel` varchar(11) DEFAULT NULL COMMENT '收货人手机号',
+  `receive_address` varchar(255) DEFAULT NULL COMMENT '收货人地址',
+  `express_name` varchar(10) DEFAULT NULL COMMENT '快递公司名称',
+  `waybill_sn` varchar(40) DEFAULT NULL COMMENT '运单号',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态：1申请中 2已报价 3已支付 4已发货 5已收货',
+  `create_time` int(11) DEFAULT NULL COMMENT '创建时间',
+  `save_time` int(11) DEFAULT NULL COMMENT '最新操作更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='汽配订购表';
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_perm_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) DEFAULT '0',
+  `rolename` varchar(255) DEFAULT '',
+  `status` tinyint(3) DEFAULT '0',
+  `perms` text,
+  `deleted` tinyint(3) DEFAULT '0',
+  `perms2` text,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_uniacid` (`uniacid`) USING BTREE,
+  KEY `idx_status` (`status`) USING BTREE,
+  KEY `idx_deleted` (`deleted`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_perm_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) DEFAULT '0',
+  `uid` int(11) DEFAULT '0',
+  `username` varchar(255) DEFAULT '',
+  `password` varchar(255) DEFAULT '',
+  `roleid` int(11) DEFAULT '0',
+  `status` int(11) DEFAULT '0',
+  `perms` text,
+  `deleted` tinyint(3) DEFAULT '0',
+  `realname` varchar(255) DEFAULT '',
+  `mobile` varchar(255) DEFAULT '',
+  `perms2` text,
+  `openid` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_uniacid` (`uniacid`) USING BTREE,
+  KEY `idx_uid` (`uid`) USING BTREE,
+  KEY `idx_roleid` (`roleid`) USING BTREE,
+  KEY `idx_status` (`status`) USING BTREE,
+  KEY `idx_deleted` (`deleted`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_saleinfo` (
+  `uniacid` int(10) NOT NULL COMMENT '小程序id',
+  `status` tinyint(4) DEFAULT '0' COMMENT '是否开启 0 未开启 1 开启',
+  `scale` tinyint(4) DEFAULT NULL COMMENT '佣金比例 1-100',
+  `image_patch` varchar(200) DEFAULT NULL COMMENT '推广码封面',
+  PRIMARY KEY (`uniacid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_weizhang` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) DEFAULT NULL COMMENT '小程序id',
+  `uid` int(10) DEFAULT NULL COMMENT '用户id',
+  `sheng` varchar(10) DEFAULT NULL COMMENT '省份 鲁',
+  `car_num` varchar(10) DEFAULT NULL COMMENT '车牌号',
+  `jia` varchar(15) DEFAULT '0' COMMENT '识别代码',
+  `fa` varchar(15) DEFAULT NULL COMMENT '发动机号',
+  `time` int(11) DEFAULT '0' COMMENT '创建时间',
+  `city_val` varchar(50) DEFAULT NULL COMMENT '城市简写',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_withdraw` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `uid` int(10) DEFAULT NULL COMMENT '提现申请人',
+  `uniacid` int(10) DEFAULT NULL COMMENT '小程序id',
+  `status` tinyint(4) DEFAULT NULL COMMENT '提现状态 0 已申请 1 已同意 3 已拒绝',
+  `detail` varchar(100) DEFAULT NULL COMMENT '内容',
+  `pay_time` int(10) DEFAULT NULL COMMENT '结束时间',
+  `account` decimal(10,2) DEFAULT NULL COMMENT '提现金额',
+  `create_time` int(10) DEFAULT NULL COMMENT '申请时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `ims_monai_market_wx_message_tmp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) DEFAULT NULL COMMENT '小程序id',
+  `name` varchar(20) NOT NULL COMMENT '模板名称',
+  `content` varchar(50) NOT NULL COMMENT '模板ID',
+  `type` tinyint(1) NOT NULL COMMENT '模板类型',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='微信模板设置';
+
+]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_monai_market_account`;
+DROP TABLE IF EXISTS `ims_monai_market_brand`;
+DROP TABLE IF EXISTS `ims_monai_market_car_detail`;
+DROP TABLE IF EXISTS `ims_monai_market_class`;
+DROP TABLE IF EXISTS `ims_monai_market_ensure`;
+DROP TABLE IF EXISTS `ims_monai_market_enter`;
+DROP TABLE IF EXISTS `ims_monai_market_feedback`;
+DROP TABLE IF EXISTS `ims_monai_market_finance`;
+DROP TABLE IF EXISTS `ims_monai_market_follow_logs`;
+DROP TABLE IF EXISTS `ims_monai_market_gujia`;
+DROP TABLE IF EXISTS `ims_monai_market_image`;
+DROP TABLE IF EXISTS `ims_monai_market_info`;
+DROP TABLE IF EXISTS `ims_monai_market_loan`;
+DROP TABLE IF EXISTS `ims_monai_market_member`;
+DROP TABLE IF EXISTS `ims_monai_market_member_address`;
+DROP TABLE IF EXISTS `ims_monai_market_notice`;
+DROP TABLE IF EXISTS `ims_monai_market_part_order`;
+DROP TABLE IF EXISTS `ims_monai_market_perm_role`;
+DROP TABLE IF EXISTS `ims_monai_market_perm_user`;
+DROP TABLE IF EXISTS `ims_monai_market_saleinfo`;
+DROP TABLE IF EXISTS `ims_monai_market_weizhang`;
+DROP TABLE IF EXISTS `ims_monai_market_withdraw`;
+DROP TABLE IF EXISTS `ims_monai_market_wx_message_tmp`;
+]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+
+</manifest>

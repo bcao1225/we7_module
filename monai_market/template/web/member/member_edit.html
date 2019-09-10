@@ -1,0 +1,145 @@
+{template 'header'}
+
+<div class="wrapper">
+
+
+
+    <section class="panel">
+
+        <header class="panel-heading">
+
+            修改会员信息
+
+        </header>
+
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+
+        <div class="panel-body" style="padding-bottom: 70px; ">
+
+            
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >会员头像</label>
+
+                    <div class="col-lg-6">
+
+                        {php echo tpl_form_field_image2('head_image',$data['head_image']);}
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >昵称</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="nickname" value="{$data['nickname']}">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >联系电话</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="phone" value="{$data['phone']}">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >发布人地址</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="address" value="{$data['address']}">
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <label for="name" class="col-sm-2 control-label">是否是会员</label>
+
+                    <div class="col-sm-4 ">
+
+                    <div class="input-group m-b-10 radio-custom radio-primary">
+
+                        <input type="radio" name="is_vip"  {if $data['is_vip'] == '1'} checked {/if} value="1" id='kaiqi1'><label for="kaiqi1">是</label>
+
+                        <input type="radio" name="is_vip"  {if $data['is_vip'] == 2} checked {/if} value="2"  id='guanbi1'><label for="guanbi1">否</label>
+                    </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">会员到期时间</label>
+                    <div class="col-sm-4">
+                        {php echo tpl_form_field_date('end_time',$data['end_time'])}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">
+                    注：是会员,到期时间大于当前时间才能满足会员条件
+                    </div>
+                </div>
+
+        </div>
+
+        <footer class="panel-footer">
+
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 保存</button>
+
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+
+        </footer>
+
+        </form>
+
+    </section>
+
+
+
+</div> 
+
+<style type="text/css">
+
+    .img2 .img-thumbnail{
+
+    height: 80px!important;
+
+    width: 80px!important;
+
+}
+
+</style>
+
+<script type="text/javascript">
+
+    
+
+    $(".shanchu").click(function(){
+
+        //alert(111);
+
+        //$("img2").append($val);
+
+        $(this).parent().parent().parent().parent().empty();
+
+        
+
+    });
+
+</script>
+
+{template 'footer'}

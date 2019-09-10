@@ -1,0 +1,114 @@
+{template 'header'}
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+      <header style="height: 50px;" class="panel-heading ">
+        </header>
+      <div class="monai-table">
+        {if $list}
+        <table class="table table-striped">
+          <thead>
+            <tr role="row">
+              <th> 价格区间 </th>
+              <th> 车辆品牌 </th>
+              <th> 手机号 </th>
+              <th> 地区 </th>
+              <th> 车辆年份 </th>
+              <th> 里程 </th>
+              <th> 车身颜色 </th>
+              <th> 其他 </th>
+              <th> 操作 </th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop $list $index $item}
+          <tr role="row" class="odd">
+            <td>
+                <div class="type-parent" style="line-height:16px">
+                    {$item['pricemin']} - {$item['pricemax']} 万元
+                </div>
+            </td>
+            <td><div class="type-parent">{$item['cartype']}</div></td>
+            <td><div class="type-parent">{$item['phone']}</div></td>
+            <td><div class="type-parent">{$item['address']}</div></td>
+            <td><div class="type-parent">{$item['topdate']}</div></td>
+            <td><div class="type-parent">{$item['licheng']}</div></td>
+            <td><div class="type-parent">{$item['carcolor']}</div></td>
+            <td><div class="type-parent">{$item['otherdes']}</div></td>
+            <td><div class="type-parent"><?php echo date("Y-m-d H:i:s",$item['time']); ?></div></td>
+            <td>
+                {if $item['state']==0}
+                    <a href="#" title="审核" class="shanchu" data-id="{$item['id']}">
+                        <span style="margin-top: 10px;line-height: 15px;" class="badge bg-important">&nbsp;设为已查看&nbsp;</span>
+                    </a>
+                {else}
+                    <span style="margin-top: 10px;line-height: 15px;" class="badge bg-info">&nbsp;已查看&nbsp;</span>
+                {/if}
+                <a href="{php echo webUrl('assess/delete').'&id='.$item['id']}" class="btn btn-danger">删除</a>
+            </td>
+          </tr>
+          {/loop}
+            </tbody>
+        </table>
+        {else}
+        <div class="monai-table-nodata">暂无信息</div>
+        {/if}
+        </div>
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+        <div style="width:100%; height:20px; clear:both"> </div>
+      </section>
+    </div>
+    </form>
+  </div>
+</div>
+<!--/.row--> 
+<script>
+    function selectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");  
+        for (var i=0; i<checkboxis.length; i++){ 
+            checkboxis[i].checked = true; 
+        }  
+    }
+    function fanselectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");  
+        for (var i=0; i<checkboxis.length; i++){ 
+            checkboxis[i].checked = !checkboxis[i].checked;  
+        }  
+    } 
+</script> 
+<script type="text/javascript">
+    $('.bianji').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.open({
+            type: 2,
+            title: '提现',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '500px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=carry.index_list&id=' + id
+        });
+    });
+    $('.shanchu').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定设为已查看？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $.post("{php echo webUrl('assess/index_see')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('查看成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('查看失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+            });
+        });
+    });
+</script>
+{template 'footer'}

@@ -1,0 +1,69 @@
+{php global $_GPC,$_W }
+
+
+
+{php $headarr= Validation::Instance()->headarr();}
+
+
+
+<!doctype html>
+
+<html lang="zh-cn">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <meta name="description" content="">
+
+    <meta name="author" content="Mosaddek">
+
+    <meta name="keyword" content="slick, flat, dashboard, bootstrap, admin, template, theme, responsive, fluid, retina">
+
+    <!--    <link rel="icon" type="image/png" href="{if !empty($_W['setting']['copyright']['icon'])}{$_W['attachurl']}{$_W['setting']['copyright']['icon']}{else}./resource/images/favicon.ico{/if}">
+
+     -->
+
+
+
+    <title>{$headarr['name']}</title>
+
+    <!--right slidebar-->
+
+
+
+    <link href="{php echo MODEL_LOCAL}static/bootstrap/css/slidebars.css" rel="stylesheet">
+
+
+
+    <!--switchery-->
+
+    <link href="{php echo MODEL_LOCAL}static/bootstrap/js/switchery/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
+
+
+
+    <!--common style-->
+
+
+
+
+
+    <link href="{php echo MODEL_LOCAL}static/bootstrap/css/style.css" rel="stylesheet">
+
+    <link href="{php echo MODEL_LOCAL}static/bootstrap/css/style-responsive.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="./resource/css/common.css?v=20180203">
+
+
+
+    <link rel="icon" type="image/png" href="{if !empty($_W['setting']['copyright']['icon'])}{$_W['attachurl']}{$_W['setting']['copyright']['icon']}{else}./resource/images/favicon.ico{/if}">
+
+<script src="{php echo MODEL_LOCAL}static/bootstrap/js/jquery-2.1.1.min.js"></script>
+
+</head>
+
+
+
+<body class="sticky-header" style="min-width:0; ">

@@ -1,0 +1,100 @@
+﻿{template 'header_only'}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                                 <div class="form-group">
+                                    <label  class="col-sm-2 control-label">车辆详情图</label>
+                                    <div style="margin-top: 10px" class="col-sm-8">
+                                        {loop $img1 $item}
+                                           <img src="{php echo tomedia($item['img_patch']);}" style="border-radius: 5px" height="100" />
+                                        {/loop}
+                                    </div>
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label">车名:</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['name']}</text>
+								</div>
+
+
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label">颜色:</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['carcolor']}</text>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label">价格</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['price']}</text>
+                                </div> 
+                                
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label">年限</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['year']}</text>
+                                </div> 
+                                
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label">车型</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['class_name']}</text>
+                                </div> 
+
+                                <div class="form-group">
+                                    <label  class="col-sm-2 control-label">公里数</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['km']}</text>
+                                </div> 
+                                 
+                                
+                                 <div class="form-group">
+                                <label class="col-md-2 control-label" >汽车所在地</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['caraddress']}</text>
+                                </div>
+                                
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" >过户次数</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['transnum']}</text>
+                                </div>
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 联系电话</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['phone']}</text>
+                                </div>
+                                
+                                 <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 创建时间</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8"><?php echo date('Y-m-d H:i:s',$data[0]['create_time']); ?></text>
+                                </div>
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 上牌日期</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['year']}</text>
+                                </div>
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 排放标准</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['effluentstand']}</text>
+                                </div>
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 排气量</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['exhaust']}</text>
+                                </div>
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 看车地点</label>
+                                     <text style="float: right;color: #555555;" class="col-sm-8">{$data[0]['watchcar']}</text>
+                                </div>
+                                <div class="form-group">
+                                <label class="col-md-2 control-label" for="text-input"> 变速箱类型</label>
+                                    <text style="float: right;color: #555555;" class="col-sm-8">
+                                        {if $data[0]['gearbox']=='0'}
+                                            手自一体
+                                        {else if $data[0]['gearbox']=='1'}
+                                            手动档
+                                        {else}
+                                            自动挡
+                                        {/if}
+                                    </text>
+                                </div>
+                                <div style=" clear:both"></div>
+
+                    </div>
+
+                    </div>
+                </div>
+{template 'footer'}

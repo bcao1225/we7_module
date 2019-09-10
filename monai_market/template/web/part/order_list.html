@@ -1,0 +1,187 @@
+{template 'header'}
+
+<div class="wrapper">
+
+  <div class="row">
+
+    <div class="col-sm-12">
+
+      <section class="panel">
+          <header style="height: 60px;margin-left: 600px" class="panel-heading ">
+              <div style="padding-top: -15px;margin-left: -25px;">
+                  <div class="col-sm-4">
+                  </div>
+                  <form action="{php echo webUrl('part/order_list')}" method="post" class="form-horizontal" form-jump='1'>
+                      <div class="input-group">
+                          <select name="status" class="select-width">
+                              <option value="" selected="">订单状态</option>
+                              <option value="1" {if $status==1}selected="selected"{/if}>待报价</option>
+                              <option value="2" {if $status==2}selected="selected"{/if}>待支付</option>
+                              <option value="3" {if $status==3}selected="selected"{/if}>待发货</option>
+                              <option value="4" {if $status==4}selected="selected"{/if}>待收货</option>
+                              <option value="5" {if $status==5}selected="selected"{/if}>已完成</option>
+                          </select>
+                          <input type="text" class="form-control" name="order_sn" value="{$order_sn}" placeholder="请输入订单号">
+                          <span class="input-group-btn">
+                            <button class="btn btn-primary sousuo" type="submit"> 搜索</button>
+                          </span>
+                      </div>
+                      <style type="text/css">
+                          .form-control{
+                              width: 70% !important;
+                          }
+                      </style>
+                  </form>
+          </header>
+
+      <div class="monai-table">
+
+          {if $list}
+
+        <table class="table convert-data-table data-table dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+
+          <thead>
+
+            <tr role="row">
+
+
+            <th>配件图片(点击看大图)</th>
+
+            <th>配件名称</th>
+
+            <th>车型</th>
+
+            <th>年份</th>
+
+            <th>配件类型</th>
+
+            <th>联系电话</th>
+
+            <th>报价</th>
+
+            <th>状态</th>
+
+            <th>订单号</th>
+
+            <th><i class="fa fa-cogs"></i>&nbsp;操作</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+          
+
+          {loop $list $index $item}
+
+            <tr>
+
+
+                <td><div class="type-parent" onclick='seeBig("{$item['id']}")'><img style="max-width: 120px;" src="{php echo tomedia($item['part_img'])}"></div></td>
+
+                <td><div class="type-parent">{$item['part_name']}</div></td>
+
+                <td><div class="type-parent">{php echo $car_type_name[ $item['car_type'] ]}</div></td>
+
+                <td><div class="type-parent">{$item['car_year']}</div></td>
+
+                <td><div class="type-parent">{php echo $part_type_name[ $item['part_type'] ]}</div></td>
+
+                <td><div class="type-parent">{$item['user_tel']}</div></td>
+
+                <td><div class="type-parent">{php echo $item['part_price'] > 0 ? $item['part_price'] : '请报价'}</div></td>
+
+                <td><div class="type-parent">{php echo $status_name[ $item['status'] ]}</div></td>
+
+                <td><div class="type-parent">{$item['order_sn']}</div></td>
+
+                <td>
+
+                    <a href="javascript:vord(0)" class="btn btn-sm btn-danger" onclick="seeInfo({$item['id']})">详情</a>
+
+                    {if $item['status'] == 1}
+                    <a href="javascript:vord(0)" class="btn btn-sm btn-danger" onclick="offerPrice({$item['id']})">报价</a>
+                    {/if}
+
+                    {if $item['status'] == 3}
+                    <a href="javascript:vord(0)" class="btn btn-sm btn-danger" onclick="delivery({$item['id']})">发货</a>
+                    {/if}
+
+                </td>
+
+            </tr>
+
+        {/loop}
+
+            </tbody>
+
+        </table>
+
+          {else}
+
+          <div class="monai-table-nodata">暂无公告信息</div>
+
+          {/if}
+
+        </div>
+
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+
+        <div style="width:100%; height:20px; clear:both"> </div>
+
+      </section>
+
+    </div>
+
+    </form>
+
+  </div>
+
+</div>
+<script type="text/javascript">
+    function seeBig(id) {
+        layer.open({
+            type: 2,
+            title: '查看大图',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '800px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=part.see_img&id=' + id
+        });
+    }
+
+    function seeInfo(id) {
+        layer.open({
+            type: 2,
+            title: '详情',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '800px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=part.info&id=' + id
+        });
+    }
+
+    function offerPrice(id) {
+        layer.open({
+            type: 2,
+            title: '报价',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '200px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=part.offer_price&id=' + id
+        });
+    }
+
+    function delivery(id) {
+        layer.open({
+            type: 2,
+            title: '发货',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '300px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=part.delivery&id=' + id
+        });
+    }
+</script>
+{template 'footer'}

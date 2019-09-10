@@ -1,0 +1,93 @@
+{template 'header'}
+<div class="wrapper">
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+      <header style="height: 50px;" class="panel-heading ">
+        </header>
+      <div class="monai-table">
+        {if $list}
+        <table class="table table-striped">
+          <thead>
+            <tr role="row">
+              <th> 申请人头像 </th>
+              <th> 申请人昵称 </th>
+              <th> 手机号 </th>
+              <th> 申请时间 </th>
+              <th> 操作 </th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop $list $index $item}
+          <tr role="row" class="odd">
+            <td>
+                <div class="type-parent" style="line-height:16px">
+                    <img src="{php echo tomedia($item['head_image']);}" height="60" style="border-radius: 99px;"/>
+                </div>
+            </td>
+            <td><div class="type-parent">{$item['nickname']}</div></td>
+            <td><div class="type-parent">{$item['phone']}</div></td>
+            <td><div class="type-parent"><?php echo date("Y-m-d H:i:s",$item['time']); ?></div></td>
+            <td>
+                {if $item['state']==0}
+                    <a href="#" title="审核" class="shanchu" data-id="{$item['id']}">
+                        <span style="margin-top: 5px;line-height: 15px;" class="badge bg-important">&nbsp;设为已查看&nbsp;</span>
+                    </a>
+                {else}
+                    <span style="margin-top: 5px;line-height: 15px;" class="badge bg-info">&nbsp;已查看&nbsp;</span>
+                {/if}
+            </td>
+          </tr>
+          {/loop}
+            </tbody>
+        </table>
+        {else}
+        <div class="monai-table-nodata">暂无信息</div>
+        {/if}
+        </div>
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+        <div style="width:100%; height:20px; clear:both"> </div>
+      </section>
+    </div>
+    </form>
+  </div>
+</div>
+<!--/.row--> 
+<script>
+    function selectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");  
+        for (var i=0; i<checkboxis.length; i++){ 
+            checkboxis[i].checked = true; 
+        }  
+    }
+    function fanselectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");  
+        for (var i=0; i<checkboxis.length; i++){ 
+            checkboxis[i].checked = !checkboxis[i].checked;  
+        }  
+    } 
+</script> 
+<script type="text/javascript">
+    $('.shanchu').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定设为已查看？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $.post("{php echo webUrl('assess/loan_see')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('查看成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('查看失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+            });
+        });
+    });
+</script>
+{template 'footer'}

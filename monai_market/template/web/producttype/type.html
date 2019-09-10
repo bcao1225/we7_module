@@ -1,0 +1,198 @@
+{template 'header'}
+
+<div class="wrapper">
+
+  <div class="row">
+
+    <div class="col-sm-12">
+
+      <section class="panel">
+
+          <header class="panel-heading addcar" style="padding: 40px;">
+              <div style="margin-top: -15px;margin-left: -25px;">
+                  <div class="col-sm-4">
+                  </div>
+                  <form action="{php echo webUrl('producttype/type')}" method="post" class="form-horizontal" form-jump='1'>
+                      <div class="col-sm-8  ">
+                          <div class="input-group" style="margin-left: 500px">
+                              <input type="text" class="form-control" name="name" value="{$name}" placeholder="请输入品牌名称">
+                              <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"> 搜索</button> </span>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <style type="text/css">
+                  .form-control{
+                      width: 98% !important;
+                  }
+              </style>
+          </header>
+
+        <div class="monai-table">
+
+            {if $list}
+
+        <table class="table table-striped ">
+
+          <thead>
+
+            <tr role="row">
+            {if $level>=1}
+            <th>顶级名称</th>
+            {/if}
+            {if $level>=2}
+            <th>二级名称</th>
+            {/if}
+
+            <th>品牌名称</th>
+
+            <th>品牌icon</th>
+
+            <th>指导价格</th>
+
+            <th>排序</th>
+
+            <th>品牌组名</th>
+
+            <th><i class="fa fa-cogs"></i>&nbsp;操作</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+          
+
+          {loop $list $index $item}
+
+                <tr>
+                    {if $level>=1}
+                    <td>
+                        <div class="type-parent">{$arrparent['level1']['name']}</div>
+                    </td>
+                    {/if}
+                    {if $level>=2}
+                    <td>
+                        <div class="type-parent">{$arrparent['level2']['name']}</div>
+                    </td>
+                    {/if}
+
+                    <td>
+                        <div class="type-parent">{$item['name']}</div>
+                    </td>
+
+                    <td>
+                        <div class="type-parent">
+                            <img src="{php echo tomedia($item['brand_icon']);}" height="60" />
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="type-parent">{$item['guide']}</div>
+                    </td>
+
+                    <td>
+                        <div class="type-parent">{$item['sort']}</div>
+                    </td>
+
+                    <td>
+                        <div class="type-parent">{$item['abc']}</div>
+                    </td>
+
+                    <td>
+
+                        {if $level>=1}
+                        <a href="javascript:;" title="查看一级" data-pid="0" class="btn btn-sm btn-primary level">查看一级</a>
+                        {/if}
+                        {if $level>=2}
+                        <a href="javascript:;" title="查看二级" data-pid="{$arrparent['level1']['id']}" class="btn btn-sm btn-primary level">查看二级</a>
+                        {else}
+                            {if $item['issub']==1}
+                                <a href="javascript:;" title="查看下级" data-pid="{$item['id']}" class="btn btn-sm btn-primary level">查看下级</a>
+                            {/if}
+                        <a href="javascript:;" title="添加下级" data-id="{$item['id']}" class="btn btn-sm btn-primary add">添加下级</a>
+                        {/if}
+
+                        <a href="#" title="编辑" data-id="{$item['id']}" class="btn btn-sm btn-primary bianji"><i class="fa fa-pencil"></i></a>
+
+                        <a href="javascript:vord(0)" data-id="{$item['id']}" title="确认删除？" class="shanchu btn btn-sm btn-danger" ><i class="fa fa-trash-o"></i></a>
+                    </td>
+
+                </tr>
+
+            {/loop}
+
+            </tbody>
+
+          
+
+        </table>
+
+            {else}
+
+            <div class="monai-table-nodata">暂无品牌信息</div>
+
+            {/if}
+
+        </div>
+
+        <div style="padding-top: 10px;float: right; margin-right:15px"> {$pager} </div>
+
+        <div style="width:100%; height:20px; clear:both"> </div>
+
+      </section>
+
+    </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!--/.row-->
+<script type="text/javascript">
+    $('.add').on('click',function () {
+        var id = $(this).attr('data-id');
+        window.location.href = "{php echo webUrl('producttype/type_add')}&pid="+id;
+    });
+    $('.level').on('click',function () {
+        var pid = $(this).attr('data-pid');
+        window.location.href = "{php echo webUrl('producttype/type')}&pid="+pid;
+    });
+    $('.bianji').on('click', function(e){
+        var id = $(this).attr('data-id')
+        layer.open({
+            type: 2,
+            title: '品牌',
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1300px' , '800px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=producttype.type_edit&id=' + id
+        });
+    });
+    $('.shanchu').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定删除？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('producttype/type_del')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('删除成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('删除失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+</script>
+{template 'footer'}

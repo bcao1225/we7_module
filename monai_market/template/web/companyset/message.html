@@ -1,0 +1,67 @@
+{template 'header'}
+
+<div class="wrapper">
+
+
+
+    <section class="panel">
+
+        <header class="panel-heading">
+
+            消息模板设置
+
+        </header>
+
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+
+        <div class="panel-body" style="padding-bottom: 70px; ">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">发货通知微信消息模板ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"  name="message1[content]" value="{$arr[1]['content']}">
+                    <input type="hidden" name="message1[name]" value="订单发货提醒">
+                    <input type="hidden" name="message1[type]" value="1">
+                    <span class="help-block">模板库编号AT0007 创建模板时请按如下截图顺序选择选项</span>
+                    <span class="help-block"><img src="{php echo MODEL_LOCAL}static/images/fahuo.png" style="height: 500px;"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">店铺认证微信消息模板ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"  name="message2[content]" value="{$arr[2]['content']}">
+                    <input type="hidden" name="message2[name]" value="店铺认证成功提醒">
+                    <input type="hidden" name="message2[type]" value="2">
+                    <span class="help-block">模板库编号AT0277 创建模板时请按如下截图顺序选择选项</span>
+                    <span class="help-block"><img src="{php echo MODEL_LOCAL}static/images/renzheng.png" style="height: 500px;"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">车辆置顶成功微信消息模板ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"  name="message3[content]" value="{$arr[3]['content']}">
+                    <input type="hidden" name="message3[name]" value="车辆置顶成功提醒">
+                    <input type="hidden" name="message3[type]" value="3">
+                    <span class="help-block">模板库编号AT1305 创建模板时请按如下截图顺序选择选项</span>
+                    <span class="help-block"><img src="{php echo MODEL_LOCAL}static/images/zhiding.jpg" style="height: 500px;"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="panel-footer">
+
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 保存</button>
+
+        </footer>
+
+        </form>
+
+    </section>
+
+
+
+</div>        
+{template 'footer'}

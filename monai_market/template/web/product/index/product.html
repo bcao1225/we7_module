@@ -1,0 +1,298 @@
+{template 'header'}
+<div class="wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <section class="panel">
+                <header class="panel-heading addcar" style="padding: 40px;">
+                    <div style="margin-top: -15px;margin-left: -25px;">
+                    <div class="col-sm-4">
+                    </div>
+                    <form action="{php echo webUrl('product/index/product')}" method="post" class="form-horizontal" form-jump='1'>
+                        <div class="col-sm-8  ">
+                            <div class="input-group" style="margin-left: 500px">
+                                <select name="status" class="select-width">
+                                    <option value="" selected="">车辆类型</option>
+                                    <option value="1" {if $status==1}selected="selected"{/if}>自营</option>
+                                    <option value="2" {if $status==2}selected="selected"{/if}>商铺</option>
+                                </select>
+                                <input type="text" class="form-control" name="name" value="{$name}" placeholder="请输入车辆名称搜索">
+                                 <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"> 搜索</button> </span>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    <style type="text/css">
+                        .form-control{
+                            width: 70% !important;
+                        }
+                    </style>
+                </header>
+                <div class="monai-table" style="background: #e9ecf3;padding-top: 1px;margin: 0;">
+                    {if $list}
+                    {loop $list $index $item}
+                    <table style="border-collapse:separate;padding: 0 20px;margin-top: 20px;background: #fff;" class="table table-hover table-condensed" >
+                        <tbody>
+                        <tr>
+                            <td colspan="9" style="text-align: left;padding: 20px 8px 20px 5px;border-top: 0px;">
+                                姓名: {$item['username']} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 联系方式: {$item['phone']}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {if $item['uid']!='0'}
+                                <a href="javascript:vord(0)"  data-id="{$item['uid']}" class="chakan badge bg-primary" >查看会员信息</a>
+                                {/if}
+                                <text style="float: right;color: #FF7B8C;"><a href="javascript:vord(0)"  data-id="{$item['id']}" class="shanchu" >删除</a></text>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align: left;padding-bottom: 15px">
+                                <div class="type-parent" style="display:inline-block;">
+                                    <div style="font-size: 16px;color: #333333;padding-bottom: 10px;padding-top: 10px;">车辆信息</div>
+                                    <img src="{php echo tomedia($item['carimg']);}" style="border-radius: 5px" height="90" width="90" />
+                                </div>
+
+                                <div style="display: inline-block;width: 200px;text-align: left;margin-top: 45px">
+                                        <p>{$item['type_name']}</p>
+                                        <p style="color: #999;margin-top: 10px">分类：{$item['type_name']}</p>
+                               {if $item['uid']=='0'}
+                                <!-- <span class="label label-success" >&nbsp;&nbsp;自营车辆&nbsp;&nbsp;</span>
+                                <span class="label label-danger label-mini">自营车辆</span> -->
+
+
+                                    <span style="margin-top: 10px;line-height: 15px;" class="badge bg-info">&nbsp;自营&nbsp;</span>
+                                {else}
+                                <span style="margin-top: 10px;line-height: 15px;" class="badge bg-important">&nbsp;商铺&nbsp;</span>
+                                {/if}
+
+                                {if $item['expiry_time']>time()}
+                                    <span style="margin-top: 10px;line-height: 15px;" class="badge bg-info">&nbsp;已置顶&nbsp;</span>
+                                    <div style="margin-top: 20px;line-height: 15px;" class="type-parent">
+                                    </div>
+                                {else}
+                                    <span style="margin-top: 10px;line-height: 15px;" class="badge bg-important">&nbsp;未置顶&nbsp;</span>
+                                {/if}</div>
+
+
+
+                            </td>
+
+                            <td style="text-align: left;width: 600px;">
+                                <div style="margin-top: 45px;text-align: left;" class="type-parent type-parent-address">【看车位置】{$item['caraddress']}</div>
+                                <div style="margin-top: 10px;text-align: left;" class="type-parent">【出厂时间】{$item['year']}</div>
+                                {if $item['expiry_time']>time()}
+                                <div style="margin-top: 10px;text-align: left;" class="type-parent">【置顶到期】<?php echo date("Y-m-d H:i:s",$item['expiry_time']); ?></div>
+                                {/if}
+                            </td>
+                            <td>
+                                <div style="margin-top: 45px;color: red;width: 100px" class="type-parent">￥ {$item['price']} 万</div>
+                            </td>
+                            <td>
+                                <div style="margin-top: 45px;width: 150px" class="type-parent">浏览量： {$item['browse']} 次</div>
+                            </td>
+                            <td>
+                                <div style="margin-top: 45px;">
+                                <span style="cursor:pointer" class="{if $item['status']==3}label label-warning{else}label{/if}" data-ajax="{php echo webUrl('product/index/appoint_ajax_recom',array('id'=>$item['id']))}" list-class="{if $item['status']==3}label{else}label label-warning{/if}" list-html="{if $item['status']==3}下架{else}上架{/if}">
+                                {if $item['status']==3}上架{else}下架{/if}</span><br/>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                <span style="cursor:pointer" class="{if $item['issold']==1}label label-warning{else}label{/if}" data-ajax="{php echo webUrl('product/index/appoint_ajax_sold',array('id'=>$item['id']))}" list-class="{if $item['issold']==1}label{else}label label-warning{/if}" list-html="{if $item['issold']!=1}已售出{else}未售出{/if}">
+                            {if $item['issold']==1}已售出{else}未售出{/if}</span>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                <span style="cursor:pointer" class="{if $item['isvip']==1}label label-warning{else}label{/if}" data-ajax="{php echo webUrl('product/index/appoint_ajax_vip',array('id'=>$item['id']))}" list-class="{if $item['isvip']==1}label{else}label label-warning{/if}" list-html="{if $item['isvip']!=1}VIP汽车{else}普通{/if}">
+                            {if $item['isvip']==1}VIP汽车{else}普通{/if}</span>
+                                </div>
+
+                                <div style="margin-top: 15px;">
+                                <span style="cursor:pointer" class="{if $item['isfine']==1}label label-warning{else}label{/if}" data-ajax="{php echo webUrl('product/index/appoint_ajax_fine',array('id'=>$item['id']))}" list-class="{if $item['isfine']==1}label{else}label label-warning{/if}" list-html="{if $item['isfine']!=1}精品{else}非精品{/if}">
+                            {if $item['isfine']==1}精品{else}非精品{/if}</span>
+                                </div>
+                            </td>
+                            <td>
+
+                                <!-- <input type="checkbox" class="js-switch-small-green " checked="" data-switchery="true" style="display: none;">
+                                <span class="switchery switchery-small" style="background-color: rgb(121, 212, 167); border-color: rgb(121, 212, 167); box-shadow: rgb(121, 212, 167) 0px 0px 0px 11px inset; transition: border 0.4s, box-shadow 0.4s, background-color 1.2s;">
+                                <small style="left: 13px; background-color: rgb(255, 255, 255); transition: left 0.2s;"></small>
+                                </span> -->
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                <div style="margin-top: 43px"></div>
+                                {if $item['uid']=='0'}
+                                <div style="margin-top: 10px"><a href="{php echo webUrl('product/index/product_edit',array('id'=>$item['id']))}" title="编辑">编辑</a></div>
+                                <div style="margin-top: 10px"><a href="#" title="查看" data-id="{$item['id']}"  class="parentIframe"><i aria-hidden="true"></i>查看</a></div>
+                                <div style="margin-top: 10px"><a href="javascript:vord(0)" data-id="{$item['id']}" class="zhiding">置顶</a></div>
+                                {else}
+                                <div style="margin-top: 10px"><a href="{php echo webUrl('product/index/product_edit',array('id'=>$item['id']))}" title="编辑">编辑</a></div>
+                                <div style="margin-top: 10px"><a href="#" title="查看" data-id="{$item['id']}"  class="parentIframe"><i aria-hidden="true"></i>查看</a></div>
+                                <div style="margin-top: 10px"><a href="javascript:vord(0)" data-id="{$item['id']}" class="zhiding">置顶</a></div>
+
+                                {/if}</div>
+                                {if $item['expiry_time']>time()}
+                                    <div style="margin-top: 10px"><a href="javascript:vord(0)" data-id="{$item['id']}" class="quxiaozhiding">取消置顶</a></div>
+                                {/if}
+                                <div style="margin-top: 10px"><a href="javascript:vord(0)" data-id="{$item['id']}" class="liulan">增加浏览量</a></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {/loop}
+                    {else}
+                    <div class="monai-table-nodata">暂无车辆信息</div>
+                    {/if}
+                </div>
+                <div class="page-reset"> {$pager} </div>
+                <div style="width:100%; height:20px; clear:both"> </div>
+            </section>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+<!--/.row-->
+<script>
+    $('.parentIframe').on('click', function(e){
+        var id = $(this).attr('data-id')
+        layer.open({
+            type: 2,
+            title: '车辆详情',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['500px' , '800px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=product.index.audit_product&id=' + id
+        });
+    });
+    $('.chakan').on('click', function(e){
+        var uid = $(this).attr('data-id')
+        layer.open({
+            type: 2,
+            title: '会员信息',
+            maxmin: true,
+            shadeClose: true, //点击遮罩关闭层
+            area : ['1200px' , '600px'],
+            content: '/web/index.php?c=site&a=entry&m=monai_market&do=web&r=product.index.product_member&uid=' + uid
+        });
+    });
+    $('.shanchu').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定删除？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('product/index/product_del')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('删除成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('删除失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+    /*$('.liulan').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定增加100浏览量？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('product/index/product_liulan')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('增加成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('增加失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });*/
+    $(".liulan").click(function(event) {
+        event.stopPropagation();
+        var id = $(this).attr('data-id')
+        layer.prompt({title: '请输入你想增加的浏览数量', formType: 3}, function(text, index){
+            layer.close(index);
+            $.post("{php echo webUrl('product/index/product_liulan')}",{"id":id,'text':text},function(result){
+                if (result==1) {
+                    layer.msg('增加成功', {icon: 1});
+                    // setTimeout(function(){
+                    //     window.location.reload();
+                    // },1000)
+                }else
+                {
+                    layer.msg('增加失败', {icon: 2});
+                    // setTimeout(function(){
+                    //     window.location.reload();
+                    // },1000)
+                }
+            });
+        });
+    });
+    $('.zhiding').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定置顶？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('product/index/product_top')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('置顶成功', {icon: 1});
+                    // setTimeout(function(){
+                    //     window.location.reload();
+                    // },1000)
+                }else
+                {
+                    layer.msg('置顶失败', {icon: 2});
+                    // setTimeout(function(){
+                    //     window.location.reload();
+                    // },1000)
+                }
+           });
+        });
+    });
+    $('.quxiaozhiding').on('click', function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('确定置顶？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+           $.post("{php echo webUrl('product/index/product_esctop')}",{"id":id},function(result){
+                if (result==1) {
+                    layer.msg('置顶成功', {icon: 1});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }else
+                {
+                    layer.msg('置顶失败', {icon: 2});
+                    setTimeout(function(){
+                        window.location.reload();
+                    },1000)
+                }
+           });
+        });
+    });
+    function selectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");
+        for (var i=0; i<checkboxis.length; i++){
+            checkboxis[i].checked = true;
+        }
+    }
+    function fanselectBox(){
+        var checkboxis = document.getElementsByName("xuanze[]");
+        for (var i=0; i<checkboxis.length; i++){
+            checkboxis[i].checked = !checkboxis[i].checked;
+        }
+    }
+</script>
+{template 'footer'}

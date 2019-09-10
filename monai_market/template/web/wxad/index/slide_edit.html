@@ -1,0 +1,99 @@
+{template 'header_list'}
+<div class="wrapper">
+
+
+
+    <section class="panel">
+
+        <header class="panel-heading">
+
+            修改轮播
+
+        </header>
+
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+
+        <div class="panel-body" style="padding-bottom: 70px; ">
+
+            
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >图片</label>
+
+                    <div class="col-lg-6">
+
+                        {php echo tpl_form_field_image2('img_patch',$data['img_patch']);}
+
+                        <span class="help-block">建议图片大小为：750*375</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >排序</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control" id="notice" name="sort" value="{$data['sort']}">
+
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="text-input">选择跳转类型</label>
+                    <div class="col-md-6">
+                         <span class="input-group-selectn">
+                              <select name="type" class="form-control type">
+                                    <option {if $data['type']==6} selected {/if} value="6">请选择跳转类型</option>
+                                    <option {if $data['type']==1} selected {/if} value="1">车辆</option>
+                                    <option {if $data['type']==4} selected {/if} value="4">推广中心</option>
+                                    <option {if $data['type']==5} selected {/if} value="5">店铺认证</option>
+                              </select>
+                         </span>
+                    </div>
+                </div>
+                <div class="form-group cheliang" {if $data['type']!=1} style="display: none;" {/if}>
+                    <label class="col-sm-2 control-label col-lg-2" >选择关联车辆</label>
+                    <div class="col-lg-6">
+                        <span class="input-group-selectn">
+                            <select name="product_id" class="form-control">
+                                <option value="">选择关联车辆</option>
+                                {loop $list $item}
+                                    <option {if $data['product_id']==$item['id']} selected {/if} value="{$item['id']}">{$item['name']}</option>
+                                {/loop}
+                            </select>
+                        </span>
+                    </div>
+                </div>
+        </div>
+        <footer class="panel-footer">
+            <button type="submit" class="btn btn-sm btn-success tijiao"><i class="fa fa-dot-circle-o"></i> 保存</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+        </footer>
+        </form>
+    </section>
+</div> 
+<script type="text/javascript">
+    $(".type").change(function(){
+        var a = $(".type").val();
+        if (a==1) {
+            $(".cheliang").css("display","");
+        }else
+        {
+            $(".cheliang").css("display","none");
+        }
+    })
+</script>           
+<script type="text/javascript">
+    $('.tijiao').click(function(){
+        setTimeout(function(){
+              parent.location.reload();
+        },1000)
+    });
+</script>
+{template 'footer'}

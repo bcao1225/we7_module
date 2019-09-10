@@ -1,0 +1,504 @@
+﻿{template 'header'}
+
+<div class="wrapper">
+
+
+
+    <section class="panel">
+
+        <header class="panel-heading">
+
+            修改车辆
+
+        </header>
+
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+
+        <div class="panel-body" style="padding-bottom: 70px; ">
+
+
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >汽车主图</label>
+
+                    <div class="col-lg-6">
+
+                        {php echo tpl_form_field_image2('carimg',$data['carimg']);}
+
+                        <span class="help-block">建议图片：300*300</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group xiangqing">
+
+                    <label class="col-sm-2 control-label col-lg-2" >车辆介绍</label>
+
+                    <div class="col-lg-6 img2">
+
+                    {loop $img1 $item}
+
+                       <div>
+
+                        <div style="border: 1px solid #a978d1;margin-top: 15px;padding:10px;">
+
+                            {php echo tpl_form_field_image2('img_patch[]',$item['img_patch']);}
+
+                            <span class="help-block">图片宽高 800*800 或为其他尺寸正方形</span>
+
+                            介绍：<input type="text" class="form-control"  name="intro[]" value="{$item['intro']}">
+
+                            <span class="help-block"></span>
+
+                            <div style="float: right;margin-right: -100px;margin-top: -225px;">
+
+                                <span class="" ><button class="shanchu btn btn-sm btn-primary" type="button"><i class="fa fa-trash-o">&nbsp;删除</i></button></span>
+
+                            </div>
+
+                            <div style="float: right;margin-right: -100px;margin-top: -225px;">
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+                    {/loop}
+
+                    {template 'product/index/product_img'}
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >产品详情图：</label>
+
+                    <div class="col-lg-6">
+
+                        {php echo tpl_form_field_multi_image('figure_img',$array);}
+
+                        <span class="help-block">建议图片大小为：850*560</span>
+
+                    </div>
+
+                </div> -->
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >汽车品牌</label>
+
+                    <div class="col-lg-6">
+
+                        <div class="input-group m-b-10" style="margin: 0;">
+                            <select name="brand">
+                                <option value="" selected="">请选择汽车品牌</option>
+                                {loop $brand $item}
+                                    <option {if $data['brand']==$item['id']} selected {/if} value="{$item['id']}">{$item['name']}</option>
+                                {/loop}
+                            </select>
+                            <select name="brand2" {if !$brand2}style="display:none;"{/if}>
+                                <option value="" selected="">请选择汽车品牌</option>
+                                {loop $brand2 $item}
+                                <option {if $data['brand2']==$item['id']} selected {/if} value="{$item['id']}">{$item['name']}</option>
+                                {/loop}
+                            </select>
+                            <select name="brand3" {if !$brand3}style="display:none;"{/if}>
+                                <option value="" selected="">请选择汽车品牌</option>
+                                {loop $brand3 $item}
+                                <option {if $data['brand3']==$item['id']} selected {/if} value="{$item['id']}">{$item['name']}</option>
+                                {/loop}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >汽车类型</label>
+
+                    <div class="col-lg-6">
+
+                        <div class="input-group m-b-10" style="margin: 0;">
+
+                            <select name="class" >
+
+                                <option value="" selected="">请选择汽车类型</option>
+
+                                {loop $class $item}
+
+                                    <option {if $data['class']==$item['id']} selected {/if} value="{$item['id']}">{$item['name']}</option>
+
+                                {/loop}
+
+                              </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="form-group">
+                
+                    <label class="col-sm-2 control-label col-lg-2" >车主姓名</label>
+                
+                    <div class="col-lg-6">
+                
+                        <input type="text" class="form-control"  name="username" value="{$data['username']}">
+                
+                    </div>
+                
+                </div> -->
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >联系电话</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="phone" value="{$data['phone']}">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >汽车名称</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="name" value="{$data['name']}">
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >产品标题</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="title" value="{$data['title']}">
+
+                    </div>
+
+                </div> -->
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >汽车价格</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="price" value="{$data['price']}">
+
+                        <span class="help-block">以万为单位保存</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >上牌日期</label>
+
+                    <div class="col-lg-6">
+
+                        {php echo _tpl_form_field_date('year',$data['year'])}
+                        <!--<input type="text" class="form-control"  name="year" value="{$data['year']}">-->
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >车龄</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="agelimit" value="{$data['agelimit']}">
+
+                        <span class="help-block">填数字即可</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label col-lg-2" >公里数</label>
+
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control"  name="km" value="{$data['km']}">
+
+                        <span class="help-block">以万为单位保存</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="name" class="col-sm-2 control-label">汽车所在地</label>
+
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control"  name="search" id="search" value="{$data['caraddress']}">
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="form-group">
+                
+                    <label for="name" class="col-sm-2 control-label">上牌日期</label>
+                
+                    <div class="col-sm-4">
+                
+                        <input type="text" class="form-control"  name="vehicletime" id="search" value="{$data['vehicletime']}">
+                
+                    </div>
+                
+                </div> -->
+
+                <!-- <div class="form-group">
+                
+                    <label for="name" class="col-sm-2 control-label">保险到期时间</label>
+                
+                    <div class="col-sm-4">
+                
+                        <input type="text" class="form-control"  name="insurance" id="search" value="{$data['insurance']}">
+                
+                    </div>
+                
+                </div>
+                 -->
+                <div class="form-group">
+
+                    <label for="name" class="col-sm-2 control-label">排气量</label>
+
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control"  name="exhaust" id="search" value="{$data['exhaust']}">
+
+                        <span class="help-block">如：(1.6)</span>
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="form-group">
+                
+                    <label for="name" class="col-sm-2 control-label">看车地点</label>
+                
+                    <div class="col-sm-4">
+                
+                        <input type="text" class="form-control"  name="watchcar" id="search" value="{$data['watchcar']}">
+                
+                        <span class="help-block">如：(北京)</span>
+                
+                    </div>
+                
+                </div> -->
+
+                <div class="form-group">
+
+                    <label for="name" class="col-sm-2 control-label">变速箱类型</label>
+
+                    <div class="col-sm-4 ">
+
+                    <div class="input-group m-b-10 radio-custom radio-primary">
+
+                        <input type="radio" name="gearbox"  {if $data['gearbox'] == '0'} checked {/if} value="0" id='kaiqi1'><label for="kaiqi1">手自一体</label>
+
+                        <input type="radio" name="gearbox"  {if $data['gearbox'] == 1} checked {/if} value="1"  id='guanbi1'><label for="guanbi1">手动档</label>
+
+                        <input type="radio" name="gearbox"  {if $data['gearbox'] == 2} checked {/if} value="2"  id='guanbi2'><label for="guanbi2">自动挡</label>
+
+                    </div>
+
+                    </div>
+
+                </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >出厂日期</label>
+                <div class="col-lg-6">
+                    {php echo _tpl_form_field_date('producttime',$data['producttime'])}
+                    <!--<input type="text" class="form-control"  name="producttime" value="{$data['producttime']}">-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >编号</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control"  name="identify" value="{$data['identify']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >过户次数</label>
+                <div class="col-lg-6">
+                    <input type="number" class="form-control"  name="transnum" value="{$data['transnum']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >排放标准</label>
+                <div class="col-lg-6">
+                    <select class="form-control" name="effluentstand">
+                        <option {if $data['effluentstand']=="国1"}selected{/if} value="国1">国1</option>
+                        <option {if $data['effluentstand']=="国2"}selected{/if} value="国2">国2</option>
+                        <option {if $data['effluentstand']=="国3"}selected{/if} value="国3">国3</option>
+                        <option {if $data['effluentstand']=="国4"}selected{/if} value="国4">国4</option>
+                        <option {if $data['effluentstand']=="国5"}selected{/if} value="国5">国5</option>
+                        <option {if $data['effluentstand']=="国6"}selected{/if} value="国6">国6</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >车辆颜色</label>
+                <div class="col-lg-6">
+                    <select class="form-control" name="carcolor">
+                        <option {if $data['carcolor']=="白色"}selected{/if} value="白色">白色</option><br>
+                        <option {if $data['carcolor']=="黑色"}selected{/if} value="黑色">黑色</option>
+                        <option {if $data['carcolor']=="红色"}selected{/if} value="红色">红色</option>
+                        <option {if $data['carcolor']=="蓝色"}selected{/if} value="蓝色">蓝色</option>
+                        <option {if $data['carcolor']=="香槟色"}selected{/if} value="香槟色">香槟色</option>
+                        <option {if $data['carcolor']=="银色"}selected{/if} value="银色">银色</option>
+                        <option {if $data['carcolor']=="棕色"}selected{/if} value="棕色">棕色</option>
+                        <option {if $data['carcolor']=="其他"}selected{/if} value="其他">其他</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >车况简介</label>
+                <div class="col-lg-6">
+                    <div class="input-group m-b-10" style="margin: 0;">
+                        <select name="cardestype" >
+                            <option value="" selected="">请选择车况简介</option>
+                            {loop $cardestype $item}
+                            <option {if $data['cardestype']==$item['name']} selected {/if} value="{$item['name']}" data-des="{$item['des']}">{$item['name']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label col-lg-2" >车况信息</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control"  name="cardes" value="{$data['cardes']}">
+                </div>
+            </div>
+
+
+        </div>
+
+        <footer class="panel-footer">
+
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 保存</button>
+
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+
+        </footer>
+
+        </form>
+
+    </section>
+
+
+
+</div>
+
+<style type="text/css">
+
+    .img2 .img-thumbnail{
+
+    height: 80px!important;
+
+    width: 80px!important;
+
+}
+
+</style>
+
+<script type="text/javascript">
+
+
+
+    $(".shanchu").click(function(){
+
+        //alert(111);
+
+        //$("img2").append($val);
+
+        $(this).parent().parent().parent().parent().empty();
+
+
+
+    });
+
+    function brandlist(obj,pid){
+        obj.html("");
+        $.ajax({
+            type:"POST",
+            url: "{php echo webUrl('product/index/brandlist')}",
+            dataType:"JSON",
+            data:{
+                pid:pid
+            },
+            success: function (res) {
+                var str = "<option value=''>请选择汽车品牌</option>";
+                $.each(res.data, function (i, item) {
+                    str += "<option value=" + item.id + ">" + item.name + "</option>";
+                });
+                obj.append(str);
+                obj.show();
+            }
+        });
+    }
+    $(function () {
+        $('select[name="brand"]').change(function () {
+            console.log("----");
+            var id = $(this).val();
+            if(id==""){
+                $('select[name="brand2"]').hide();
+                $('select[name="brand3"]').hide();
+                $('select[name="brand2"]').html('');
+                $('select[name="brand3"]').html('');
+                return;
+            }
+            //----------------
+            brandlist($('select[name="brand2"]'),id);
+        });
+        $('select[name="brand2"]').change(function () {
+            var id = $(this).val();
+            if(id==""){
+                $('select[name="brand3"]').hide();
+                $('select[name="brand3"]').html();
+                return;
+            }
+            brandlist($('select[name="brand3"]'),id);
+        });
+
+        $('select[name="cardestype"]').change(function () {
+            var des = $(this).find("option:selected").data('des');
+            console.log("选择注释",des);
+            $('input[name="cardes"]').val(des);
+        });
+    })
+
+</script>
+
+{template 'footer'}

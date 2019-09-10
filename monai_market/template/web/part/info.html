@@ -1,0 +1,205 @@
+{template 'header_list'}
+
+<div class="wrapper">
+
+
+
+    <section class="panel">
+
+        <form class="form-horizontal tasi-form">
+
+        <div class="panel-body" style="padding-bottom: 70px; ">
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">订单号</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['order_sn']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">进度</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['status']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">配件图片</label>
+
+                <div class="col-sm-8">
+
+                    <img src="{$line['part_img']}" height="150" />
+
+                </div>
+
+            </div>
+
+                <div class="form-group">
+
+                    <label class="col-sm-2 control-label">配件名称</label>
+
+                    <div class="col-sm-8">
+
+                        <input type="text" class="form-control" name="content" value="{$line['part_name']}" readonly>
+
+                    </div>
+
+                </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">车型</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['car_type']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">年份</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['car_year']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">配件类型</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['part_type']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">联系电话</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['user_tel']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">报价</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="￥{$line['part_price']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">收货人姓名</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['receive_name']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">收货人手机号</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['receive_tel']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">收货人地址</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['receive_address']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">快递公司名称</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['express_name']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">运单号</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['waybill_sn']}" readonly>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="col-sm-2 control-label">创建时间</label>
+
+                <div class="col-sm-8">
+
+                    <input type="text" class="form-control" name="content" value="{$line['create_time']}" readonly>
+
+                </div>
+
+            </div>
+        </div>
+        </form>
+
+    </section>
+
+</div>
+
+<script>
+    $(function () {
+        $('html').css('overflow', 'auto');
+    });
+</script>
+
+{template 'footer'}

@@ -1,0 +1,32 @@
+<div>
+<div style="border: 1px solid #a978d1;margin-top: 15px;padding:10px;">
+	{php echo tpl_form_field_image2('img_patch[]');}
+    <span class="help-block">图片宽高 800*800 或为其他尺寸正方形</span>
+    介绍：<input type="text" class="form-control"  name="intro[]">
+	<span class="help-block"></span>
+	<div style="float: right;margin-right: -100px;margin-top: -225px;">
+		<span class="" ><button class="shanchu btn btn-sm btn-primary" type="button"><i class="fa fa-trash-o">&nbsp;删除</i></button></span>
+	</div>
+	<div style="float: right;margin-right: -100px;margin-top: -225px;">
+		<span class="addbut" ><button class="tianjia btn btn-sm btn-primary" type="button"><i class="fa fa-plus">&nbsp;添加</i></button></span>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+    //var num=0;
+    $(".tianjia").click(function(){
+        //alert(22);
+        //$("img2").append($val);
+        $.post("{php echo webUrl('product/index/product_img')}",{},function(result){
+            $('.addbut').attr('style','display: none;');
+            $('.img2').append(result);
+              
+        });
+    });
+    $(".shanchu").click(function(){
+        //alert(111);
+        //$("img2").append($val);
+        $(this).parent().parent().parent().parent().empty();
+        
+    });
+</script>

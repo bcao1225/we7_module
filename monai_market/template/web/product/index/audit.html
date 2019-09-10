@@ -1,0 +1,211 @@
+{template 'header'}
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+
+
+                <div class="panel panel-info">
+
+
+
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+
+                        <form action="{php echo webUrl('product/index/audit')}" method="post" class="form-horizontal" form-jump='1'>
+
+                            <div class="col-sm-4 pull-right" style="padding-bottom:10px">
+
+                                <div class="input-group">
+
+                                    <div class="input-group-select">
+
+                                        <select name="status" class="form-control" style="height: 10px;">
+
+                                            <option value="" selected="">审核状态</option>
+
+                                            <option value="0" {if $status=='0'}selected="selected"{/if}>未审核</option>
+
+                                            <option value="1" {if $status==1}selected="selected"{/if}>审核通过</option>
+
+                                            <option value="2" {if $status==2}selected="selected"{/if}>审核驳回</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <input type="text" class="input-sm form-control" name="name" value="{$name}" placeholder="请输入汽车名称搜索"> <span class="input-group-btn">
+
+                                    <button class="btn btn-primary" type="submit"> 搜索</button> </span>
+
+                                </div>
+
+                            </div>
+
+                            </form>
+
+                    <form style="margin-top: 40px;" action="{php echo webUrl('product/index/product_editall')}" method="post" enctype="multipart/form-data" class="form-horizontal ">
+
+                    <input type="hidden" name="token" value="{$_W['token']}">
+
+                        <table class="table-striped table-bordered table-hover dataTables-example table">
+
+                        <thead class="navbar-inner">
+
+                        <th>车主姓名</th>
+
+                        <th>联系电话</th>
+
+                        <!-- <th>产品主图</th> -->
+
+                        <th>产品名称</th>
+
+                        <th>产品价格</th>
+
+                        <th>产品分类</th>
+
+                        <th>创建时间</th>
+
+                        <th>审核状态</th>
+
+                        <th>操作</th>
+
+
+
+                     </thead>
+
+                    <tbody id="level-list">
+
+                      {loop $list $index $item}
+
+                     <tr>
+
+                        <td>
+
+                            <div class="type-parent">{$item['username']}</div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="type-parent">{$item['phone']}</div>
+
+                        </td>
+
+                        <!-- <td>
+
+                            <div class="type-parent">
+
+                                <img src="{php echo tomedia($item['image']);}" width="60" height="60" />
+
+                            </div>
+
+                        </td> -->
+
+                        <td>
+
+                            <div class="type-parent">{$item['name']}</div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="type-parent" style="color: red;">{$item['price']}</div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="type-parent">{$item['type_name']}</div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="type-parent"><?php echo date("Y-m-d H:i:s",$item['create_time']); ?></div>
+
+                        </td>
+
+                        <td>
+
+                            {if $item['audit_type']=='0'}
+
+                                <span style="border: 1px solid deepskyblue;color: deepskyblue;border-radius:25px;">&nbsp;&nbsp;未审核&nbsp;&nbsp;</span>
+
+                            {else if $item['audit_type']=='1'}
+
+                                <span style="border: 1px solid green;color: green;border-radius:25px;">&nbsp;&nbsp;审核通过&nbsp;&nbsp;</span>
+
+                            {else if $item['audit_type']=='2'}
+
+                                <span style="border: 1px solid red;color: red;border-radius:25px;">&nbsp;&nbsp;审核驳回&nbsp;&nbsp;</span>
+
+                            {/if}
+
+                        </td>
+
+                        <td>
+
+                            <a href="{php echo webUrl('product/index/audit_product',array('id'=>$item['id']))}" title="审核" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>审核</a>
+
+                        </td>
+
+                    </tr>
+
+                    {/loop}
+
+                </tbody>
+
+           </table>        
+
+                
+
+            </div>
+
+            <div style="padding-top: 10px;float: right;">
+
+                {$pager}
+
+            </div>
+
+            <div style="width:100%; height:20px; clear:both">
+
+            </div>
+
+                </form>
+
+                </div>
+
+            </div><!--/.row-->
+
+<script>
+
+	function selectBox(){
+
+        var checkboxis = document.getElementsByName("xuanze[]");  
+
+        for (var i=0; i<checkboxis.length; i++){ 
+
+            checkboxis[i].checked = true; 
+
+        }  
+
+    }
+
+	function fanselectBox(){
+
+        var checkboxis = document.getElementsByName("xuanze[]");  
+
+        for (var i=0; i<checkboxis.length; i++){ 
+
+            checkboxis[i].checked = !checkboxis[i].checked;  
+
+        }  
+
+    } 
+
+</script>
+
+    {template 'footer'}

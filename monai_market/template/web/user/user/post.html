@@ -1,0 +1,109 @@
+{template 'header'}
+<div class="wrapper">
+
+	<section class="panel">
+		<header class="panel-heading">
+			操作员管理
+		</header>
+		<hr>
+        <form action="{php echo webUrl('user/user/add')}" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+		<div class="panel-body">
+			
+				<div class="form-group">
+					<label class="col-sm-2 control-label col-lg-2" >操作员用户名</label>
+					<div class="col-lg-6">
+							  <input type="text" id="text-input" name="username" class="form-control" value="{$item['username']}" placeholder="" autocomplete="false">
+                              <span class="help-block">不能输入 系统现有用户! 只能新增 权限才能生效. 新增的从这里可以修改</span>
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="col-sm-2 control-label col-lg-2" >操作员密码</label>
+					<div class="col-lg-6">
+							  <input type="password"  name="password" class="form-control"   autocomplete="false"/>
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="col-sm-2 control-label col-lg-2" >所属角色</label>
+					<div class="col-lg-6">
+                           <span class="input-group-selectn">
+                                  <select name="roleid" class="form-control" onchange="changeRole(event)">
+                                      <option value="0">无角色</option>
+                                      {loop $roles $v}
+                                      <option value="{$v['id']}" {if $v['id'] == $item['roleid']}selected = "selected"{/if}>{$v['rolename']}</option>
+                                      {/loop}
+                                  </select>
+                             </span>
+                            <span class="help-block">如果您选择了角色，则此用户本身就继承了此角色的所有权限</span>
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="col-sm-2 control-label col-lg-2" >操作员姓名</label>
+					<div class="col-lg-6">
+							  <input type="text" name="realname"  value="{$item['realname']}" class="form-control" placeholder="">
+					</div>
+				</div>
+                 <div class="form-group">
+					<label class="col-sm-2 control-label col-lg-2" >操作员电话</label>
+					<div class="col-lg-6">
+							  <input type="text"  name="mobile" value="{$item['mobile']}" class="form-control" placeholder="">
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="col-sm-2 control-label col-lg-2" >操作员状态</label>
+					<div class="col-lg-10">
+						<div class="input-group m-b-10 radio-custom radio-primary">
+                             <input type="radio" name="status"  {if $item['status'] == 1} checked {/if} value="1" id='kaiqi'><label for="kaiqi">开启</label>
+                             <input type="radio" name="status"  {if empty($item['status'])} checked {/if} value="0"  id='guanbi'><label for="guanbi">关闭</label>
+						</div>
+					</div>
+				</div>
+               {template 'permission'}
+		</div>
+        <footer class="panel-footer">
+        	<input type="hidden" name="id"  value="{$_GPC['id']}" >
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 保存</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+        </footer>
+        </form>
+	</section>
+<script language='javascript'>
+                    function changeRole(e) {
+                        select_role(e.target.value)
+                    }
+                    function select_role(id) {
+                        $.ajax({url:"{php echo webUrl('user/role/query')}",data:{id:id},success:function(result){
+                                $("#userid").val(result.id);
+                                $("#user").val( result.rolename );
+                                var perms = JSON.parse(result).perms2.split(',');
+                                $(':checkbox').not(':eq(0)').removeAttr('disabled').removeAttr('checked').each(function(){
+
+                                    var _this = $(this);
+                                    var perm = '';
+                                    if( _this.data('group') ){
+                                        perm+=_this.data('group');
+                                    }
+                                    if( _this.data('parent') ){
+                                        if (_this.data('parent') != 'text') {
+                                            perm += "." + _this.data('parent');
+                                        }
+                                    }
+                                    if( _this.data('son') ){
+                                        if (_this.data('son') != 'text') {
+                                            perm += "." + _this.data('son');
+                                        }
+                                    }
+                                    if( _this.data('grandson') ){
+                                        if (_this.data('grandson') != 'text') {
+                                            perm += "." + _this.data('grandson');
+                                        }
+                                    }
+                                    if( $.arrayIndexOf(perms,perm)!=-1){
+                                        $(this).attr('disabled',true).get(0).checked =true;
+                                    }
+                                });
+                                $(".close").click();
+                            }});
+                    }
+                </script>
+</div>            
+{template 'footer'}

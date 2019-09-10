@@ -1,0 +1,57 @@
+{template 'header'}
+
+<div class="wrapper">
+
+
+
+    <section class="panel">
+
+        <header class="panel-heading">
+
+            违章设置
+
+        </header>
+
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal tasi-form">
+
+        <div class="panel-body" style="padding-bottom: 70px; ">
+
+                <div class="form-group">
+                    <label for="firstname" class="col-sm-2 control-label">聚合appkey</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control"  name="juhe_appkey" value="{$result['juhe_appkey']}">
+                        <span>不填写或者填写0小程序端显示正在升级维护</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="firstname" class="col-sm-2 control-label">默认可查询违章次数</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control"  name="weizhang_num" value="{$result['weizhang_num']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="firstname" class="col-sm-2 control-label">查询10次违章费用</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control"  name="weizhang_money" value="{$result['weizhang_money']}">
+                    </div>
+                </div>
+        </div>
+
+        <footer class="panel-footer">
+
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> 保存</button>
+
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> 撤销</button>
+
+        </footer>
+
+        </form>
+
+    </section>
+
+
+
+</div>        
+{template 'footer'}

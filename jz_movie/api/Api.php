@@ -5,6 +5,8 @@ require_once __DIR__.'/Movie.php';
 require_once __DIR__.'/User.php';
 require_once __DIR__.'/Investment.php';
 require_once __DIR__.'/Actor.php';
+require_once __DIR__.'/WxPort.php';
+require_once __DIR__.'/Util.php';
 
 defined('IN_IA') or exit('Access Denied');
 
@@ -43,5 +45,29 @@ class Api extends WeModuleWxapp{
     public function get_user($web_user_code = '')
     {
         return $this->db->get('web_user', ['web_user_code' => $web_user_code]);
+    }
+
+    /**
+     * 获取小程序的access_token
+     */
+    public function get_access_token(){
+        $content = cache_read('access_token');
+        if($content['overtime']>time()){
+            return $content['token'];
+        }
+
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appid.'&secret='.$this->app_secret;
+        $response = ihttp_get($url);
+        $content = json_decode($response['content'],true);
+
+        //将access_token缓存起来
+        cache_write('access_token',
+            [
+                'token'=>$content['access_token'],
+                'overtime'=>time()+$content['expires_in']
+            ]
+        );
+
+        return $content['access_token'];
     }
 }

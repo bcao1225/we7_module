@@ -1,0 +1,39 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>错误页面</title>
+    <meta name="keywords" content="" />
+    <link href="{php echo MODEL_LOCAL}static/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+<!--start-wrap--->
+<div class="wrap">
+    <!---start-header---->
+
+    <!---End-header---->
+    <!--start-content------>
+    <div class="content">
+        <img src="{php echo MODEL_LOCAL}static/images/error-img.png" title="error" />
+        <p>{$message} <span><label id="settime">5</label> 秒后自动跳转</span></p>
+
+        <a href='javascript:history.back()'>返回</a>
+
+    </div>
+    <!--End-Cotent------>
+</div>
+<script>
+    var num=5;
+    setInterval(function(){
+        endnum=num--;
+        document.getElementById("settime").innerHTML=endnum
+        if(endnum==0){
+            window.history.back(-1);
+        }
+    },1000);
+</script>
+<!--End-wrap--->
+</body>
+</html>
+
