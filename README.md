@@ -64,4 +64,25 @@ $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&app
 $response = ihttp_get($url);
 $content = json_decode($response['content'],true); //这里后面传入true，将字符串转换成数组
 ```
+###调用模板消息方式注意事项
+```
+$data = [
+    'touser'=>$web_user['openid'],
+    'template_id'=>'...',
+    'form_id'=>$web_user['form_id'],
+    'page'=>'/jz_movie/pages/user/user',
+    'emphasis_keyword'=>'keyword1.DATA',
+    'data'=>[
+        'keyword1'=>[
+            'value'=>$earnings['earnings']
+        ],
+        'keyword2'=>[
+            'value'=>date('Y-m-d H:i:s',time())
+        ]
+    ]
+];
+
+//推送文本消息
+ihttp_post($url,json_encode($data)); //php调用模板消息发送，是需要将数组转换成json字符串的
+```
 

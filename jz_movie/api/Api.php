@@ -52,7 +52,9 @@ class Api extends WeModuleWxapp{
      */
     public function get_access_token(){
         $content = cache_read('access_token');
-        if($content['overtime']>time()){
+
+
+        if($content['overtime']>time()&&$content!=''){
             return $content['token'];
         }
 
