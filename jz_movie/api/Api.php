@@ -1,12 +1,13 @@
 <?php
 
-//创建了一个模块时，必须引入当前模块
+require_once __DIR__ . '/../lib/FileLog.php';
+
+//新建一个类时，需要从这儿引入
+require_once __DIR__.'/Actor.php';
+require_once __DIR__.'/Investment.php';
 require_once __DIR__.'/Movie.php';
 require_once __DIR__.'/User.php';
-require_once __DIR__.'/Investment.php';
-require_once __DIR__.'/Actor.php';
 require_once __DIR__.'/WxPort.php';
-require_once __DIR__.'/Util.php';
 
 defined('IN_IA') or exit('Access Denied');
 
@@ -14,6 +15,8 @@ class Api extends WeModuleWxapp{
     
     public $appid = 'wx4732bfa5eef2bf6d';
     public $app_secret = '7847059d28802e9812770b5561e1d57a';
+
+    public $log;
 
     public $other_database = [
         'host' => '39.104.81.221', //数据库IP或是域名
@@ -34,6 +37,9 @@ class Api extends WeModuleWxapp{
 
     public static function instant(){
         global $_GPC;
+
+        FileLog::println("...");
+
         $clazz_name = ucfirst($_GPC['clazz']);
         $clazz = new $clazz_name;
         call_user_func([$clazz,$_GPC['do']]);
@@ -52,7 +58,6 @@ class Api extends WeModuleWxapp{
      */
     public function get_access_token(){
         $content = cache_read('access_token');
-
 
         if($content['overtime']>time()&&$content!=''){
             return $content['token'];

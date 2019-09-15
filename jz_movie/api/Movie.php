@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/Api.php';
+require_once __DIR__ . '/Api.php';
 
 defined('IN_IA') or exit('Access Denied');
 
@@ -76,6 +76,7 @@ class Movie extends Api
      */
     public function movie_all(){
         global $_W, $_GPC;
+
         if ($_GPC['movie_schedule']) {
             $list = $this->db->getall('movie', ['movie_schedule' => $_GPC['movie_schedule']]);
         } else {
