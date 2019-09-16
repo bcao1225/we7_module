@@ -37,9 +37,6 @@ class Api extends WeModuleWxapp{
 
     public static function instant(){
         global $_GPC;
-
-        FileLog::println("...");
-
         $clazz_name = ucfirst($_GPC['clazz']);
         $clazz = new $clazz_name;
         call_user_func([$clazz,$_GPC['do']]);
