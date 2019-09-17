@@ -33,28 +33,37 @@ class User extends Api
     }
 
     /**
+     * 更新用户信息
+     */
+    public function update_user(){
+        global $_GPC;
+        $this->db->update('web_user',['nickname'=>$_GPC['nickname'],'logo'=>$_GPC['avatarUrl']],['openid'=>$_GPC['openid']]);
+        $this->result(0,'更新成功',$this->get_user($_GPC['openid']));
+    }
+
+    /**
      * 通过openid获取用户信息
      */
     public function openid_by_user()
     {
         global $_GPC;
-        $this->result(0, '获取成功', $this->db->get('web_user', ['openid' => $_GPC['openid']]));
+        $this->result(0, '获取成功', $this->get_user($_GPC['openid']));
     }
 
     //更新当前用户登录时间
     public function set_upload_time()
     {
         global $_W, $_GPC;
-        $this->db->update('web_user', ['last_longin_time' => date('Y-m-d H:i:s', time())], ['web_user_code' => $_GPC['web_user_code']]);
-        $this->result(0, '更新成功', $this->get_user($_GPC['web_user_code']));
+        $this->db->update('web_user', ['last_longin_time' => date('Y-m-d H:i:s', time())], ['openid' => $_GPC['openid']]);
+        $this->result(0, '更新成功', $this->get_user($_GPC['openid']));
     }
 
     /*更新用户手机号码*/
     public function set_phone()
     {
         global $_W, $_GPC;
-        $this->db->update('web_user', ['phone' => $_GPC['phone']], ['web_user_code' => $_GPC['web_user_code']]);
-        $this->result(0, '更新成功', $this->get_user($_GPC['web_user_code']));
+        $this->db->update('web_user', ['phone' => $_GPC['phone']], ['openid' => $_GPC['openid']]);
+        $this->result(0, '更新成功', $this->get_user($_GPC['openid']));
     }
 
     /**

@@ -16,12 +16,10 @@ class Api extends WeModuleWxapp{
     public $appid = 'wx4732bfa5eef2bf6d';
     public $app_secret = '7847059d28802e9812770b5561e1d57a';
 
-    public $log;
-
     public $other_database = [
         'host' => '39.104.81.221', //数据库IP或是域名
-        'username' => 'root', // 数据库连接用户名
-        'password' => 'root', // 数据库连接密码
+        'username' => 'ltt', // 数据库连接用户名
+        'password' => 'jzjsb145321', // 数据库连接密码
         'database' => 'jz_movie', // 数据库名
         'port' => 3306, // 数据库连接端口
         'charset' => 'utf8', // 数据库默认编码
@@ -43,11 +41,13 @@ class Api extends WeModuleWxapp{
     }
 
     /**
-     * 通过传入web_user_code获取用户信息
+     * 通过传入openid获取用户信息
+     * @param string $openid 用户唯一标识符
+     * @return bool
      */
-    public function get_user($web_user_code = '')
+    public function get_user($openid = '')
     {
-        return $this->db->get('web_user', ['web_user_code' => $web_user_code]);
+        return $this->db->get('web_user', ['openid' => $openid]);
     }
 
     /**
