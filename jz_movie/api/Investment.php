@@ -22,9 +22,11 @@ class Investment extends Api{
     /*向电影投资*/
     public function movie_by_investment()
     {
-        global $_GPC, $_W;
+        global $_GPC;
         /*将当前form_id保存在指定用户中*/
         $this->db->update('web_user',['form_id'=>$_GPC['form_id']],['web_user_code'=>$_GPC['web_user_code']]);
+
+        $user = $this->db->get('web_user',['web_user_code'=>$_GPC['web_user_code']]);
 
         $user_to_movie = $this->db->get('web_user_to_movie',
             [
@@ -49,7 +51,6 @@ class Investment extends Api{
         }
 
         /*将当前用户的体验金减少*/
-        $user = $this->get_user($_GPC['web_user_code']);
         $this->db->update('web_user', ['experience_of_gold' => $user['experience_of_gold'] - $_GPC['money']], ['web_user_code' => $_GPC['web_user_code']]);
 
         /*将当前电影的募集金额增加*/

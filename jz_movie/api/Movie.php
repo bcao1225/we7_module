@@ -83,12 +83,10 @@ class Movie extends Api
             if ($_GPC['movie_schedule'] == 8) {
                 $seven = 7 * 24 * 60 * 60;
                 $list = $this->db->getall('movie');
-
                 $rest_list = [];
-
                 $current_time = time();
-
                 foreach ($list as $item) {
+
                     //预计上映时间
                     $estimated = strtotime($item['estimated_release_time']);
 
@@ -104,7 +102,6 @@ class Movie extends Api
                         array_push($rest_list,$item);
                     }
                 }
-
                 $this->result(0, '获取成功', $rest_list);
             } else {
                 $list = $this->db->getall('movie', ['movie_schedule' => $_GPC['movie_schedule']]);

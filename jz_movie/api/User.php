@@ -26,7 +26,8 @@ class User extends Api
             'nickname' => $_GPC['nickName'],
             'sex' => $_GPC['gender'],
             'create_time' => date('Y-m-d H:i:s', time()),
-            'experience_of_gold' => 50000
+            'experience_of_gold' => 50000,
+            'user_type'=>2
         ]);
 
         $this->result(0, '保存成功', $this->db->get('web_user', ['openid' => $_W['openid']]));
@@ -120,7 +121,13 @@ class User extends Api
         $pc = new WXBizDataCrypt($this->appid, $_GPC['sessionKey']);
         $errCode = $pc->decryptData($_GPC['encryptedData'], $_GPC['iv'], $data);
 
-        $this->result(0, '获取成功', $data);
+        if($data==null){
+            $message = '访问量过大，获取手机号失败，请重试';
+        }else{
+            $message = '获取成功';
+        }
+
+        $this->result(0, $message, $data);
     }
 
     /**
