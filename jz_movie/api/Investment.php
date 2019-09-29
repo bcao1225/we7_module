@@ -66,8 +66,10 @@ class Investment extends Api{
                 ':movie_code' => $movie['movie_code']
             ]);
 
+        //重新获取一次信息
+        $user = $this->db->get('web_user',['web_user_code'=>$_GPC['web_user_code']]);
 
-        $this->result(0, '投资成功', ['movie'=>$movie,'user'=>$this->get_user($user_to_movie['web_user_code'])]);
+        $this->result(0, '投资成功', ['movie'=>$movie,'user'=>$user]);
     }
 
     /**
