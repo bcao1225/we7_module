@@ -8,10 +8,15 @@
  */
 
 defined('IN_IA') or exit('Access Denied');
+require_once __DIR__.'/api/Base.php';
 
 
 class zhls_sunModuleWxapp extends WeModuleWxapp
 {
+    public function instance(){
+        Base::instence();
+    }
+
     //主分类
     public function doPageType()
     {
@@ -2990,19 +2995,6 @@ class zhls_sunModuleWxapp extends WeModuleWxapp
         echo json_encode($data);
     }
 
-
-//获取首页轮播图
-    public function doPageBanner()
-    {
-        global $_GPC, $_W;
-        $banner = pdo_get('zhls_sun_banner', ['uniacid' => $_W['uniacid']]);
-        $banner['lb_imgs'] = explode(',', $banner['lb_imgs']);
-//    foreach ($banner['lb_imgs'] as $k=>$v){
-//        $banner['lb_imgs'][$k] = $_W['attachurl'].$v;
-//    }
-        return $this->result(0, ',', $banner);
-    }
-
 // 获取业务id数据
     public function doPagebusinessData()
     {
@@ -3895,15 +3887,6 @@ class zhls_sunModuleWxapp extends WeModuleWxapp
     {
         global $_W;
         $shopData = pdo_get('zhls_sun_system', ['uniacid' => $_W['uniacid']]);
-        return $this->result(0, '', $shopData);
-    }
-
-// 自定义首页图标
-    public function doPageIndexpic()
-    {
-        global $_W;
-        $shopData = pdo_get('zhls_sun_system', ['uniacid' => $_W['uniacid']]);
-        $shopData['service_num'] = $shopData['service_num'] + 1;
         return $this->result(0, '', $shopData);
     }
 

@@ -4,6 +4,8 @@
 * v_prize 抽奖模块，对应小程序前端：[抽奖小程序](https://github.com/qq3245096941/wxapp_prize)
 * jz_movie 江左模拟盘模块，对应小程序前端：[江左模拟盘](https://github.com/qq3245096941/jz_movie_weapp)
 * monai_market 二手车模块，外包项目，没有前端
+* zhls_sun 律师小程序，对应前端：[律师小程序](https://github.com/qq3245096941/zhls_sun_weapp)
+
 
 ***
 #``jz_movie``模块将wxapp文件进行模块划分

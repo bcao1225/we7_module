@@ -5,6 +5,45 @@ defined('IN_IA') or exit('Access Denied');
 
 class Movie extends Api
 {
+
+    /**
+     * 修改电影的进度
+     */
+    public function amend_movie_schedule(){
+        global $_GPC;
+        $this->db->update('movie',['movie_schedule'=>$_GPC['movie_schedule']],['movie_code'=>$_GPC['movie_code']]);
+        $this->result(0,'修改成功',[]);
+    }
+
+    /**
+     *  新增电影票房
+     */
+    public function add_movie_box_office()
+    {
+        global $_GPC;
+        $last_box_office = $_GPC['last_box_office'];
+
+        //更新电影的总票房
+        $this->db->update('movie',['box_office'=>$last_box_office],['movie_code'=>$_GPC['movie_code']]);
+
+        $movie = $this->db->get('movie',['movie_code'=>$_GPC['movie_code']]);
+
+        //获取合作表的信息
+        $user_to_movie_list = $this->db->getall('web_user_to_movie',['movie_code'=>$_GPC['movie_code']]);
+
+        foreach ($user_to_movie_list as $key=>$user_to_movie){
+            $earnings = ($user_to_movie['money']/$movie['all_collect'])*
+            ($last_box_office/$movie['all_collect'])*
+            $movie['piece_of_party_proportion']*
+            $last_box_office;
+            $earnings = round($earnings,2);
+
+            $this->db->update('web_user_to_movie',['earnings'=>$earnings],['web_user_to_movie'=>$user_to_movie['web_user_to_movie']]);
+        }
+
+        $this->result(0,'增加票房成功',[]);
+    }
+
     /**
      * 通过电影code获取电影
      */
@@ -99,7 +138,7 @@ class Movie extends Api
                     FileLog::println($arr);
 
                     if ($estimated < $current_time + $seven && $estimated > $current_time) {
-                        array_push($rest_list,$item);
+                        array_push($rest_list, $item);
                     }
                 }
                 $this->result(0, '获取成功', $rest_list);
