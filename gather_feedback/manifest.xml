@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.w7.cc" versionCode="">
+
+    <application setting='false'>
+        <name><![CDATA[收集反馈]]></name>
+
+        <identifie><![CDATA[gather_feedback]]></identifie>
+
+        <version><![CDATA[1.0.0]]></version>
+
+        <ability><![CDATA[xxx]]></ability>
+
+        <type><![CDATA[xxx]]></type>
+
+        <description><![CDATA[收集用户的反馈信息]]></description>
+
+        <author><![CDATA[QQRPazWaNPgW]]></author>
+
+        <url><![CDATA[xxx]]></url>
+
+        <setting><![CDATA[xxx]]></setting>
+
+    </application>
+
+
+    <platform>
+        <rule embed="false"/>
+        <rule embed="false"/>
+        <supports>
+            <item type="app"/>
+        </supports>
+
+    </platform>
+
+    <bindings>
+        <menu>
+            <entry title="提问管理" do="question_all"/>
+        </menu>
+    </bindings>
+
+    <install><![CDATA[]]></install>
+    <uninstall><![CDATA[]]></uninstall>
+    <upgrade><![CDATA[]]></upgrade>
+</manifest>
