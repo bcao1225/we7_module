@@ -5,10 +5,11 @@
 * jz_movie 江左模拟盘模块，对应小程序前端：[江左模拟盘](https://github.com/qq3245096941/jz_movie_weapp)
 * monai_market 二手车模块，外包项目，没有前端
 * zhls_sun 律师小程序，对应前端：[律师小程序](https://github.com/qq3245096941/zhls_sun_weapp)
+* gather_feedback 收集反馈，公众号程序，h5页面
 
 
 ***
-#``jz_movie``模块将wxapp文件进行模块划分
+# ``jz_movie``模块将wxapp文件进行模块划分
 ```
 <?php
 
