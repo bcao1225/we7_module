@@ -1,44 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns="http://www.w7.cc" versionCode="">
-
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
-
         <identifie><![CDATA[gather_feedback]]></identifie>
-
         <version><![CDATA[1.0.0]]></version>
-
         <ability><![CDATA[xxx]]></ability>
-
-        <type><![CDATA[xxx]]></type>
-
+        <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息]]></description>
-
-        <author><![CDATA[QQRPazWaNPgW]]></author>
-
+        <author><![CDATA[追风的牧羊人3245096941@qq.com]]></author>
         <url><![CDATA[xxx]]></url>
-
         <setting><![CDATA[xxx]]></setting>
-
     </application>
 
-
     <platform>
-        <rule embed="false"/>
-        <rule embed="false"/>
+        <subscribes>
+            <message type="text"/>
+            <message type="image"/>
+            <message type="voice"/>
+            <message type="video"/>
+            <message type="shortvideo"/>
+            <message type="location"/>
+            <message type="link"/>
+            <message type="subscribe"/>
+            <message type="unsubscribe"/>
+            <message type="qr"/>
+            <message type="trace"/>
+            <message type="click"/>
+            <message type="view"/>
+            <message type="merchant_order"/>
+            <message type="user_get_card"/>
+            <message type="user_del_card"/>
+            <message type="user_consume_card"/>
+        </subscribes>
+        <handles>
+            <message type="text"/>
+            <message type="image"/>
+            <message type="voice"/>
+            <message type="video"/>
+            <message type="shortvideo"/>
+            <message type="location"/>
+            <message type="link"/>
+            <message type="subscribe"/>
+            <message type="unsubscribe"/>
+            <message type="qr"/>
+            <message type="trace"/>
+            <message type="click"/>
+            <message type="view"/>
+            <message type="merchant_order"/>
+            <message type="user_get_card"/>
+            <message type="user_del_card"/>
+            <message type="user_consume_card"/>
+        </handles>
         <supports>
             <item type="app"/>
         </supports>
-
     </platform>
 
     <bindings>
+        <cover>
+            <entry title="功能封面" do="index" state="" direct="false" />
+        </cover>
         <menu>
-            <entry title="提问管理" do="question_all"/>
+            <entry title="统计" do="statistics"/>
+            <entry title="用户管理" do="user_manager"/>
+            <entry title="题目管理" do="question_manager"/>
+            <entry title="系统设置" do="system_setting"/>
         </menu>
     </bindings>
 
-    <install><![CDATA[]]></install>
+    <install><![CDATA[
+        CREATE TABLE `ims_gather_feedback_question` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `title` varchar(255) NOT NULL DEFAULT '' COMMENT '题目名称',
+          `type` int(11) NOT NULL COMMENT '题目类型，1：单选题，2：多选题，3：填空题',
+          `question` text NOT NULL COMMENT '单选题和多选题的问题选项，一个微擎的序列化数组，需要前端反序列化',
+          `is_required` int(11) NOT NULL COMMENT '是否必填，0：不必须，1：必选',
+          `sort` int(11) NOT NULL COMMENT '排序，数字越小，越在顶部',
+          `is_open_remark` int(11) NOT NULL COMMENT '是否开启问题备注，1开启，0关闭',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_gather_feedback_system_setting` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `title` varchar(255) NOT NULL DEFAULT '',
+          `image` varchar(255) NOT NULL DEFAULT '',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_gather_feedback_user` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `nickname` varchar(255) NOT NULL DEFAULT '',
+          `openid` varchar(255) NOT NULL DEFAULT '',
+          `address` varchar(255) NOT NULL DEFAULT '',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+    ]]></install>
     <uninstall><![CDATA[]]></uninstall>
     <upgrade><![CDATA[]]></upgrade>
 </manifest>

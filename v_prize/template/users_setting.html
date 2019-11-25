@@ -3,7 +3,8 @@
 <!--搜索框-->
 <form class="we7-padding-bottom clearfix" method="post" action="{php echo $this->createWebUrl('users_setting')}">
     <div class="input-group pull-left col-sm-4">
-        <input type="text" name="query_prize_code" value="{$_GPC['query_prize_code']}" class="form-control" placeholder="请输入抽奖码">
+        <input type="text" name="query_prize_code" value="{$_GPC['query_prize_code']}" class="form-control"
+               placeholder="请输入抽奖码">
         <span class="input-group-btn">
                 <button type="submit" class="btn btn-default search">
                     <i class="fa fa-search"></i>
@@ -38,11 +39,10 @@
             <p><span class="label label-danger">{$user['phone']}</span></p>
             <span>
                 <span class="label label-info">{$user['address']}</span>
-
             </span>
         </td>
         <td>
-           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{$key}">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{$key}">
                 查看抽奖码
             </button>
             <div class="modal fade" id="myModal{$key}" tabindex="-1" aria-labelledby="myModalLabel">
@@ -72,7 +72,8 @@
                                         <span class="label label-success">中奖码</span>
                                         {else}
                                         <span class="label label-danger">抽奖码</span>丨
-                                        <a href="{php echo $this->createWebUrl('users_setting').'&user_state=update&id='.$prize_code['id']}" class="btn btn-default btn-xs">
+                                        <a href="{php echo $this->createWebUrl('users_setting').'&user_state=update&id='.$prize_code['id']}"
+                                           class="btn btn-default btn-xs">
                                             标记为中奖码
                                         </a>
                                         {/if}

@@ -1,0 +1,67 @@
+{template 'header'}
+<img style="width:100%" src="{php echo tomedia($system_setting['image'])}" alt="">
+
+{loop $question_list $index $question}
+<div class="card">
+    <div class="card-title">
+        {if $question['is_required']==='1'}<i class="weui-icon-warn"></i>{/if}{$question['title']}
+    </div>
+    <div class="card-body">
+        <!--单选框-->
+        {if $question['type']==='1'}
+        <div class="weui-cells weui-cells_radio">
+            {loop $question['question'] $key $que}
+            <label class="weui-cell weui-check__label" for="{php echo $index.'-'.$key}">
+                <div class="weui-cell__bd"><p>{$que}</p></div>
+                <div class="weui-cell__ft">
+                    <input type="radio" class="weui-check"
+                           name="{php echo $question['type']==='1'?'radio'.$question['id']:'check'.$question['id']}"
+                           id="{php echo $index.'-'.$key}">
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            {/loop}
+            {if $question['is_open_remark']==='1'}<textarea class="weui-textarea" placeholder="备注(选填)" rows="2"></textarea>{/if}
+        </div>
+        {elseif $question['type']==='2'}
+        <!--多选框-->
+        <div class="weui-cells weui-cells_checkbox">
+            {loop $question['question'] $key $que}
+            <label class="weui-cell weui-check__label" for="{php echo $index.'-'.$key}">
+                <div class="weui-cell__hd">
+                    <input type="checkbox"
+                           class="weui-check"
+                           name="checkbox1"
+                           id="{php echo $index.'-'.$key}">
+                    <i class="weui-icon-checked"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>{$que}</p>
+                </div>
+            </label>
+            {/loop}
+            {if $question['is_open_remark']==='1'}<textarea class="weui-textarea" placeholder="备注(选填)" rows="2"></textarea>{/if}
+        </div>
+        {else}
+        <!--填空题-->
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请输入内容" rows="5"></textarea>
+            </div>
+        </div>
+        {/if}
+    </div>
+</div>
+{/loop}
+
+<style>
+    .card{
+        margin: 10px;
+        background: #fff;
+        padding: 10px;
+        box-shadow: 1px 1px 5px #d2d2d2;
+        border-radius: 10px;
+    }
+</style>
+
+{template 'footer'}

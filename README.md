@@ -60,14 +60,14 @@ app.util.request({
 ```
 调用``wxapp``文件的``get_investment``方法，这个方法在``investment``类中。
 ***
-###json_decode转换字符串问题
+### json_decode转换字符串问题
 
 ```
 $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appid.'&secret='.$this->app_secret;
 $response = ihttp_get($url);
 $content = json_decode($response['content'],true); //这里后面传入true，将字符串转换成数组
 ```
-###调用模板消息方式注意事项
+### 调用模板消息方式注意事项
 ```
 $data = [
     'touser'=>$web_user['openid'],
@@ -87,5 +87,14 @@ $data = [
 
 //推送文本消息
 ihttp_post($url,json_encode($data)); //php调用模板消息发送，是需要将数组转换成json字符串的
+```
+***
+### 定义微擎公众号模块，手机端主页二维码定义
+```
+<bindings>
+    <cover>
+        <entry title="功能封面" do="index" state="" direct="false" />
+    </cover>
+</bindings>
 ```
 
