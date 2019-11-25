@@ -1,5 +1,39 @@
 {template 'header'}
 
+<ul class="nav nav-tabs">
+    <li class="{php echo $_GPC['type']===null?'active':''}"><a href="{php echo $this->createWebUrl('user_manager')}">全部</a></li>
+    <li class="{php echo $_GPC['type']==='1'?'active':''}"><a href="{php echo $this->createWebUrl('user_manager').'&action=query&type=1'}">已提交</a></li>
+    <li class="{php echo $_GPC['type']==='0'?'active':''}"><a href="{php echo $this->createWebUrl('user_manager').'&action=query&type=0'}">未提交</a></li>
+</ul>
 
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th>头像</th>
+        <th>昵称</th>
+        <th>openid</th>
+        <th>地址</th>
+        <th>是否提交</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $user_list $index $user}
+    <tr>
+        <td><img width="50" src="{$user['avatar']}" alt=""></td>
+        <td>{$user['nickname']}</td>
+        <td><span class="label label-danger">{$user['openid']}</span></td>
+        <td>{$user['address']}</td>
+        <td>
+            {php echo $user['is_submit']==='0'?'未提交':'以提交'}
+            {if $user['is_submit']==='1'}丨<button class="btn btn-success btn-xs">查看答题情况</button>{/if}
+        </td>
+        <td>
+            <a class="btn btn-danger" href="{php echo $this->createWebUrl('user_manager').'&action=delete&id='.$user['id']}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
 
 {template 'common/footer'}

@@ -8,6 +8,7 @@ if (empty($_W['fans']['nickname'])) {
 }
 
 $user_data = [
+    'avatar'=>$_W['fans']['avatar'],
     'nickname' => $_W['fans']['nickname'],
     'openid' => $_W['fans']['openid'],
     'address' => $_W['fans']['tag']['province'] . '-' . $_W['fans']['tag']['city']
