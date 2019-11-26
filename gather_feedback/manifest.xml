@@ -58,7 +58,7 @@
 
     <bindings>
         <cover>
-            <entry title="功能封面" do="index" state="" direct="false" />
+            <entry title="微信页入口" do="index" state="" direct="false" />
         </cover>
         <menu>
             <entry title="统计" do="statistics"/>

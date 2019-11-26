@@ -1,7 +1,7 @@
 {template 'header'}
 <img style="width:100%" src="{php echo tomedia($system_setting['image'])}" alt="">
 
-<form style="padding: 10px" action="{php echo $this->createMobileUrl('submit')}" method="post">
+<form class="message" style="padding: 10px" action="{php echo $this->createMobileUrl('submit')}" method="post">
     {loop $question_list $index $question}
     <div class="card">
         <div class="card-title">
@@ -24,6 +24,7 @@
                 </label>
                 {/loop}
                 {if $question['is_open_remark']==='1'}
+
                 <textarea class="weui-textarea" placeholder="备注(选填)" rows="2"
                           name="{php echo 'remark-'.$question['id']}"></textarea>
                 {/if}
@@ -72,4 +73,60 @@
     }
 </style>
 
+<script>
+    $(function(){
+        $(".message").validate({
+            errorPlacement(error, element) {
+                error.appendTo(element.parent().parent());
+            },
+            rules:{
+                /*{loop $question_list $index $question}*/
+                    //单选题
+                    /*{if $question['type']==='1'}*/
+                           "radio-{$question['id']}":{
+                                //是否必须
+                                /*{if $question['is_required']==='1'}*/required : true,/*{/if}*/
+                           },
+                    /*{/if}*/
+                    /*{if $question['type']==='2'}*/
+                        "check-{$question['id']}[]":{
+                            //是否必须
+                            /*{if $question['is_required']==='1'}*/required : true,/*{/if}*/
+                        },
+                    /*{/if}*/
+                    /*{if $question['type']==='3'}*/
+                    "text-{$question['id']}":{
+                        //是否必须
+                        /*{if $question['is_required']==='1'}*/required : true,/*{/if}*/
+                    },
+                    /*{/if}*/
+                /*{/loop}*/
+            },
+            messages:{
+                /*{loop $question_list $index $question}*/
+                    //单选题
+                    /*{if $question['type']==='1'}*/
+                    "radio-{$question['id']}":{
+                        //是否必须
+                        /*{if $question['is_required']==='1'}*/required : '请选择一项',/*{/if}*/
+                    },
+                    /*{/if}*/
+                    /*{if $question['type']==='2'}*/
+                    "check-{$question['id']}[]":{
+                        //是否必须
+                        /*{if $question['is_required']==='1'}*/required : '请至少选择一项',/*{/if}*/
+                    },
+                    /*{/if}*/
+                    /*{if $question['type']==='3'}*/
+                    "text-{$question['id']}":{
+                        //是否必须
+                        /*{if $question['is_required']==='1'}*/required : '此项不能留空',/*{/if}*/
+                    },
+                    /*{/if}*/
+                /*{/loop}*/
+            },
+            debug:false
+        });
+    });
+</script>
 {template 'footer'}

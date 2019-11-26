@@ -2,6 +2,10 @@
 
 global $_GPC, $_W;
 
+/*系统设置*/
+$system_setting = pdo_getall('ims_gather_feedback_system_setting')[0];
+$system_setting['title'] = '提交完成';
+
 $arr = [];
 
 foreach ($_GPC as $key => $value) {
@@ -16,7 +20,7 @@ foreach ($_GPC as $key => $value) {
     }
 
     /*判断是否是填空题*/
-    if(strpos($key, 'text') !== false){
+    if (strpos($key, 'text') !== false) {
         array_push($arr, [
             'parent_id' => $id,
             'desc' => $value
@@ -47,8 +51,8 @@ pdo_insert('ims_gather_feedback_submit', [
 ]);
 
 /*设置submit_id*/
-pdo_update('ims_gather_feedback_user',['submit_id'=>pdo_insertid()],['id'=>$user_id['id']]);
+pdo_update('ims_gather_feedback_user', ['submit_id' => pdo_insertid()], ['id' => $user_id['id']]);
 
-
+include_once $this->template('submit_complete');
 
 

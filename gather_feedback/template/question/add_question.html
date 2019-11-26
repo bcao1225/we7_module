@@ -6,7 +6,7 @@
 </ul>
 
 {if $_GPC['id']!==null}<div class="alert alert-warning">修改题目时，不允许修改<strong>题目类型和选项</strong>
-    ，如果确实有需求，建议新增题目，并删除当前题目。这么做目的确保<strong>统计时数据不出错</strong>3</div>{/if}
+    ，如果确实有需求，建议新增题目，并删除当前题目。这么做目的确保<strong>统计时数据不出错</strong></div>{/if}
 
 <form method="post" action="{php echo $this->createWebUrl('question_manager').'&action='.$_GPC['action']}">
     <input type="hidden" name="id" value="{$_GPC['id']}"/>
@@ -78,7 +78,7 @@
             </div>
             {/if}
         </div>
-        <button class="btn btn-success createCheckItemBtn" type="button">创建</button>
+        {if $_GPC['id']===null}<button class="btn btn-success createCheckItemBtn" type="button">创建</button>{/if}
     </div>
 
     <!--是否必填-->
