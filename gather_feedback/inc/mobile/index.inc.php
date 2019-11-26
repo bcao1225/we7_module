@@ -8,7 +8,7 @@ if (empty($_W['fans']['nickname'])) {
 }
 
 $user_data = [
-    'avatar'=>$_W['fans']['avatar'],
+    'avatar' => $_W['fans']['avatar'],
     'nickname' => $_W['fans']['nickname'],
     'openid' => $_W['fans']['openid'],
     'address' => $_W['fans']['tag']['province'] . '-' . $_W['fans']['tag']['city']
@@ -26,9 +26,10 @@ if ($user) {
 $system_setting = pdo_getall('ims_gather_feedback_system_setting')[0];
 
 /*题目列表*/
-$question_list = pdo_getall('ims_gather_feedback_question');
-foreach ($question_list as $key => $value) {
-    $question_list[$key]['question'] = iunserializer($value['question']);
+$question_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question ORDER BY sort');
+foreach ($question_list as $key => $question) {
+    $children_list = pdo_getall('ims_gather_feedback_children_question', ['parent_id' => $question['id']]);
+    $question_list[$key]['children_list'] = $this->addPrefix($children_list,$question['select_type']);
 }
 
 include_once $this->template('index');

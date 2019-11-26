@@ -5,68 +5,67 @@
     <li><a href="{php echo $this->createWebUrl('question_manager').'&action=add'}">添加题目</a></li>
 </ul>
 
-{loop $question_list $index $question}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">{php echo $question['title']}</h3>
-    </div>
-    <div class="panel-body">
-
-        <div class="row">
-            <div class="col-md-6">
-                <table class="we7-table">
-                    <tbody>
-                    <tr>
-                        <td>题目类型</td>
-                        <td>
-                            {if $question['type']==='1'}
-                            <span  class="label label-danger">单选题</span>
-                            {elseif $question['type']==='2'}
-                            <span  class="label label-default">多选题</span>
-                            {else}
-                            <span  class="label label-default">填空题</span>
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>是否必填</td>
-                        <td>
-                            {if $question['is_required']==='1'}
-                            <span  class="label label-danger">必选</span>
-                            {else}
-                            <span  class="label label-default">选填</span>
-                            {/if}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>是否开启备注</td>
-                        <td>
-                            {if $question['is_open_remark']==='0'}
-                            <span class="label label-danger">暂未开启备注</span>
-                            {else}
-                            <div class="label label-success">已开启备注</div>
-                            {/if}
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <ul class="list-group">
-                    {loop $question['question'] $key $que}
-                    <li class="list-group-item">{php echo $que}</li>
-                    {/loop}
-                </ul>
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th>标题</th>
+        <th>题目类型</th>
+        <th>是否必填</th>
+        <th>是否开启备注</th>
+        <th>选项列表</th>
+        <th>排序</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $question_list $index $question}
+    <tr>
+        <td>{$question['title']}</td>
+        <td>
+            {if $question['type']==='1'} 单选题
+            {elseif $question['type']==='2'} 多选题
+            {else} 填空题
+            {/if}
+        </td>
+        <td>
+            {if $question['is_required']==='1'}
+            <span  class="label label-danger">必选</span>
+            {else}
+            <span  class="label label-default">选填</span>
+            {/if}
+        </td>
+        <td>
+            {if $question['type']!=='3'}
+                {if $question['is_open_remark']==='0'}
+                <span class="label label-danger">暂未开启备注</span>
+                {else}
+                <div class="label label-success">已开启备注</div>
+                {/if}
+            {/if}
+        </td>
+        <td>
+            <ul>
+                {loop $question['children_list'] $children}
+                <li>{$children['title']}</li>
+                {/loop}
+            </ul>
+        </td>
+        <td>
+            {$question['sort']}
+        </td>
+        <td>
+            <div class="btn-group btn-group-sm">
+                <a href="{php echo $this->createWebUrl('question_manager').'&action=update&id='.$question['id']}" class="btn btn-success">修改</a>
+                <a href="{php echo $this->createWebUrl('question_manager').'&action=delete&id='.$question['id']}" class="btn btn-danger">删除</a>
             </div>
-            <div class="col-md-6">
-                <div class="btn-group btn-group-lg">
-                    <a href="{php echo $this->createWebUrl('question_manager').'&action=update&id='.$question['id']}" class="btn btn-success">修改</a>
-                    <a href="{php echo $this->createWebUrl('question_manager').'&action=delete&id='.$question['id']}" class="btn btn-danger">删除</a>
-                </div>
-            </div>
-        </div>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
 
-    </div>
-</div>
-{/loop}
+<style>
+
+</style>
 
 {template 'common/footer'}

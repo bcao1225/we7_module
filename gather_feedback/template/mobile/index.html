@@ -11,13 +11,13 @@
             <!--单选框-->
             {if $question['type']==='1'}
             <div class="weui-cells weui-cells_radio">
-                {loop $question['question'] $key $que}
+                {loop $question['children_list'] $key $children}
                 <label class="weui-cell weui-check__label" for="{php echo $index.'-'.$key}">
-                    <div class="weui-cell__bd"><p>{$que}</p></div>
+                    <div class="weui-cell__bd"><p>{$children['title']}</p></div>
                     <div class="weui-cell__ft">
                         <input type="radio" class="weui-check"
-                               name="{php echo 'radio-'.$index}"
-                               value="{$key}"
+                               name="{php echo 'radio-'.$question['id']}"
+                               value="{$children['id']}"
                                id="{php echo $index.'-'.$key}">
                         <span class="weui-icon-checked"></span>
                     </div>
@@ -25,35 +25,35 @@
                 {/loop}
                 {if $question['is_open_remark']==='1'}
                 <textarea class="weui-textarea" placeholder="备注(选填)" rows="2"
-                          name="{php echo 'remark-'.$index}"></textarea>
+                          name="{php echo 'remark-'.$question['id']}"></textarea>
                 {/if}
             </div>
             {elseif $question['type']==='2'}
             <!--多选框-->
             <div class="weui-cells weui-cells_checkbox">
-                {loop $question['question'] $key $que}
+                {loop $question['children_list'] $key $children}
                 <label class="weui-cell weui-check__label" for="{php echo $index.'-'.$key}">
                     <div class="weui-cell__hd">
                         <input type="checkbox"
                                class="weui-check"
-                               name="{php echo 'check-'.$index.'[]'}"
-                               value="{$key}"
+                               name="{php echo 'check-'.$question['id'].'[]'}"
+                               value="{$children['id']}"
                                id="{php echo $index.'-'.$key}">
                         <i class="weui-icon-checked"></i>
                     </div>
                     <div class="weui-cell__bd">
-                        <p>{$que}</p>
+                        <p>{$children['title']}</p>
                     </div>
                 </label>
                 {/loop}
                 {if $question['is_open_remark']==='1'}
-                <textarea class="weui-textarea" placeholder="备注(选填)" name="{php echo 'remark-'.$index}"
+                <textarea class="weui-textarea" placeholder="备注(选填)" name="{php echo 'remark-'.$question['id']}"
                           rows="2"></textarea>
                 {/if}
             </div>
             {else}
             <!--填空题-->
-            <textarea class="weui-textarea" name="{php echo 'text-'.$index}" placeholder="请输入内容" rows="5"></textarea>
+            <textarea class="weui-textarea" name="{php echo 'text-'.$question['id']}" placeholder="请输入内容" rows="5"></textarea>
             {/if}
         </div>
     </div>

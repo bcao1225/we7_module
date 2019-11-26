@@ -5,6 +5,9 @@
     <li class="active"><a href="{php echo $this->createWebUrl('question_manager').'&action=add'}">添加题目</a></li>
 </ul>
 
+{if $_GPC['id']!==null}<div class="alert alert-warning">修改题目时，不允许修改<strong>题目类型和选项</strong>
+    ，如果确实有需求，建议新增题目，并删除当前题目。这么做目的确保<strong>统计时数据不出错</strong>3</div>{/if}
+
 <form method="post" action="{php echo $this->createWebUrl('question_manager').'&action='.$_GPC['action']}">
     <input type="hidden" name="id" value="{$_GPC['id']}"/>
     <!--标题-->
@@ -18,7 +21,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">问题类型</label>
         <div class="form-controls col-sm-8">
-            <select class="form-control" name="type">
+            <select class="form-control" name="type" {if $_GPC['id']!==null}onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;"{/if}>
                 <option value="">请选择题目类型</option>
                 <option value="1" {php echo $question['type']==='1'?'selected':''}>单选题</option>
                 <option value="2" {php echo $question['type']==='2'?'selected':''}>多选题</option>
@@ -28,14 +31,15 @@
     </div>
     <!--单选题选项创建-->
     <div class="form-group {php echo $question['type']==='1'?'':'hide'} radio">
-        <label class="control-label col-sm-2">创建单选题选项</label>
+        <label class="control-label col-sm-2">单选题选项</label>
         <div class="form-controls col-sm-8 radioList">
             {if $_GPC['action']==='update'&& $question['type']==='1'}
-                {loop $question['question'] $index $que}
+                {loop $question['children_list'] $index $children}
                     <div class="input-group">
-                        <input type="text" class="form-control" name="radio_question[]" value="{$que}">
+                        <input {php echo $_GPC['id']===null?'':'disabled'} type="text" class="form-control" name="radio_question[]" value="{$children['title']}">
                         <span class="input-group-btn">
-                            <button class="btn btn-danger deleteRadioItemBtn" type="button">删除</button>
+                            <button class="btn btn-danger deleteRadioItemBtn"
+                                    {php echo $_GPC['id']===null?'':'disabled'} type="button">删除</button>
                         </span>
                     </div>
                 {/loop}
@@ -48,19 +52,20 @@
             </div>
             {/if}
         </div>
-        <button class="btn btn-success createRadioItemBtn" type="button">创建</button>
+        {if $_GPC['id']===null}<button class="btn btn-success createRadioItemBtn" type="button">创建选项</button>{/if}
     </div>
 
     <!--多选题选项创建-->
     <div class="form-group {php echo $question['type']==='2'?'':'hide'} check">
-        <label class="control-label col-sm-2">创建多选题选项</label>
+        <label class="control-label col-sm-2">多选题选项</label>
         <div class="form-controls col-sm-8 checkList">
             {if $_GPC['action']==='update'&& $question['type']==='2'}
-                {loop $question['question'] $index $que}
+                {loop $question['children_list'] $index $children}
                     <div class="input-group">
-                        <input type="text" class="form-control" name="check_question[]" value="{$que}">
+                        <input {php echo $_GPC['id']===null?'':'disabled'} type="text" class="form-control" name="check_question[]" value="{$children['title']}">
                         <span class="input-group-btn">
-                            <button class="btn btn-danger deleteCheckItemBtn" type="button">删除</button>
+                            <button class="btn btn-danger deleteCheckItemBtn"
+                                    {php echo $_GPC['id']===null?'':'disabled'} type="button">删除</button>
                         </span>
                     </div>
                 {/loop}
@@ -89,9 +94,9 @@
         </div>
     </div>
 
-    <!--问题备注-->
-    <div class="form-group">
-        <label class="control-label col-sm-2">是否开启问题备注</label>
+    <!--选项备注-->
+    <div class="form-group {php echo $question['type']==='3'?'hide':''} remark">
+        <label class="control-label col-sm-2">是否开启选择后备注</label>
         <div class="form-controls col-sm-8">
             <label class="radio-inline">
                 <input type="radio" name="is_open_remark" {php echo $question['is_open_remark']==='1'||$_GPC['action']==='add'?'checked':''} value="1"> 开启
@@ -102,12 +107,24 @@
         </div>
     </div>
 
+    <!--选项类型-->
+    <div class="form-group {php echo $question['type']==='3'?'hide':''} selectType">
+        <label class="control-label col-sm-2">选项类型</label>
+        <div class="form-controls col-sm-8">
+            <select class="form-control" name="select_type">
+                <option {php echo $question['select_type']==='letter'?'selected':''} value="letter">字母</option>
+                <option {php echo $question['select_type']==='num'?'selected':''} value="num">数字</option>
+                <option {php echo $question['select_type']==='void'?'selected':''} value="">空</option>
+            </select>
+        </div>
+    </div>
+
     <!--排序-->
     <div class="form-group">
         <label class="control-label col-sm-2">排序</label>
         <div class="form-controls col-sm-5">
             <input class="form-control" type="number" name="sort" value="{$question['sort']}">
-            <span class="help-block">数字越高，题目越靠前</span>
+            <span class="help-block">数字越小，题目越靠前</span>
         </div>
     </div>
 
@@ -153,14 +170,20 @@
                 case '1':
                     $(".radio").removeClass('hide');
                     $(".check").addClass('hide');
+                    $(".remark").removeClass('hide');
+                    $(".selectType").removeClass('hide');
                     break;
                 case '2':
                     $(".radio").addClass('hide');
                     $(".check").removeClass('hide');
+                    $(".remark").removeClass('hide');
+                    $(".selectType").removeClass('hide');
                     break;
                 case '3':
                     $(".radio").addClass('hide');
                     $(".check").addClass('hide');
+                    $(".remark").addClass('hide');
+                    $(".selectType").addClass('hide');
                     break;
             }
         });

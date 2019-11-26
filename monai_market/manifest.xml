@@ -419,29 +419,29 @@ CREATE TABLE IF NOT EXISTS `ims_monai_market_wx_message_tmp` (
 
 ]]></install>
 	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_monai_market_account`;
-DROP TABLE IF EXISTS `ims_monai_market_brand`;
-DROP TABLE IF EXISTS `ims_monai_market_car_detail`;
-DROP TABLE IF EXISTS `ims_monai_market_class`;
-DROP TABLE IF EXISTS `ims_monai_market_ensure`;
-DROP TABLE IF EXISTS `ims_monai_market_enter`;
-DROP TABLE IF EXISTS `ims_monai_market_feedback`;
-DROP TABLE IF EXISTS `ims_monai_market_finance`;
-DROP TABLE IF EXISTS `ims_monai_market_follow_logs`;
-DROP TABLE IF EXISTS `ims_monai_market_gujia`;
-DROP TABLE IF EXISTS `ims_monai_market_image`;
-DROP TABLE IF EXISTS `ims_monai_market_info`;
-DROP TABLE IF EXISTS `ims_monai_market_loan`;
-DROP TABLE IF EXISTS `ims_monai_market_member`;
-DROP TABLE IF EXISTS `ims_monai_market_member_address`;
-DROP TABLE IF EXISTS `ims_monai_market_notice`;
-DROP TABLE IF EXISTS `ims_monai_market_part_order`;
-DROP TABLE IF EXISTS `ims_monai_market_perm_role`;
-DROP TABLE IF EXISTS `ims_monai_market_perm_user`;
-DROP TABLE IF EXISTS `ims_monai_market_saleinfo`;
-DROP TABLE IF EXISTS `ims_monai_market_weizhang`;
-DROP TABLE IF EXISTS `ims_monai_market_withdraw`;
-DROP TABLE IF EXISTS `ims_monai_market_wx_message_tmp`;
-]]></uninstall>
+						DROP TABLE IF EXISTS `ims_monai_market_brand`;
+						DROP TABLE IF EXISTS `ims_monai_market_car_detail`;
+						DROP TABLE IF EXISTS `ims_monai_market_class`;
+						DROP TABLE IF EXISTS `ims_monai_market_ensure`;
+						DROP TABLE IF EXISTS `ims_monai_market_enter`;
+						DROP TABLE IF EXISTS `ims_monai_market_feedback`;
+						DROP TABLE IF EXISTS `ims_monai_market_finance`;
+						DROP TABLE IF EXISTS `ims_monai_market_follow_logs`;
+						DROP TABLE IF EXISTS `ims_monai_market_gujia`;
+						DROP TABLE IF EXISTS `ims_monai_market_image`;
+						DROP TABLE IF EXISTS `ims_monai_market_info`;
+						DROP TABLE IF EXISTS `ims_monai_market_loan`;
+						DROP TABLE IF EXISTS `ims_monai_market_member`;
+						DROP TABLE IF EXISTS `ims_monai_market_member_address`;
+						DROP TABLE IF EXISTS `ims_monai_market_notice`;
+						DROP TABLE IF EXISTS `ims_monai_market_part_order`;
+						DROP TABLE IF EXISTS `ims_monai_market_perm_role`;
+						DROP TABLE IF EXISTS `ims_monai_market_perm_user`;
+						DROP TABLE IF EXISTS `ims_monai_market_saleinfo`;
+						DROP TABLE IF EXISTS `ims_monai_market_weizhang`;
+						DROP TABLE IF EXISTS `ims_monai_market_withdraw`;
+						DROP TABLE IF EXISTS `ims_monai_market_wx_message_tmp`;
+					]]></uninstall>
 	<upgrade><![CDATA[]]></upgrade>
 
 </manifest>

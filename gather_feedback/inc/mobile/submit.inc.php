@@ -8,10 +8,18 @@ foreach ($_GPC as $key => $value) {
     $id = explode('-', $key)[1];
 
     /*判断是否是单选字段或多选字段*/
-    if (strpos($key, 'radio') !== false || strpos($key, 'check') !== false || strpos($key, 'text') !== false) {
+    if (strpos($key, 'radio') !== false || strpos($key, 'check') !== false) {
         array_push($arr, [
-            'id' => $id,
-            'value' => $value
+            'parent_id' => $id,
+            'click_children_id' => $value
+        ]);
+    }
+
+    /*判断是否是填空题*/
+    if(strpos($key, 'text') !== false){
+        array_push($arr, [
+            'parent_id' => $id,
+            'desc' => $value
         ]);
     }
 
@@ -22,22 +30,25 @@ foreach ($_GPC as $key => $value) {
      */
     if (strpos($key, 'remark') !== false) {
         foreach ($arr as $dataKey => $dataValue) {
-            if ($dataValue['id'] === $id) {
+            if ($dataValue['parent_id'] === $id) {
                 $arr[$dataKey]['remake'] = $value;
             }
         }
     }
 }
 
-$user_id = pdo_get('ims_gather_feedback_user',['openid'=>$_W['fans']['openid']],['id']);
+$user_id = pdo_get('ims_gather_feedback_user', ['openid' => $_W['fans']['openid']], ['id']);
 
 /*将处理好的数据保存到数据库中*/
 pdo_insert('ims_gather_feedback_submit', [
-    'user_id'=>$user_id['id'],
-    'data'=>iserializer($arr)
+    'user_id' => $user_id['id'],
+    'data' => iserializer($arr),
+    'create_time' => time()
 ]);
 
-/*将当前用户标注为已添加*/
-pdo_update('ims_gather_feedback_user',['is_submit'=>'1'],['id'=>$user_id['id']]);
+/*设置submit_id*/
+pdo_update('ims_gather_feedback_user',['submit_id'=>pdo_insertid()],['id'=>$user_id['id']]);
+
+
 
 

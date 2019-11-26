@@ -71,39 +71,65 @@
     <install><![CDATA[
         CREATE TABLE `ims_gather_feedback_question` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-          `title` varchar(255) NOT NULL DEFAULT '' COMMENT '题目名称',
-          `type` int(11) NOT NULL COMMENT '题目类型，1：单选题，2：多选题，3：填空题',
-          `question` text NOT NULL COMMENT '单选题和多选题的问题选项，一个微擎的序列化数组，需要前端反序列化',
-          `is_required` int(11) NOT NULL COMMENT '是否必填，0：不必须，1：必选',
-          `sort` int(11) NOT NULL COMMENT '排序，数字越小，越在顶部',
-          `is_open_remark` int(11) NOT NULL COMMENT '是否开启问题备注，1开启，0关闭',
+          `title` varchar(255) DEFAULT '' COMMENT '题目名称',
+          `type` int(11) DEFAULT NULL COMMENT '题目类型，1：单选题，2：多选题，3：填空题',
+          `is_required` int(11) DEFAULT NULL COMMENT '是否必填，0：不必须，1：必选',
+          `is_open_remark` int(11) DEFAULT NULL COMMENT '是否开启问题备注，1开启，0关闭',
+          `select_type` varchar(11) DEFAULT 'void' COMMENT '选项类型，letter字母，num数字，void不带前缀',
+          `sort` int(11) DEFAULT NULL COMMENT '排序，数字越小，越在顶部',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+        INSERT INTO `ims_gather_feedback_question` VALUES ('18', '你喜欢的水果是', '2', '1', '1', 'num', '2');
+        INSERT INTO `ims_gather_feedback_question` VALUES ('17', '你对公司服务满意吗', '1', '1', '1', 'letter', '1');
+        INSERT INTO `ims_gather_feedback_question` VALUES ('19', '你对公司具体的建议是什么', '3', '1', '1', 'letter', '3');
+
+        CREATE TABLE `ims_gather_feedback_children_question` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `title` varchar(255) DEFAULT NULL,
+          `parent_id` int(11) DEFAULT NULL COMMENT '对应question表的id',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('8', '比较满意', '17');
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('7', '非常满意', '17');
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('9', '及格', '17');
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('10', '不满意', '17');
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('11', '苹果', '18');
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('12', '香蕉', '18');
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('13', '梨子', '18');
 
         CREATE TABLE `ims_gather_feedback_submit` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `user_id` int(11) NOT NULL,
-          `data` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+          `data` text NOT NULL,
+          `create_time` int(11) DEFAULT '0' COMMENT '创建时间',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
         CREATE TABLE `ims_gather_feedback_system_setting` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `title` varchar(255) NOT NULL DEFAULT '',
           `image` varchar(255) NOT NULL DEFAULT '',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `nickname` varchar(255) NOT NULL DEFAULT '',
           `openid` varchar(255) NOT NULL DEFAULT '',
-          `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '地址',
+          `address` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
           `avatar` text NOT NULL COMMENT '头像',
-          `is_submit` int(11) NOT NULL DEFAULT '0' COMMENT '是否提交反馈，1提交，0未提交',
+          `submit_id` int(11) DEFAULT NULL,
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
     ]]></install>
-    <uninstall><![CDATA[]]></uninstall>
+    <uninstall><![CDATA[
+        DROP TABLE IF EXISTS `ims_gather_feedback_question`;
+        DROP TABLE IF EXISTS `ims_gather_feedback_children_question`;
+        DROP TABLE IF EXISTS `ims_gather_feedback_submit`;
+        DROP TABLE IF EXISTS `ims_gather_feedback_system_setting`;
+        DROP TABLE IF EXISTS `ims_gather_feedback_user`;
+    ]]></uninstall>
     <upgrade><![CDATA[]]></upgrade>
 </manifest>
