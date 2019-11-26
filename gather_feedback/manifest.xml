@@ -78,22 +78,31 @@
           `sort` int(11) NOT NULL COMMENT '排序，数字越小，越在顶部',
           `is_open_remark` int(11) NOT NULL COMMENT '是否开启问题备注，1开启，0关闭',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_gather_feedback_submit` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `user_id` int(11) NOT NULL,
+          `data` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
         CREATE TABLE `ims_gather_feedback_system_setting` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `title` varchar(255) NOT NULL DEFAULT '',
           `image` varchar(255) NOT NULL DEFAULT '',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `nickname` varchar(255) NOT NULL DEFAULT '',
           `openid` varchar(255) NOT NULL DEFAULT '',
-          `address` varchar(255) NOT NULL DEFAULT '',
+          `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '地址',
+          `avatar` text NOT NULL COMMENT '头像',
+          `is_submit` int(11) NOT NULL DEFAULT '0' COMMENT '是否提交反馈，1提交，0未提交',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
     ]]></install>
     <uninstall><![CDATA[]]></uninstall>
     <upgrade><![CDATA[]]></upgrade>
