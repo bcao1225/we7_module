@@ -4,9 +4,9 @@
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
         <version><![CDATA[1.0.0]]></version>
-        <ability><![CDATA[xxx]]></ability>
+        <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
-        <description><![CDATA[收集用户的反馈信息]]></description>
+        <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
         <author><![CDATA[追风的牧羊人3245096941@qq.com]]></author>
         <url><![CDATA[xxx]]></url>
         <setting><![CDATA[xxx]]></setting>
@@ -61,7 +61,7 @@
             <entry title="微信页入口" do="index" state="" direct="false" />
         </cover>
         <menu>
-            <entry title="统计" do="statistics"/>
+            <!--<entry title="统计" do="statistics"/>-->
             <entry title="用户管理" do="user_manager"/>
             <entry title="题目管理" do="question_manager"/>
             <entry title="系统设置" do="system_setting"/>
@@ -111,8 +111,11 @@
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `title` varchar(255) NOT NULL DEFAULT '',
           `image` varchar(255) NOT NULL DEFAULT '',
+          `last_submit_text` text NOT NULL COMMENT '提交成功后展示的文本',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+        INSERT INTO `ims_gather_feedback_system_setting` VALUES ('10', '公司反馈', '', '提交完成。');
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
