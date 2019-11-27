@@ -98,3 +98,37 @@ ihttp_post($url,json_encode($data)); //php调用模板消息发送，是需要�
 </bindings>
 ```
 
+### 微擎模块引入第三方js库的问题
+echarts是一个特殊的库，如果是cdn引入，必须写在head中，这样浏览器才会把echarts对象注册为全局对象。
+但是微擎模块头部是通过``{template 'common/header'}``引入头部文件，这样做虽然好，但是微擎会隐藏``head``标签
+，不然开发者编辑，我们可以使用``<iframe>``标签的方式来做。
+
+```
+{template 'header'}
+<iframe frameborder="0" src="{MODULE_URL}template/body.html"></iframe>
+
+<style>
+    iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{template 'common/footer'}
+```
+通过``iframe``标签引入另外一个html文件，在这个html文件中引入echarts
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.min.js"></script>
+</head>
+<body>
+...
+```
+
+
+

@@ -11,4 +11,4 @@ foreach ($parent_list as $parentKey=>$parent){
     $parent_list[$parentKey]['children'] = pdo_get('ims_gather_feedback_children_question',['parent_id'=>$parent['id']]);
 }
 
-include_once $this->template('statistics');
+include_once $this->template('total/total');
