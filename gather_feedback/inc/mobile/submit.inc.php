@@ -17,6 +17,16 @@ foreach ($_GPC as $key => $value) {
             'parent_id' => $id,
             'click_children_id' => $value
         ]);
+
+        if(is_array($value)){
+            foreach ($value as $click_children_id){
+                /*多选题次数加1*/
+                pdo_query('UPDATE ims_gather_feedback_children_question SET select_num = select_num + 1 WHERE id = ' . $click_children_id);
+            }
+        }else{
+            /*单选题次数加1*/
+            pdo_query('UPDATE ims_gather_feedback_children_question SET select_num = select_num + 1 WHERE id = ' . $value);
+        }
     }
 
     /*判断是否是填空题*/

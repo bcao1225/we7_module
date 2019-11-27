@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[1.0.0]]></version>
+        <version><![CDATA[1.1.0]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
@@ -88,6 +88,7 @@
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `title` varchar(255) DEFAULT NULL,
           `parent_id` int(11) DEFAULT NULL COMMENT '对应question表的id',
+          `select_num` int(11) DEFAULT '0' COMMENT '用户选择的次数',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
@@ -134,5 +135,5 @@
         DROP TABLE IF EXISTS `ims_gather_feedback_system_setting`;
         DROP TABLE IF EXISTS `ims_gather_feedback_user`;
     ]]></uninstall>
-    <upgrade><![CDATA[]]></upgrade>
+    <upgrade><![CDATA[upgrade.php]]></upgrade>
 </manifest>
