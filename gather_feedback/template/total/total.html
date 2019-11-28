@@ -1,7 +1,7 @@
 {template 'common/header'}
 
 <div class="alert alert-info">
-    此处为选择题和填空题的统计分析
+    此处为选择题和填空题的统计分析，总提交人数为：<strong>{php echo count($user_list)}</strong>
 </div>
 
 {loop $parent_list $questionKey $question}
@@ -60,6 +60,7 @@
                 });
             });
         </script>
+
     </div>
 </div>
 {/if}
