@@ -2,6 +2,8 @@
 
 global $_GPC, $_W;
 
+$signPackage = $_W['account']['jssdkconfig'];//微擎封装好的jssdk签名包的内容
+
 /*获取粉丝信息*/
 if (empty($_W['fans']['nickname'])) {
     mc_oauth_userinfo();
@@ -23,8 +25,8 @@ $user_data = [
     'address' => $_W['fans']['tag']['province'] . '-' . $_W['fans']['tag']['city']
 ];
 
-/*将粉丝信息保存*/
 $user = pdo_get('ims_gather_feedback_user', ['openid' => $_W['fans']['openid']]);
+/*判断用户是否存储在数据库中*/
 if ($user) {
     pdo_update('ims_gather_feedback_user', $user_data, ['id' => $user['id']]);
     /*判断是否提交数据*/
@@ -34,8 +36,11 @@ if ($user) {
         include_once $this->template('index');
     }
 } else {
+    /*将粉丝信息保存*/
     pdo_insert('ims_gather_feedback_user', $user_data);
+    include_once $this->template('index');
 }
+
 
 
 

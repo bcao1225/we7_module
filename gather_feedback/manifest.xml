@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[1.1.0]]></version>
+        <version><![CDATA[1.2.0]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
@@ -113,10 +113,13 @@
           `title` varchar(255) NOT NULL DEFAULT '',
           `image` varchar(255) NOT NULL DEFAULT '',
           `last_submit_text` text NOT NULL COMMENT '提交成功后展示的文本',
+          `share_title` varchar(255) NOT NULL DEFAULT '' COMMENT '分享标题',
+          `share_desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '分享描述',
+          `share_img` varchar(255) NOT NULL DEFAULT '' COMMENT '分享图片',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
-        INSERT INTO `ims_gather_feedback_system_setting` VALUES ('10', '公司反馈', '', '提交完成。');
+        INSERT INTO `ims_gather_feedback_system_setting` VALUES ();
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

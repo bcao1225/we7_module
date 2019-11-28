@@ -1,0 +1,90 @@
+{template 'setting/setting_header'}
+
+<div class="alert alert-warning" role="alert">
+     需在公众号<strong>JS接口安全域名</strong>中配置本站域名，即可生效。
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" action="{php echo $this->createWebUrl('system_setting').'&action=share'}">
+            <div class="form-group">
+                <label class="control-label col-sm-2">分享标题</label>
+                <div class="form-controls col-sm-10">
+                    <input class="form-control" type="text" name="share_title" value="{$system_setting['share_title']}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">分享描述</label>
+                <div class="form-controls col-sm-10">
+                    <textarea class="form-control" name="share_desc" rows="5"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2">分享图片</label>
+                <div class="form-controls col-sm-10">
+                    {php echo tpl_form_field_image('share_img',$system_setting['share_img'])}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">提交</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h4>预览</h4>
+        <div class="share_preview">
+            <p class="share_title">{$system_setting['share_title']}</p>
+            <div class="row" style="height: 50px">
+                <p class="share_desc col-md-9">{$system_setting['share_desc']}</p>
+                <div class="col-md-3">
+                    <img class="share_img" src="{php echo tomedia($system_setting['share_img'])}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("textarea[name='share_desc']").html($.trim("{$system_setting['share_desc']}"));
+
+    setInterval(()=>{
+        $(".share_img").attr('src', $("input[name='share_img']").attr('url'))
+    },1000);
+
+    $("input[name='share_title']").on('input propertychange', function () {
+        $(".share_title").html($(this).val());
+    });
+
+    $("textarea[name='share_desc']").on('input propertychange', function () {
+        $(".share_desc").html($(this).val());
+    });
+</script>
+
+<style>
+    .share_preview {
+        padding: 8px;
+        border-radius: 3px;
+        width: 380px;
+        height: 90px;
+        border: 1px solid #d2d2d2;
+    }
+
+    .share_preview .share_title {
+        padding: 0;
+        margin: 3px;
+        font-size: 18px;
+    }
+
+    .share_preview .share_desc {
+        font-size: 12px;
+        color: #cccccc;
+    }
+
+    .share_preview .share_img {
+        width: 40px;
+        height: 40px;
+    }
+</style>

@@ -2,22 +2,45 @@
 
 global $_W, $_GPC;
 
-$arr = [
-    'title' => $_GPC['title'],
-    'image' => $_GPC['image'],
-    'last_submit_text' => $_GPC['last_submit_text']
-];
-
-/*提交*/
-if ($_W['ispost']) {
-    if ($_GPC['id'] === '') {
-        pdo_insert('ims_gather_feedback_system_setting', $arr);
-    } else {
-        pdo_update('ims_gather_feedback_system_setting', $arr, ['id' => $_GPC['id']]);
-    }
-    message('保存成功', $this->createWebUrl('system_setting'), 'success');
-}
-
 $system_setting = pdo_getall('ims_gather_feedback_system_setting')[0];
 
-include_once $this->template('system_setting');
+switch ($_GPC['action']) {
+    /*分享设置*/
+    case 'share':
+        if($_W['ispost']){
+            $data = [
+                'share_title'=>$_GPC['share_title'],
+                'share_desc'=>$_GPC['share_desc'],
+                'share_img'=>$_GPC['share_img']
+            ];
+
+            pdo_update('ims_gather_feedback_system_setting',$data,['id'=>$system_setting['id']]);
+
+
+
+            message('保存成功',$this->createWebUrl('system_setting').'&action=share','success');
+        }
+        include_once $this->template('setting/share_setting');
+        break;
+    default:
+        /*提交*/
+        if ($_W['ispost']) {
+
+            pdo_update('ims_gather_feedback_system_setting',  [
+                'title' => $_GPC['title'],
+                'image' => $_GPC['image'],
+                'last_submit_text' => $_GPC['last_submit_text']
+            ], ['id' => $system_setting['id']]);
+
+            message('保存成功', $this->createWebUrl('system_setting'), 'success');
+        }
+        include_once $this->template('setting/basic_setting');
+        break;
+}
+
+
+
+
+
+
+

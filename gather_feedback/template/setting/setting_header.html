@@ -1,0 +1,9 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="{php echo $_GPC['action'] === null?'active':''}">
+        <a href="{php echo $this->createWebUrl('system_setting')}">基本设置</a>
+    </li>
+    <li class="{php echo $_GPC['action']==='share'?'active':''}">
+        <a href="{php echo $this->createWebUrl('system_setting').'&action=share'}">分享设置</a>
+    </li>
+</ul>

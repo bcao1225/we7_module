@@ -105,6 +105,59 @@ require(['{MODULE_URL}lib/echarts.min.js'],function (echarts) {
     //...执行操作
 }
 ```
+### 微信网页实现自定义分享
+微擎封装了分享内容详情查看：[自定义分享]('https://s.w7.cc/index.php?c=wiki&do=view&id=1&list=390')
+
+但是微擎有几处错误
+
+> 头部需这样引入
+```
+<head>
+    <meta charset="UTF-8">
+    <title>{$system_setting['title']}</title>
+    {php register_jssdk(true)} //头部需如此引入
+</head>
+```
+
+> ```wx```对象需配置
+
+* 首先在php中获取jssdk签名包
+* ```
+  $signPackage = $_W['account']['jssdkconfig'];//微擎封装好的jssdk签名包的内容
+  ```
+* 并在html文件中进行配置，即可使用
+  ```
+    wx.config({
+            debug: false,
+            appId: '{$signPackage["appId"]}',
+            timestamp: '{$signPackage["timestamp"]}',
+            nonceStr: '{$signPackage["nonceStr"]}',
+            signature: '{$signPackage["signature"]}',
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone'
+            ]
+        });
+    
+        wx.ready(function () {
+            wx.onMenuShareAppMessage({
+                title: "{$system_setting['share_title']}",
+                desc: "{$system_setting['share_desc']}",
+                link: document.location.href,
+                imgUrl: "{php echo tomedia($system_setting['share_img'])}",
+                success: function () {
+                },
+                cancel: function () {
+                }
+            });
+        });
+  ```
+可参考别人的帖子：[在微擎调用微信JSSDK实现分享功能]('https://blog.csdn.net/zhemejinnameyuanxc/article/details/81258584');
+
 
 
 

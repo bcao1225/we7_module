@@ -54,7 +54,8 @@
             </div>
             {else}
             <!--填空题-->
-            <textarea class="weui-textarea" name="{php echo 'text-'.$question['id']}" placeholder="请输入内容" rows="5"></textarea>
+            <textarea class="weui-textarea" name="{php echo 'text-'.$question['id']}" placeholder="请输入内容"
+                      rows="5"></textarea>
             {/if}
         </div>
     </div>
@@ -74,58 +75,87 @@
 </style>
 
 <script>
-    $(function(){
+    wx.config({
+        debug: false,
+        appId: '{$signPackage["appId"]}',
+        timestamp: '{$signPackage["timestamp"]}',
+        nonceStr: '{$signPackage["nonceStr"]}',
+        signature: '{$signPackage["signature"]}',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
+        ]
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+            title: "{$system_setting['share_title']}",
+            desc: "{$system_setting['share_desc']}",
+            link: document.location.href,
+            imgUrl: "{php echo tomedia($system_setting['share_img'])}",
+            success: function () {
+            },
+            cancel: function () {
+            }
+        });
+    });
+
+    $(function () {
         $(".message").validate({
             errorPlacement(error, element) {
                 error.appendTo(element.parent().parent());
             },
-            rules:{
+            rules: {
                 /*{loop $question_list $index $question}*/
-                    //单选题
-                    /*{if $question['type']==='1'}*/
-                           "radio-{$question['id']}":{
-                                //是否必须
-                                /*{if $question['is_required']==='1'}*/required : true,/*{/if}*/
-                           },
-                    /*{/if}*/
-                    /*{if $question['type']==='2'}*/
-                        "check-{$question['id']}[]":{
-                            //是否必须
-                            /*{if $question['is_required']==='1'}*/required : true,/*{/if}*/
-                        },
-                    /*{/if}*/
-                    /*{if $question['type']==='3'}*/
-                    "text-{$question['id']}":{
-                        //是否必须
-                        /*{if $question['is_required']==='1'}*/required : true,/*{/if}*/
-                    },
-                    /*{/if}*/
+                //单选题
+                /*{if $question['type']==='1'}*/
+                "radio-{$question['id']}": {
+                    //是否必须
+                    /*{if $question['is_required']==='1'}*/required: true,/*{/if}*/
+                },
+                /*{/if}*/
+                /*{if $question['type']==='2'}*/
+                "check-{$question['id']}[]": {
+                    //是否必须
+                    /*{if $question['is_required']==='1'}*/required: true,/*{/if}*/
+                },
+                /*{/if}*/
+                /*{if $question['type']==='3'}*/
+                "text-{$question['id']}": {
+                    //是否必须
+                    /*{if $question['is_required']==='1'}*/required: true,/*{/if}*/
+                },
+                /*{/if}*/
                 /*{/loop}*/
             },
-            messages:{
+            messages: {
                 /*{loop $question_list $index $question}*/
-                    //单选题
-                    /*{if $question['type']==='1'}*/
-                    "radio-{$question['id']}":{
-                        //是否必须
-                        /*{if $question['is_required']==='1'}*/required : '请选择一项',/*{/if}*/
-                    },
-                    /*{/if}*/
-                    /*{if $question['type']==='2'}*/
-                    "check-{$question['id']}[]":{
-                        //是否必须
-                        /*{if $question['is_required']==='1'}*/required : '请至少选择一项',/*{/if}*/
-                    },
-                    /*{/if}*/
-                    /*{if $question['type']==='3'}*/
-                    "text-{$question['id']}":{
-                        //是否必须
-                        /*{if $question['is_required']==='1'}*/required : '此项不能留空',/*{/if}*/
-                    },
-                    /*{/if}*/
+                //单选题
+                /*{if $question['type']==='1'}*/
+                "radio-{$question['id']}": {
+                    //是否必须
+                    /*{if $question['is_required']==='1'}*/required: '请选择一项',/*{/if}*/
+                },
+                /*{/if}*/
+                /*{if $question['type']==='2'}*/
+                "check-{$question['id']}[]": {
+                    //是否必须
+                    /*{if $question['is_required']==='1'}*/required: '请至少选择一项',/*{/if}*/
+                },
+                /*{/if}*/
+                /*{if $question['type']==='3'}*/
+                "text-{$question['id']}": {
+                    //是否必须
+                    /*{if $question['is_required']==='1'}*/required: '此项不能留空',/*{/if}*/
+                },
+                /*{/if}*/
                 /*{/loop}*/
             },
-            debug:false
+            debug: false
         });
     });
 </script>

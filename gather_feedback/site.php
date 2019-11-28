@@ -10,7 +10,6 @@ defined('IN_IA') or exit('Access Denied');
 
 class Gather_feedbackModuleSite extends WeModuleSite
 {
-
     /**
      * 给后添加后缀
      * @param $child_list '选项集合，arr类型'
