@@ -24,7 +24,7 @@ foreach ($user_list as $user_key => $user){
 $parent_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question ORDER BY sort');
 
 foreach ($parent_list as $parentKey=>$parent){
-    $parent_list[$parentKey]['children'] = pdo_getall('ims_gather_feedback_children_question',['parent_id'=>$parent['id']]);
+    $parent_list[$parentKey]['children'] = pdo_fetchall('SELECT * FROM ims_gather_feedback_children_question WHERE parent_id = '.$parent['id'].' ORDER BY select_sort desc');
 }
 
 include_once $this->template('total/total');

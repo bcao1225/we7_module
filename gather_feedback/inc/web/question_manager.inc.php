@@ -47,16 +47,26 @@ switch ($_GPC['action']) {
         break;
     /*删除*/
     case 'delete':
+        /*删除题目*/
         pdo_delete('ims_gather_feedback_question', ['id' => $_GPC['id']]);
         /*删除选项*/
         pdo_delete('ims_gather_feedback_children_question', ['parent_id' => $_GPC['id']]);
         message('删除成功', $this->createWebUrl('question_manager'), 'success');
         break;
-    /*题目总览*/
+    /*排序选项*/
+    case 'select_sort':
+        foreach ($_GPC as $key=>$post_data){
+            if(strpos($key,'selectSort') !== false){
+                $id = explode('_',$key)[1];
+                pdo_update('ims_gather_feedback_children_question',['select_sort'=>$post_data],['id'=>$id]);
+            }
+        }
+        message('保存成功',$this->createWebUrl('question_manager'),'success');
+        break;
     default:
         $question_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question ORDER BY sort');
         foreach ($question_list as $key => $question) {
-            $children_list = pdo_getall('ims_gather_feedback_children_question', ['parent_id' => $question['id']]);
+            $children_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_children_question WHERE parent_id = '.$question['id'].' ORDER BY select_sort');
             /*增加前缀*/
             $question_list[$key]['children_list'] = $this->addPrefix($children_list, $question['select_type']);
         }

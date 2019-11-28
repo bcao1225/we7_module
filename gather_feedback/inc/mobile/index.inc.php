@@ -14,7 +14,7 @@ $system_setting = pdo_getall('ims_gather_feedback_system_setting')[0];
 /*题目列表*/
 $question_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question ORDER BY sort');
 foreach ($question_list as $key => $question) {
-    $children_list = pdo_getall('ims_gather_feedback_children_question', ['parent_id' => $question['id']]);
+    $children_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_children_question WHERE parent_id = '.$question['id'].' ORDER BY select_sort');
     $question_list[$key]['children_list'] = $this->addPrefix($children_list, $question['select_type']);
 }
 

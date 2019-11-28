@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[1.2.0]]></version>
+        <version><![CDATA[1.2.1]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
@@ -88,17 +88,18 @@
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `title` varchar(255) DEFAULT NULL,
           `parent_id` int(11) DEFAULT NULL COMMENT '对应question表的id',
-          `select_num` int(11) DEFAULT 0 COMMENT '用户选择的次数',
+          `select_num` int(11) DEFAULT '0' COMMENT '用户选择的次数',
+          `select_sort` int(11) DEFAULT '0' COMMENT '选项排序',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('8', '比较满意', '17',19);
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('7', '非常满意', '17',32);
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('9', '及格', '17',16);
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('10', '不满意', '17',18);
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('11', '苹果', '18',32);
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('12', '香蕉', '18',31);
-        INSERT INTO `ims_gather_feedback_children_question` VALUES ('13', '梨子', '18',40);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('8', '比较满意', '17',19,1);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('7', '非常满意', '17',32,2);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('9', '及格', '17',16,3);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('10', '不满意', '17',18,4);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('11', '苹果', '18',32,5);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('12', '香蕉', '18',31,6);
+        INSERT INTO `ims_gather_feedback_children_question` VALUES ('13', '梨子', '18',40,7);
 
         CREATE TABLE `ims_gather_feedback_submit` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -119,7 +120,7 @@
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
-        INSERT INTO `ims_gather_feedback_system_setting` VALUES ();
+        INSERT INTO `ims_gather_feedback_system_setting` VALUES ('11', '公司反馈信息', '', '提交成功，感谢您的参与', '公司调查问卷', '本公司最近为您提供过服务，现邀请您做一次调查问卷，欢迎您的参与', '');
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

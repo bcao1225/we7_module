@@ -75,22 +75,6 @@
 </style>
 
 <script>
-    wx.config({
-        debug: false,
-        appId: '{$signPackage["appId"]}',
-        timestamp: '{$signPackage["timestamp"]}',
-        nonceStr: '{$signPackage["nonceStr"]}',
-        signature: '{$signPackage["signature"]}',
-        jsApiList: [
-            'checkJsApi',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'onMenuShareQQ',
-            'onMenuShareWeibo',
-            'onMenuShareQZone'
-        ]
-    });
-
     wx.ready(function () {
         wx.onMenuShareAppMessage({
             title: "{$system_setting['share_title']}",

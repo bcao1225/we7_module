@@ -15,5 +15,24 @@
     <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/city-picker.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 </head>
+<script>
+    wx.config({
+        debug: false,
+        appId: '{$signPackage["appId"]}',
+        timestamp: '{$signPackage["timestamp"]}',
+        nonceStr: '{$signPackage["nonceStr"]}',
+        signature: '{$signPackage["signature"]}',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
+        ]
+    });
+</script>
 <body style="background: #eee">
+
+
 
