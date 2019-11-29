@@ -122,19 +122,19 @@
                 /*{if $question['type']==='1'}*/
                 "radio-{$question['id']}": {
                     //是否必须
-                    /*{if $question['is_required']==='1'}*/required: '请选择一项',/*{/if}*/
+                    /*{if $question['is_required']==='1'}*/required: "{$system_setting['radio_hint']}",/*{/if}*/
                 },
                 /*{/if}*/
                 /*{if $question['type']==='2'}*/
                 "check-{$question['id']}[]": {
                     //是否必须
-                    /*{if $question['is_required']==='1'}*/required: '请至少选择一项',/*{/if}*/
+                    /*{if $question['is_required']==='1'}*/required: "{$system_setting['check_hint']}",/*{/if}*/
                 },
                 /*{/if}*/
                 /*{if $question['type']==='3'}*/
                 "text-{$question['id']}": {
                     //是否必须
-                    /*{if $question['is_required']==='1'}*/required: '此项不能留空',/*{/if}*/
+                    /*{if $question['is_required']==='1'}*/required: "{$system_setting['text_hint']}",/*{/if}*/
                 },
                 /*{/if}*/
                 /*{/loop}*/

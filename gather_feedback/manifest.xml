@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[1.2.1]]></version>
+        <version><![CDATA[1.2.2]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
@@ -117,10 +117,14 @@
           `share_title` varchar(255) NOT NULL DEFAULT '' COMMENT '分享标题',
           `share_desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '分享描述',
           `share_img` varchar(255) NOT NULL DEFAULT '' COMMENT '分享图片',
+          `radio_hint` varchar(255) NOT NULL DEFAULT '' COMMENT '单选题提示文字',
+          `check_hint` varchar(255) NOT NULL DEFAULT '' COMMENT '多选题',
+          `text_hint` varchar(255) DEFAULT '' COMMENT '填空题提示文字',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
-        INSERT INTO `ims_gather_feedback_system_setting` VALUES ('11', '公司反馈信息', '', '提交成功，感谢您的参与', '公司调查问卷', '本公司最近为您提供过服务，现邀请您做一次调查问卷，欢迎您的参与', '');
+        INSERT INTO `ims_gather_feedback_system_setting` VALUES
+        ('11', '公司反馈信息', '', '提交成功，感谢您的参与', '公司调查问卷', '本公司最近为您提供过服务，现邀请您做一次调查问卷，欢迎您的参与','','请选择一项','请至少选择一项','不能为空');
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

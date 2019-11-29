@@ -2,21 +2,60 @@
 
 global $_GPC, $_W;
 
+/*存储查询到的结果*/
 $user_list = [];
 
 switch ($_GPC['action']) {
-    case 'query':
-        if ($_GPC['type'] === '0') {
-            $user_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_user WHERE submit_id is null');
-        } else {
-            $user_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_user WHERE submit_id is not null');
-        }
-        break;
     case 'delete':
         pdo_delete('ims_gather_feedback_user', ['id' => $_GPC['id']]);
+        /*删除对应提交的数据*/
+        pdo_delete('ims_gather_feedback_submit', ['user_id' => $_GPC['id']]);
         break;
     default:
-        $user_list = pdo_getall('ims_gather_feedback_user');
+        /*总用户量*/
+        switch ($_GPC['type']){
+            case '0':
+                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE submit_id IS NULL')['total'];
+                break;
+            case '1':
+                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE submit_id IS NOT NULL')['total'];
+                break;
+            default:
+                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user')['total'];
+                break;
+        }
+
+        /*每页数量*/
+        $page_num = 7;
+
+        $page_arr = [];
+        for ($i = 1; $i <= ceil($total / $page_num); $i++) {
+            array_push($page_arr, $i);
+        }
+
+        /*如果是点击左侧菜单进入*/
+        if($_GPC['page']===null){
+            $sql = "SELECT * FROM ims_gather_feedback_user ORDER BY id DESC LIMIT 0,$page_num";
+        }else{
+            /*获取传过来的条数*/
+            $currentIndex = ($_GPC['page'] - 1) * $page_num;
+            $sql = '';
+            switch ($_GPC['type']){
+                case '0':
+                    /*未提交*/
+                    $sql = "SELECT * FROM ims_gather_feedback_user WHERE submit_id IS NULL ORDER BY id DESC LIMIT $currentIndex,$page_num";
+                    break;
+                case '1':
+                    /*已提交*/
+                    $sql = "SELECT * FROM ims_gather_feedback_user WHERE submit_id IS NOT NULL ORDER BY id DESC LIMIT $currentIndex,$page_num";
+                    break;
+                default:
+                    /*全部*/
+                    $sql = "SELECT * FROM ims_gather_feedback_user ORDER BY id DESC LIMIT $currentIndex,$page_num";
+                    break;
+            }
+        }
+        $user_list = pdo_fetchall($sql);
         break;
 }
 
@@ -38,7 +77,7 @@ foreach ($user_list as $key => $user) {
                 if (is_array($submit['click_children_id'])) {
                     $str = '';
                     foreach ($submit['click_children_id'] as $children_id) {
-                        $str = $str.pdo_get('ims_gather_feedback_children_question', ['id' => $children_id])['title'].',';
+                        $str = $str . pdo_get('ims_gather_feedback_children_question', ['id' => $children_id])['title'] . ',';
                     }
                     $child_data['select'] = $str;
                 } else {
@@ -62,6 +101,7 @@ foreach ($user_list as $key => $user) {
         /*整理后的数据*/
         $user_list[$key]['message_data'] = $arr;
     }
+
     $user_list[$key]['submit_data'] = $submit_data;
 }
 
