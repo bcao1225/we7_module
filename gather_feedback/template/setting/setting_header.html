@@ -6,6 +6,9 @@
     <li class="{php echo $_GPC['action'] === 'question'?'active':''}">
         <a href="{php echo $this->createWebUrl('system_setting').'&action=question'}">题目设置</a>
     </li>
+    <li class="{php echo $_GPC['action'] === 'red_packet'?'active':''}">
+        <a href="{php echo $this->createWebUrl('system_setting').'&action=red_packet'}">红包设置</a>
+    </li>
     <li class="{php echo $_GPC['action']==='share'?'active':''}">
         <a href="{php echo $this->createWebUrl('system_setting').'&action=share'}">分享设置</a>
     </li>

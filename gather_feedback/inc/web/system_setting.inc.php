@@ -15,7 +15,7 @@ switch ($_GPC['action']) {
             ];
 
             pdo_update('ims_gather_feedback_system_setting', $data, ['id' => $system_setting['id']]);
-            message('保存成功',$this->createWebUrl('system_setting').'&action=question','success');
+            message('保存成功', $this->createWebUrl('system_setting') . '&action=question', 'success');
         }
 
         include_once $this->template('setting/question_setting');
@@ -33,6 +33,14 @@ switch ($_GPC['action']) {
             message('保存成功', $this->createWebUrl('system_setting') . '&action=share', 'success');
         }
         include_once $this->template('setting/share_setting');
+        break;
+    /*红包设置*/
+    case 'red_packet':
+        if ($_W['ispost']) {
+            pdo_update('ims_gather_feedback_system_setting', ['red_packet_money' => $_GPC['red_packet_money']], ['id' => $system_setting['id']]);
+            message('保存成功',$this->createWebUrl('system_setting').'&action=red_packet','success');
+        }
+        include_once $this->template('setting/red_packet_setting');
         break;
     default:
         /*提交*/

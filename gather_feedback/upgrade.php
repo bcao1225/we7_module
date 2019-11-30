@@ -23,3 +23,8 @@ if(!pdo_fieldexists('ims_gather_feedback_system_setting', 'radio_hint')){
     pdo_query("ALTER TABLE ims_gather_feedback_system_setting ADD `check_hint` varchar(255) NOT NULL DEFAULT '';");
     pdo_query("ALTER TABLE ims_gather_feedback_system_setting ADD `text_hint` varchar(255) NOT NULL DEFAULT '';");
 }
+
+//1.3.0 添加红包
+if(!pdo_fieldexists('ims_gather_feedback_system_setting', 'red_packet_money')){
+    pdo_query("ALTER TABLE ims_gather_feedback_system_setting ADD `red_packet_money` varchar(10) NOT NULL DEFAULT '0';");
+}
