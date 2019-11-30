@@ -1,15 +1,15 @@
 {template 'common/header'}
 
 <div class="alert alert-info">
-    此处为选择题和填空题的统计分析，总提交人数为：<strong>{php echo count($user_list)}</strong>
+    总提交人数为：<strong>{php echo count($user_list)}</strong>
 </div>
 
 {loop $parent_list $questionKey $question}
-{if $question['type']!=='3'}
+
 <div class="panel panel-default">
     <div class="panel-heading">{$question['title']}</div>
     <div class="panel-body">
-
+        {if $question['type']!=='3'}
         <div id="main{$questionKey}" style="width: 1000px;height:300px;"></div>
         <script type="text/javascript">
             require(['https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.min.js'], (echarts) => {
@@ -60,9 +60,14 @@
                 });
             });
         </script>
-
+        {else}
+        {loop $text_list[$question['id']] $text}
+            <p>{$text}</p>
+            <hr>
+        {/loop}
+        {/if}
     </div>
 </div>
-{/if}
+
 {/loop}
 {template 'common/footer'}
