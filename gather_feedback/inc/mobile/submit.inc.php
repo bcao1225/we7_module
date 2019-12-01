@@ -51,17 +51,19 @@ foreach ($_GPC as $key => $value) {
     }
 }
 
-$user_id = pdo_get('ims_gather_feedback_user', ['openid' => $_W['fans']['openid']], ['id']);
+/*判断是否是刷新页面*/
+if(count($arr)>0){
+    /*将处理好的数据保存到数据库中*/
+    pdo_insert('ims_gather_feedback_submit', [
+        'user_id' => $_GPC['user_id'],
+        'data' => iserializer($arr),
+        'activity_id'=>$_GPC['activity_id'],
+        'create_time' => time()
+    ]);
 
-/*将处理好的数据保存到数据库中*/
-pdo_insert('ims_gather_feedback_submit', [
-    'user_id' => $user_id['id'],
-    'data' => iserializer($arr),
-    'create_time' => time()
-]);
-
-/*设置submit_id*/
-pdo_update('ims_gather_feedback_user', ['submit_id' => pdo_insertid()], ['id' => $user_id['id']]);
+    /*设置当前用户所在活动中已提交状态*/
+    pdo_update('ims_gather_feedback_user',['is_submit'=>1],['id'=>$_GPC['user_id']]);
+}
 
 include_once $this->template('submit_complete');
 

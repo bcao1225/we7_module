@@ -12,16 +12,19 @@ switch ($_GPC['action']) {
         pdo_delete('ims_gather_feedback_submit', ['user_id' => $_GPC['id']]);
         break;
     default:
-        /*总用户量*/
-        switch ($_GPC['type']){
+        /*当前活动总用户*/
+        switch ($_GPC['type']) {
+            /*当前活动未提交*/
             case '0':
-                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE submit_id IS NULL')['total'];
+                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE is_submit=0 AND activity_id=' . $_GPC['activity_id'])['total'];
                 break;
+            /*当前活动已提交*/
             case '1':
-                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE submit_id IS NOT NULL')['total'];
+                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE is_submit=1 AND activity_id=' . $_GPC['activity_id'])['total'];
                 break;
+            /*全部人员*/
             default:
-                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user')['total'];
+                $total = pdo_fetch('SELECT count(1) as total FROM ims_gather_feedback_user WHERE activity_id=' . $_GPC['activity_id'])['total'];
                 break;
         }
 
@@ -33,27 +36,22 @@ switch ($_GPC['action']) {
             array_push($page_arr, $i);
         }
 
-        /*如果是点击左侧菜单进入*/
-        if($_GPC['page']===null){
-            $sql = "SELECT * FROM ims_gather_feedback_user ORDER BY id DESC LIMIT 0,$page_num";
-        }else{
-            /*获取传过来的条数*/
-            $currentIndex = ($_GPC['page'] - 1) * $page_num;
-            $sql = '';
-            switch ($_GPC['type']){
-                case '0':
-                    /*未提交*/
-                    $sql = "SELECT * FROM ims_gather_feedback_user WHERE submit_id IS NULL ORDER BY id DESC LIMIT $currentIndex,$page_num";
-                    break;
-                case '1':
-                    /*已提交*/
-                    $sql = "SELECT * FROM ims_gather_feedback_user WHERE submit_id IS NOT NULL ORDER BY id DESC LIMIT $currentIndex,$page_num";
-                    break;
-                default:
-                    /*全部*/
-                    $sql = "SELECT * FROM ims_gather_feedback_user ORDER BY id DESC LIMIT $currentIndex,$page_num";
-                    break;
-            }
+        /*获取传过来的页码*/
+        $currentIndex = ($_GPC['page'] - 1) * $page_num;
+        $sql = '';
+        switch ($_GPC['type']) {
+            case '0':
+                /*未提交*/
+                $sql = "SELECT * FROM ims_gather_feedback_user WHERE is_submit=0 AND activity_id=" . $_GPC['activity_id'] . " ORDER BY id DESC LIMIT $currentIndex,$page_num";
+                break;
+            case '1':
+                /*已提交*/
+                $sql = "SELECT * FROM ims_gather_feedback_user WHERE is_submit=1 AND activity_id=" . $_GPC['activity_id'] . " ORDER BY id DESC LIMIT $currentIndex,$page_num";
+                break;
+            default:
+                /*全部*/
+                $sql = "SELECT * FROM ims_gather_feedback_user WHERE activity_id=" . $_GPC['activity_id'] . " ORDER BY id DESC LIMIT $currentIndex,$page_num";
+                break;
         }
         $user_list = pdo_fetchall($sql);
         break;

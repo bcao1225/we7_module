@@ -2,13 +2,14 @@
 
 <ul class="nav nav-tabs">
     <li class="{php echo $_GPC['type']===null?'active':''}"><a
-            href="{php echo $this->createWebUrl('user_manager').'&page=1'}">全部</a></li>
+            href="{php echo $this->createWebUrl('user_manager').'&page=1&activity_id='.$_GPC['activity_id']}">全部</a></li>
     <li class="{php echo $_GPC['type']==='1'?'active':''}"><a
-            href="{php echo $this->createWebUrl('user_manager').'&type=1&page=1'}">已提交</a></li>
+            href="{php echo $this->createWebUrl('user_manager').'&type=1&page=1&activity_id='.$_GPC['activity_id']}">已提交</a></li>
     <li class="{php echo $_GPC['type']==='0'?'active':''}"><a
-            href="{php echo $this->createWebUrl('user_manager').'&type=0&page=1'}">未提交</a></li>
+            href="{php echo $this->createWebUrl('user_manager').'&type=0&page=1&activity_id='.$_GPC['activity_id']}">未提交</a></li>
 </ul>
 
+<!--选择活动-->
 <table class="we7-table table-condensed">
     <thead>
     <tr>
@@ -78,9 +79,9 @@
         {loop $page_arr $item}
         <li class="{php echo $_GPC['page']===strval($item)?'active':''}">
             {if $_GPC['type']===null}
-            <a href="{php echo $this->createWebUrl('user_manager').'&page='.$item}">{$item}</a>
+            <a href="{php echo $this->createWebUrl('user_manager').'&page='.$item.'&activity_id='.$_GPC['activity_id']}">{$item}</a>
             {else}
-            <a href="{php echo $this->createWebUrl('user_manager').'&page='.$item.'&type='.$_GPC['type']}">{$item}</a>
+            <a href="{php echo $this->createWebUrl('user_manager').'&page='.$item.'&type='.$_GPC['type'].'&activity_id='.$_GPC['activity_id']}">{$item}</a>
             {/if}
         </li>
         {/loop}

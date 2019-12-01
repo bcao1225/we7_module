@@ -1,7 +1,8 @@
 {template 'header'}
 <img style="width:100%" src="{php echo tomedia($system_setting['image'])}" alt="">
 
-<form class="message" style="padding: 10px" action="{php echo $this->createMobileUrl('submit')}" method="post">
+<form class="message" style="padding: 10px" action="{php echo $this->createMobileUrl('submit').'&user_id='.$user['id']}" method="post">
+    <input hidden type="text" name="activity_id" value="{$_GPC['activity_id']}">
     {loop $question_list $index $question}
     <div class="card">
         <div class="card-title">
