@@ -106,7 +106,7 @@ require(['{MODULE_URL}lib/echarts.min.js'],function (echarts) {
 }
 ```
 ### 微信网页实现自定义分享
-微擎封装了分享内容详情查看：[自定义分享]('https://s.w7.cc/index.php?c=wiki&do=view&id=1&list=390')
+微擎封装了分享内容详情查看：[自定义分享](https://s.w7.cc/index.php?c=wiki&do=view&id=1&list=390)
 
 但是微擎有几处错误
 
@@ -128,7 +128,7 @@ require(['{MODULE_URL}lib/echarts.min.js'],function (echarts) {
 * 并在html文件中进行配置，即可使用
   ```
     wx.config({
-            debug: false,
+            debug: false, //这里设置为true时，微信分享功能每个步骤都会弹框。
             appId: '{$signPackage["appId"]}',
             timestamp: '{$signPackage["timestamp"]}',
             nonceStr: '{$signPackage["nonceStr"]}',
@@ -156,7 +156,7 @@ require(['{MODULE_URL}lib/echarts.min.js'],function (echarts) {
             });
         });
   ```
-可参考别人的帖子：[在微擎调用微信JSSDK实现分享功能]('https://blog.csdn.net/zhemejinnameyuanxc/article/details/81258584');
+可参考别人的帖子：[在微擎调用微信JSSDK实现分享功能](https://blog.csdn.net/zhemejinnameyuanxc/article/details/81258584);
 
 ### 微擎生成二维码，转换成字符串
 ```
