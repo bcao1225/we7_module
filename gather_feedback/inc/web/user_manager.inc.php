@@ -10,6 +10,7 @@ switch ($_GPC['action']) {
         pdo_delete('ims_gather_feedback_user', ['id' => $_GPC['id']]);
         /*删除对应提交的数据*/
         pdo_delete('ims_gather_feedback_submit', ['user_id' => $_GPC['id']]);
+        message('删除成功',$this->createWebUrl('user_manager').'&activity_id='.$_GPC['activity_id'].'&page='.$_GPC['page'].'&type='.$_GPC['type'],'success');
         break;
     default:
         /*当前活动总用户*/

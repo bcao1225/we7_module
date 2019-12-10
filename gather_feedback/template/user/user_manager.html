@@ -67,7 +67,9 @@
         </td>
         <td>
             <a class="btn btn-danger btn-xs"
-               href="{php echo $this->createWebUrl('user_manager').'&action=delete&id='.$user['id']}">删除</a>
+               href="{php echo $this->createWebUrl('user_manager').'&action=delete&id='.$user['id'].'&activity_id='.$_GPC['activity_id'].'&page='.$_GPC['page']}.'&type='.$_GPC['type']">
+                删除
+            </a>
         </td>
     </tr>
     {/loop}

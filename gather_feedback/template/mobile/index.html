@@ -76,19 +76,6 @@
 </style>
 
 <script>
-    wx.ready(function () {
-        wx.onMenuShareAppMessage({
-            title: "{$system_setting['share_title']}",
-            desc: "{$system_setting['share_desc']}",
-            link: document.location.href,
-            imgUrl: "{php echo tomedia($system_setting['share_img'])}",
-            success: function () {
-            },
-            cancel: function () {
-            }
-        });
-    });
-
     $(function () {
         $(".message").validate({
             errorPlacement(error, element) {
@@ -145,3 +132,8 @@
     });
 </script>
 {template 'footer'}
+<style>
+    .error{
+        color: red;
+    }
+</style>

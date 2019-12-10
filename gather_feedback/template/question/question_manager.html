@@ -29,11 +29,11 @@
 
 <div class="panel-group" id="accordion">
     {loop $activity_list $activity}
-    <div class="panel panel-default">
+    <div class="panel panel-default card">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{$activity['id']}">
-                    {$activity['title']}丨{php echo date("Y-m-d",$activity['create_time']);}
+                <a class="h3" data-toggle="collapse" data-parent="#accordion" href="#collapse{$activity['id']}">
+                    {$activity['title']}丨<span class="label label-warning">{php echo date("Y-m-d",$activity['create_time']);}</span>
                 </a>
             </h4>
         </div>
@@ -47,10 +47,10 @@
                     </div>
                     <div class="btn-group">
                         <a class="btn btn-default" href="{php echo $this->createWebUrl('user_manager').'&activity_id='.$activity['id'].'&page=1'}">
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 查看用户提交情况
+                            <img width="40" src="{php echo MODULE_URL.'icon/user.png'}" alt="">用户提交情况
                         </a>
                         <a class="btn btn-default" href="{php echo $this->createWebUrl('statistics').'&activity_id='.$activity['id'].'&page=1'}">
-                            <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span> 查看统计分析图
+                            <img width="40" src="{php echo MODULE_URL.'icon/tubiao.png'}" alt="">统计分析图
                         </a>
                     </div>
                     <hr>
@@ -177,11 +177,10 @@
     </div>
     {/loop}
 </div>
-
-
-
 <style>
-
+    .card{
+        box-shadow: 1px 1px 7px #d2d2d2;
+    }
 </style>
 
 {template 'common/footer'}

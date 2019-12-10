@@ -7,6 +7,11 @@ $signPackage = $_W['account']['jssdkconfig'];//微擎封装好的jssdk签名包�
 /*获取扫码传过来的活动id*/
 $activity_id = $_GPC['activity_id'];
 
+if($activity_id===null){
+   message('请使用活动二维码和路径',$this->createMoblieUrl('index'),'error');
+   exit();
+}
+
 /*获取粉丝信息*/
 if (empty($_W['fans']['nickname'])) {
     mc_oauth_userinfo();

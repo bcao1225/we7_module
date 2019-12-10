@@ -31,6 +31,19 @@
             'onMenuShareQZone'
         ]
     });
+
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+            title: "{$system_setting['share_title']}",
+            desc: "{$system_setting['share_desc']}",
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('index').'&activity_id='.$_GPC['activity_id']}",
+            imgUrl: "{php echo tomedia($system_setting['share_img'])}",
+            success: function () {
+            },
+            cancel: function () {
+            }
+        });
+    });
 </script>
 <body style="background: #eee">
 

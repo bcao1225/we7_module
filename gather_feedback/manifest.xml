@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[2.0.0]]></version>
+        <version><![CDATA[2.0.4]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
@@ -155,5 +155,5 @@
         DROP TABLE IF EXISTS `ims_gather_feedback_system_setting`;
         DROP TABLE IF EXISTS `ims_gather_feedback_user`;
     ]]></uninstall>
-    <upgrade><![CDATA[upgrade.php]]></upgrade>
+    <upgrade><![CDATA[]]></upgrade>
 </manifest>

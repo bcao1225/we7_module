@@ -15,7 +15,7 @@ $user_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_user WHERE is_submi
 
 /*通过提交人信息获取提交数据*/
 foreach ($user_list as $user_key => $user) {
-    $submit = pdo_get('ims_gather_feedback_submit', ['id' => $user['submit_id'],'activity_id'=>$_GPC['activity_id']]);
+    $submit = pdo_get('ims_gather_feedback_submit', ['user_id' => $user['id'],'activity_id'=>$_GPC['activity_id']]);
     $submit['data'] = iunserializer($submit['data']);
 
     foreach ($submit['data'] as $submit_select) {
