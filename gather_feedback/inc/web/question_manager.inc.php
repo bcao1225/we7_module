@@ -73,7 +73,6 @@ switch ($_GPC['action']) {
         break;
     /*删除*/
     case 'delete':
-
         /*删除题目*/
         pdo_delete('ims_gather_feedback_question', ['id' => $_GPC['id']]);
         /*删除选项*/

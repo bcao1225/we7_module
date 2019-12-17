@@ -4,8 +4,16 @@
     总提交人数为：<strong>{php echo count($user_list)}</strong>
 </div>
 
-{loop $parent_list $questionKey $question}
+<ul class="nav nav-tabs" role="tablist">
+    <li class="{php echo $_GPC['chart']===null?'active':''}">
+        <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id']}">柱形图</a>
+    </li>
+    <li class="{php echo $_GPC['chart']==='pie'?'active':''}">
+        <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id'].'&chart=pie'}">饼图</a>
+    </li>
+</ul>
 
+{loop $parent_list $questionKey $question}
 <div class="panel panel-default">
     <div class="panel-heading">{$question['title']}</div>
     <div class="panel-body">
@@ -13,6 +21,62 @@
         <div id="main{$questionKey}" style="width: 1000px;height:300px;"></div>
         <script type="text/javascript">
             require(['https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.min.js'], (echarts) => {
+                /*{if $_GPC['chart']==='pie'}*/
+                echarts.init(document.getElementById('main{$questionKey}')).setOption({
+                    title: {
+                        text: "{$question['title']}"
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'right',
+                        data: [
+                            /*{loop $question['children'] $children}*/
+                            "{$children['title']}",
+                            /*{/loop}*/
+                        ]
+                    },
+                    series: [
+                        {
+                            name:'访问来源',
+                            type:'pie',
+                            radius: ['40%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'outside',
+                                },
+                                emphasis: {
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '20',
+                                        fontWeight: 'bold'
+                                    }
+                                },
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: true,
+                                    length: 20,
+                                    length2: 20,
+                                    lineStyle: {
+                                        color: '#333'
+                                    }
+                                }
+                            },
+                            data:[
+                                /*{loop $question['children'] $children}*/
+                                {value:"{$children['select_num']}",name:"{$children['title']}"},
+                                /*{/loop}*/
+                            ]
+                        }
+                    ]
+                });
+                /*{else}*/
                 echarts.init(document.getElementById('main{$questionKey}')).setOption({
                     title: {
                         text: "{$question['title']}"
@@ -58,6 +122,7 @@
                         },
                     }]
                 });
+                /*{/if}*/
             });
         </script>
         {else}

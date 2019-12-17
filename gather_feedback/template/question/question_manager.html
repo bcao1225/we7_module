@@ -49,7 +49,7 @@
                         <a class="btn btn-default" href="{php echo $this->createWebUrl('user_manager').'&activity_id='.$activity['id'].'&page=1'}">
                             <img width="40" src="{php echo MODULE_URL.'icon/user.png'}" alt="">用户提交情况
                         </a>
-                        <a class="btn btn-default" href="{php echo $this->createWebUrl('statistics').'&activity_id='.$activity['id'].'&page=1'}">
+                        <a class="btn btn-default" href="{php echo $this->createWebUrl('statistics').'&activity_id='.$activity['id']}">
                             <img width="40" src="{php echo MODULE_URL.'icon/tubiao.png'}" alt="">统计分析图
                         </a>
                     </div>
@@ -165,7 +165,13 @@
                         <td>
                             <div class="btn-group btn-group-sm">
                                 <a href="{php echo $this->createWebUrl('question_manager').'&action=update&id='.$question['id']}" class="btn btn-success">修改</a>
-                                <a href="{php echo $this->createWebUrl('question_manager').'&action=delete&id='.$question['id']}" class="btn btn-danger">删除</a>
+                                <button class="btn btn-danger {php echo 'delete_question'.$index}">删除</button>
+                                <script>
+                                    $(".{php echo 'delete_question'.$index}").click(()=>{
+                                        if(!confirm('确定删除吗'))return;
+                                        window.location.href = "{php echo $this->createWebUrl('question_manager').'&action=delete&id='.$question['id']}"
+                                    })
+                                </script>
                             </div>
                         </td>
                     </tr>

@@ -28,8 +28,4 @@ class Gather_feedbackModuleSite extends WeModuleSite
 
         return $child_list;
     }
-
-    public function get_question(){
-        return 'hello';
-    }
 }
