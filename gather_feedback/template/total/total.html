@@ -21,8 +21,23 @@
         <div id="main{$questionKey}" style="width: 1000px;height:300px;"></div>
         <script type="text/javascript">
             require(['https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.min.js'], (echarts) => {
+                const pie_echarts = echarts.init(document.getElementById('main{$questionKey}'));
+
+                /*扇形数据*/
+                let pie_data = [/*{loop $question['children'] $children}*/
+                                {value:"{$children['select_num']}",name:"{$children['title']}"},
+                                /*{/loop}*/];
+
+                /*最大扇形块对应的名称*/
+                const max_pie = pie_data.reduce((init,currentValue)=>{
+                    if(Number.parseInt(init.value)>Number.parseInt(currentValue.value)){
+                        return init;
+                    }
+                    return currentValue;
+                });
+
                 /*{if $_GPC['chart']==='pie'}*/
-                echarts.init(document.getElementById('main{$questionKey}')).setOption({
+                pie_echarts.setOption({
                     title: {
                         text: "{$question['title']}"
                     },
@@ -41,19 +56,22 @@
                     },
                     series: [
                         {
-                            name:'访问来源',
+                            name:'feedback_pie',
                             type:'pie',
-                            radius: ['40%', '70%'],
+                            radius: ['35%', '70%'],
                             avoidLabelOverlap: false,
                             label: {
                                 normal: {
                                     show: true,
                                     position: 'outside',
+                                    formatter:(e)=>{
+                                        return `${e.data.name}(${e.data.value})，占比：${e.percent}%`
+                                    }
                                 },
                                 emphasis: {
                                     show: true,
                                     textStyle: {
-                                        fontSize: '20',
+                                        fontSize: '15',
                                         fontWeight: 'bold'
                                     }
                                 },
@@ -68,30 +86,63 @@
                                     }
                                 }
                             },
-                            data:[
-                                /*{loop $question['children'] $children}*/
-                                {value:"{$children['select_num']}",name:"{$children['title']}"},
-                                /*{/loop}*/
-                            ]
+                            data:pie_data
                         }
                     ]
                 });
+
+                /*设置饼图默认选中的块，此块为饼图最大值的块*/
+                pie_echarts.dispatchAction({
+                    type: 'highlight',
+                    seriesName:'feedback_pie',
+                    name:max_pie.name
+                });
+
+                pie_echarts.on('mouseover', (e)=>{
+                    //当检测到鼠标悬停事件，取消默认选中高亮
+                    pie_echarts.dispatchAction({
+                        type: 'downplay',
+                        seriesName:'feedback_pie',
+                        name:max_pie.name
+                    });
+                    //高亮显示悬停的那块
+                    pie_echarts.dispatchAction({
+                        type: 'highlight',
+                        seriesName:'feedback_pie',
+                        dataIndex: e.dataIndex
+                    });
+                });
+
+                pie_echarts.on('mouseout', (e)=>{
+                    if(max_pie.name!==e.name){
+                        //将之前高亮的取消高亮
+                        pie_echarts.dispatchAction({
+                            type: 'downplay',
+                            seriesName:'feedback_pie',
+                            dataIndex: e.dataIndex
+                        });
+
+                        //检测鼠标移出后显示之前默认高亮的那块
+                        pie_echarts.dispatchAction({
+                            type: 'highlight',
+                            seriesName:'feedback_pie',
+                            name:max_pie.name
+                        });
+                    }
+                });
+
                 /*{else}*/
                 echarts.init(document.getElementById('main{$questionKey}')).setOption({
                     title: {
                         text: "{$question['title']}"
                     },
                     tooltip: {},
-                    legend: {
-                        data: ['选择量']
-                    },
                     xAxis: {},
-
                     yAxis: {
                         type: 'category',
                         data: [
                             /*{loop $question['children'] $children}*/
-                            "{$children['title']}",
+                            `{$children['title']}({$children['select_num']})`,
                             /*{/loop}*/
                         ]
                     },
@@ -109,9 +160,14 @@
                             normal:{
                                 //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
                                 color: function (params){
-                                    var colorList = ['#19be6b','#ff9900','#ed4014','#2db7f5'];
+                                    let colorList = ['#19be6b','#ff9900','#ed4014','#2db7f5'];
                                     return colorList[params.dataIndex];
-                                }
+                                },
+                                label: {
+                                    formatter: "{c}",
+                                    show: true,
+                                    position: "right",
+                                },
                             },
                             //鼠标悬停时：
                             emphasis: {

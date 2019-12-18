@@ -177,6 +177,59 @@ function make_qrcode($url = '')
 ```
 <img width="130" src="{$activity['qrcode']}" alt="">
 ```
+***
+### 设置```echarts```饼图默认高亮
+```
+/*最大扇形块对应的名称*/
+const max_pie_name = pie_data.reduce((init,currentValue)=>{
+    if(Number.parseInt(init.value)>Number.parseInt(currentValue.value)){
+        return init;
+    }
+    return currentValue;
+});
+//排序功能，获取在数组中value值最大的对象
+```
+
+```
+/*设置饼图默认选中的块，此块为饼图最大值的块*/
+pie_echarts.dispatchAction({
+    type: 'highlight',
+    seriesName:'feedback_pie',
+    name:max_pie_name.name
+});
+
+pie_echarts.on('mouseover', (e)=>{
+    //当检测到鼠标悬停事件，取消默认选中高亮
+    pie_echarts.dispatchAction({
+        type: 'downplay',
+        seriesName:'feedback_pie',
+        name:max_pie_name.name
+    });
+    //高亮显示悬停的那块
+    pie_echarts.dispatchAction({
+        type: 'highlight',
+        seriesName:'feedback_pie',
+        dataIndex: e.dataIndex
+    });
+});
+
+pie_echarts.on('mouseout', (e)=>{
+    //将之前高亮的取消高亮
+    pie_echarts.dispatchAction({
+        type: 'downplay',
+        seriesName:'feedback_pie',
+        dataIndex: e.dataIndex
+    });
+
+    //检测鼠标移出后显示之前默认高亮的那块
+    pie_echarts.dispatchAction({
+        type: 'highlight',
+        seriesName:'feedback_pie',
+        name:max_pie_name.name
+    });
+});
+```
+
 
 
 
