@@ -65,6 +65,12 @@ if(count($arr)>0){
     pdo_update('ims_gather_feedback_user',['is_submit'=>1],['id'=>$_GPC['user_id']]);
 }
 
+/*获取统计的题目数量*/
+$parent_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question WHERE activity_id=' . $_GPC['activity_id'] . ' ORDER BY sort');
+foreach ($parent_list as $parentKey => $parent) {
+    $parent_list[$parentKey]['children'] = pdo_fetchall('SELECT * FROM ims_gather_feedback_children_question WHERE parent_id = ' . $parent['id'] . ' ORDER BY select_sort desc');
+}
+
 include_once $this->template('submit_complete');
 
 

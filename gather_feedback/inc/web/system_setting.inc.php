@@ -49,7 +49,8 @@ switch ($_GPC['action']) {
             pdo_update('ims_gather_feedback_system_setting', [
                 'title' => $_GPC['title'],
                 'image' => $_GPC['image'],
-                'last_submit_text' => $_GPC['last_submit_text']
+                'last_submit_text' => $_GPC['last_submit_text'],
+                'show_total'=>$_GPC['show_total']
             ], ['id' => $system_setting['id']]);
 
             message('保存成功', $this->createWebUrl('system_setting'), 'success');

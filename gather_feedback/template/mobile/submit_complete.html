@@ -1,13 +1,83 @@
 {template 'header'}
 
 <img style="width: 100%" src="{php echo tomedia($system_setting['image'])}" alt="">
-
 <h2 class="hint">{$system_setting['last_submit_text']}</h2>
 
+{if $system_setting['show_total']==='1'}
+<div class="total">
+    {loop $parent_list $parent_key $question}
+    {if $question['type']!=='3'}
+    <div class="pie">
+        <h3>{$question['title']}</h3>
+        <div style="width:340px;height: 200px;margin: 0 auto;" id="pie{$parent_key}"></div>
+        <script>
+            echarts.init(document.getElementById('pie{$parent_key}')).setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b}: {c} ({d}%)"
+                },
+                series: [
+                    {
+                        name: 'feedback_pie',
+                        type: 'pie',
+                        radius: ['35%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'outside',
+                                formatter: (e) => {
+                                    return `${e.data.name}`
+                                }
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '15',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                        },
+                        labelLine: {
+                            normal: {
+                                show: true,
+                                length: 15,
+                                length2: 15,
+                                lineStyle: {
+                                    color: '#333'
+                                }
+                            }
+                        },
+                        data: [/*{loop $question['children'] $children}*/
+                            {value: "{$children['select_num']}", name: "{$children['title']}"},
+                            /*{/loop}*/]
+                    }
+                ]
+            });
+        </script>
+    </div>
+    {/if}
+    {/loop}
+</div>
+{/if}
+
 <style>
-    .hint{
+    .total {
+        padding: 10px;
+    }
+
+    .hint {
         text-align: center;
-        margin-top: 50px;
+        margin: 20px;
+    }
+
+    .pie {
+        box-shadow: 1px 1px 5px #d2d2d2;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background: #ffffff;
+        padding: 10px;
+        box-sizing: border-box;
     }
 </style>
 

@@ -41,7 +41,13 @@ if ($user) {
     /*判断当前用户是否在当前活动中提交过数据*/
     $current_submit = pdo_get('ims_gather_feedback_submit', ['user_id' => $user['id'], 'activity_id' => $activity_id]);
     if ($current_submit) {
+        /*获取题目和对应的选项*/
+        $parent_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question WHERE activity_id=' . $_GPC['activity_id'] . ' ORDER BY sort');
+        foreach ($parent_list as $parentKey => $parent) {
+            $parent_list[$parentKey]['children'] = pdo_fetchall('SELECT * FROM ims_gather_feedback_children_question WHERE parent_id = ' . $parent['id'] . ' ORDER BY select_sort desc');
+        }
         include_once $this->template('submit_complete');
+
     } else {
         include_once $this->template('index');
     }
