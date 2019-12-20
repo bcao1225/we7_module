@@ -6,10 +6,14 @@
 
 <ul class="nav nav-tabs" role="tablist">
     <li class="{php echo $_GPC['chart']===null?'active':''}">
-        <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id']}">柱形图</a>
+        <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id']}">
+            <img width="35" src="{php echo MODULE_URL.'/icon/huabanfuben.png'}" alt="">
+        </a>
     </li>
     <li class="{php echo $_GPC['chart']==='pie'?'active':''}">
-        <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id'].'&chart=pie'}">饼图</a>
+        <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id'].'&chart=pie'}">
+            <img width="35" src="{php echo MODULE_URL.'/icon/bingtu.png'}" alt="">
+        </a>
     </li>
 </ul>
 
@@ -19,6 +23,26 @@
     <div class="panel-body">
         {if $question['type']!=='3'}
         <div id="main{$questionKey}" style="height:300px;"></div>
+        <!--查看备注-->
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample{$questionKey}">查看所有备注</button>
+        <div class="collapse" id="collapseExample{$questionKey}">
+            <div class="well">
+                <div class="list-group">
+                    {loop $remark_list[$question['id']] $user_remake}
+                    <a href="javascript:;" class="list-group-item">
+                        <p class="list-group-item-heading">
+                            <img width="35" class="img-circle" src="{$user_remake['avatar']}">
+                            {$user_remake['nickname']}
+                            <span class="label label-success">他的选择</span>{$user_remake['title']}
+                        </p>
+                        <h4 class="list-group-item-text">
+                            {$user_remake['remake']}
+                        </h4>
+                    </a>
+                    {/loop}
+                </div>
+            </div>
+        </div>
         <script type="text/javascript">
             require(['https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.min.js'], (echarts) => {
                 const pie_echarts = echarts.init(document.getElementById('main{$questionKey}'));

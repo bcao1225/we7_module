@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[2.1.1]]></version>
+        <version><![CDATA[2.2.0]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
