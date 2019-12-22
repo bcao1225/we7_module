@@ -6,7 +6,10 @@
     {loop $question_list $index $question}
     <div class="card">
         <div class="card-title">
-            {if $question['is_required']==='1'}<i class="weui-icon-warn"></i>{/if}{$question['title']}
+            {$question['title']}
+            {if $question['is_required']==='1'} <span class="hint require_hint">必填</span>{/if}
+            {if $question['type']==='1'}<span class="hint radio_hint">单选题</span>{/if}
+            {if $question['type']==='2'}<span class="hint check_hint">多选题</span>{/if}
         </div>
         <div class="card-body">
             <!--单选框-->
@@ -135,5 +138,24 @@
 <style>
     .error{
         color: red;
+    }
+
+    .hint{
+        color: #fff;
+        padding: 3px;
+        border-radius: 3px;
+        font-size: 10px;
+    }
+
+    .require_hint{
+        background: #ed4014;
+    }
+
+    .radio_hint{
+        background: #19be6b;
+    }
+
+    .check_hint{
+        background: #ff9900;
     }
 </style>

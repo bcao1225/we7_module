@@ -9,7 +9,7 @@
     {if $question['type']!=='3'}
     <div class="pie">
         <h3>{$question['title']}</h3>
-        <div style="width:340px;height: 200px;margin: 0 auto;" id="pie{$parent_key}"></div>
+        <div style="width:250px;height: 180px;margin: 0 auto;" id="pie{$parent_key}"></div>
         <script>
             echarts.init(document.getElementById('pie{$parent_key}')).setOption({
                 tooltip: {
@@ -63,7 +63,7 @@
 
 <style>
     .total {
-        padding: 10px;
+        padding:10px 25px;
     }
 
     .hint {
