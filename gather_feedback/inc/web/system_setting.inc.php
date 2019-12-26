@@ -45,12 +45,12 @@ switch ($_GPC['action']) {
     default:
         /*提交*/
         if ($_W['ispost']) {
-
             pdo_update('ims_gather_feedback_system_setting', [
                 'title' => $_GPC['title'],
                 'image' => $_GPC['image'],
                 'last_submit_text' => $_GPC['last_submit_text'],
-                'show_total'=>$_GPC['show_total']
+                'show_total'=>$_GPC['show_total'],
+                'copyright'=>$_GPC['copyright']
             ], ['id' => $system_setting['id']]);
 
             message('保存成功', $this->createWebUrl('system_setting'), 'success');

@@ -3,7 +3,7 @@
     <application setting='false'>
         <name><![CDATA[收集反馈]]></name>
         <identifie><![CDATA[gather_feedback]]></identifie>
-        <version><![CDATA[2.2.2]]></version>
+        <version><![CDATA[2.3.1]]></version>
         <ability><![CDATA[工具类模块，信息收集]]></ability>
         <type><![CDATA[app]]></type>
         <description><![CDATA[收集用户的反馈信息，帮助企业快速获取客户的建议和意见]]></description>
@@ -119,23 +119,24 @@
         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
         CREATE TABLE `ims_gather_feedback_system_setting` (
-            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-            `title` varchar(255) NOT NULL DEFAULT '',
-            `image` varchar(255) NOT NULL DEFAULT '',
-            `last_submit_text` text NOT NULL COMMENT '提交成功后展示的文本',
-            `show_total` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否向用户展示统计结果，0不展示，1展示',
-            `share_title` varchar(255) NOT NULL DEFAULT '' COMMENT '分享标题',
-            `share_desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '分享描述',
-            `share_img` varchar(255) NOT NULL DEFAULT '' COMMENT '分享图片',
-            `radio_hint` varchar(255) NOT NULL DEFAULT '' COMMENT '单选题提示文字',
-            `check_hint` varchar(255) NOT NULL DEFAULT '' COMMENT '多选题',
-            `text_hint` varchar(255) DEFAULT '' COMMENT '填空题提示文字',
-            `red_packet_money` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '红包金额',
-            PRIMARY KEY (`id`)
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `title` varchar(255) NOT NULL DEFAULT '',
+          `image` varchar(255) NOT NULL DEFAULT '',
+          `last_submit_text` text NOT NULL COMMENT '提交成功后展示的文本',
+          `show_total` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否向用户展示统计结果，0不展示，1展示',
+          `copyright` varchar(255) NOT NULL DEFAULT '' COMMENT '底部版权',
+          `share_title` varchar(255) NOT NULL DEFAULT '' COMMENT '分享标题',
+          `share_desc` varchar(1000) NOT NULL DEFAULT '' COMMENT '分享描述',
+          `share_img` varchar(255) NOT NULL DEFAULT '' COMMENT '分享图片',
+          `radio_hint` varchar(255) NOT NULL DEFAULT '' COMMENT '单选题提示文字',
+          `check_hint` varchar(255) NOT NULL DEFAULT '' COMMENT '多选题',
+          `text_hint` varchar(255) DEFAULT '' COMMENT '填空题提示文字',
+          `red_packet_money` varchar(10) NOT NULL DEFAULT '0' COMMENT '红包金额',
+          PRIMARY KEY (`id`)
         ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
         INSERT INTO `ims_gather_feedback_system_setting` VALUES
-        ('11', '公司反馈信息', '', '提交成功，感谢您的参与',0, '公司调查问卷', '本公司最近为您提供过服务，现邀请您做一次调查问卷，欢迎您的参与','','请选择一项','请至少选择一项','不能为空','0');
+        ('11', '公司反馈信息', '', '提交成功，感谢您的参与',0,'提供技术支持','公司调查问卷', '本公司最近为您提供过服务，现邀请您做一次调查问卷，欢迎您的参与','','请选择一项','请至少选择一项','不能为空','0');
 
         CREATE TABLE `ims_gather_feedback_user` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

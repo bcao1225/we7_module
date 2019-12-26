@@ -4,6 +4,50 @@
     总提交人数为：<strong>{php echo count($user_list)}</strong>
 </div>
 
+<div id="submit_map" style="height: 300px"></div>
+<script>
+    require(['https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.min.js'], (echarts) => {
+        echarts.init(document.getElementById('submit_map')).setOption({
+            title: {
+                text: '用户提交数与日期关系图',
+                x: 'center',
+                align: 'right'
+            },
+            xAxis: {
+                name:'日期',
+                type: 'category',
+                data: [/*{loop $create_for_submit_list $key $item}*/
+                    '{php echo $key}',
+                    /*{/loop}*/],
+                /*去除网格线*/
+                splitLine:{
+                    show:false
+                }
+            },
+            yAxis: {
+                name:'人数',
+                type: 'value',
+                minInterval: 1
+            },
+            series: [{
+                data: [/*{loop $create_for_submit_list $key $item}*/
+                    '{php echo $item}',
+                    /*{/loop}*/],
+                type: 'line',
+                smooth: true,
+                itemStyle:
+                    {
+                        normal: {
+                            label: {
+                                show: true
+                            }
+                        }
+                    }
+            }]
+        });
+    })
+</script>
+
 <ul class="nav nav-tabs" role="tablist">
     <li class="{php echo $_GPC['chart']===null?'active':''}">
         <a href="{php echo $this->createWebUrl('statistics').'&activity_id='.$_GPC['activity_id']}">
@@ -24,7 +68,9 @@
         {if $question['type']!=='3'}
         <div id="main{$questionKey}" style="height:300px;"></div>
         <!--查看备注-->
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample{$questionKey}">查看所有备注</button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                data-target="#collapseExample{$questionKey}">查看所有备注
+        </button>
         <div class="collapse" id="collapseExample{$questionKey}">
             <div class="well">
                 <div class="list-group">
@@ -49,8 +95,8 @@
 
                 /*扇形数据*/
                 let pie_data = [/*{loop $question['children'] $children}*/
-                                {value: "{$children['select_num']}", name: "{$children['title']}"},
-                                /*{/loop}*/];
+                    {value: "{$children['select_num']}", name: "{$children['title']}"},
+                    /*{/loop}*/];
 
                 /*最大扇形块*/
                 const max_pie = pie_data.reduce((init, currentValue) => {

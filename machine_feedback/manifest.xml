@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.w7.cc" versionCode="">
+
+    <application setting='false'>
+        <name><![CDATA[机器反馈]]></name>
+
+        <identifie><![CDATA[machine_feedback]]></identifie>
+
+        <version><![CDATA[1.0.0]]></version>
+
+        <ability><![CDATA[xxx]]></ability>
+
+        <type><![CDATA[xxx]]></type>
+
+        <description><![CDATA[获取购买信息的反馈信息]]></description>
+
+        <author><![CDATA[QQRPazWaNPgW]]></author>
+
+        <url><![CDATA[xxx]]></url>
+
+        <setting><![CDATA[xxx]]></setting>
+
+    </application>
+
+    <platform>
+        <rule embed="false"/>
+        <rule embed="false"/>
+		<subscribes>
+			<message type="text"/>
+			<message type="image"/>
+			<message type="voice"/>
+			<message type="video"/>
+			<message type="shortvideo"/>
+			<message type="location"/>
+			<message type="link"/>
+			<message type="subscribe"/>
+			<message type="unsubscribe"/>
+			<message type="qr"/>
+			<message type="trace"/>
+			<message type="click"/>
+			<message type="view"/>
+			<message type="merchant_order"/>
+			<message type="user_get_card"/>
+			<message type="user_del_card"/>
+			<message type="user_consume_card"/>
+		</subscribes>
+		<handles>
+			<message type="text"/>
+			<message type="image"/>
+			<message type="voice"/>
+			<message type="video"/>
+			<message type="shortvideo"/>
+			<message type="location"/>
+			<message type="link"/>
+			<message type="subscribe"/>
+			<message type="unsubscribe"/>
+			<message type="qr"/>
+			<message type="trace"/>
+			<message type="click"/>
+			<message type="view"/>
+			<message type="merchant_order"/>
+			<message type="user_get_card"/>
+			<message type="user_del_card"/>
+			<message type="user_consume_card"/>
+		</handles>
+        <supports>
+            <item type="app"/>
+        </supports>
+    </platform>
+
+    <bindings>
+		<menu>
+			<entry title="机器管理" do="machine_manager"/>
+			<entry title="系统设置" do="system_setting"/>
+		</menu>
+    </bindings>
+
+    <install><![CDATA[]]></install>
+    <uninstall><![CDATA[]]></uninstall>
+    <upgrade><![CDATA[]]></upgrade>
+</manifest>

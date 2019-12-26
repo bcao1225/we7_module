@@ -68,6 +68,19 @@ foreach ($user_list as $user_key => $user) {
     }
 }
 
+/*通过日期统计用户提交的次数*/
+$submit_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_submit WHERE activity_id=' . $_GPC['activity_id'] . ' ORDER BY create_time');
+$create_for_submit_list = [];
+
+foreach ($submit_list as $submit) {
+    $create_time = date('Y-m-d', intval($submit['create_time']));
+    if (!array_key_exists($create_time, $create_for_submit_list)) {
+        $create_for_submit_list[$create_time] = 1;
+    } else {
+        $create_for_submit_list[$create_time] = $create_for_submit_list[$create_time] + 1;
+    }
+}
+
 /*获取题目和对应的选项*/
 $parent_list = pdo_fetchall('SELECT * FROM ims_gather_feedback_question WHERE activity_id=' . $_GPC['activity_id'] . ' ORDER BY sort');
 foreach ($parent_list as $parentKey => $parent) {

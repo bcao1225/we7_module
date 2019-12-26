@@ -58,15 +58,15 @@
         <label class="control-label col-sm-2">多选题选项</label>
         <div class="form-controls col-sm-8 checkList">
             {if $_GPC['action']==='update'&& $question['type']==='2'}
-                {loop $question['children_list'] $index $children}
-                    <div class="input-group">
-                        <input {php echo $_GPC['id']===null?'':'disabled'} type="text" class="form-control" name="check_question[]" value="{$children['title']}">
-                        <span class="input-group-btn">
+            {loop $question['children_list'] $index $children}
+            <div class="input-group">
+                <input {php echo $_GPC['id']===null?'':'disabled'} type="text" class="form-control" name="check_question[]" value="{$children['title']}">
+                <span class="input-group-btn">
                             <button class="btn btn-danger deleteCheckItemBtn"
                                     {php echo $_GPC['id']===null?'':'disabled'} type="button">删除</button>
                         </span>
-                    </div>
-                {/loop}
+            </div>
+            {/loop}
             {else}
             <div class="input-group">
                 <input type="text" class="form-control" name="check_question[]">
@@ -131,7 +131,6 @@
 
 <script>
     $(function () {
-
         $('form').bootstrapValidator({
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
