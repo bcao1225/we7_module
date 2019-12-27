@@ -19,7 +19,7 @@ defined('IN_IA') or exit('Access Denied');
 
 class Jz_movieModuleWxapp extends WeModuleWxapp
 {
-    public function __construct()
+    public function __destruct()  //这里不能调用构造函数，因为有些常量必须要类初始化完毕后才会初始化。
     {
         Api::instant();
     }
