@@ -6,6 +6,7 @@
 * monai_market 二手车模块，外包项目，没有前端
 * zhls_sun 律师小程序，对应前端：[律师小程序](https://github.com/qq3245096941/zhls_sun_weapp)
 * gather_feedback 收集反馈，公众号程序，h5页面
+* machine_feedback 斐力机械，小程序，对应前端：[斐力科技](https://github.com/qq3245096941/fljx)
 
 
 ***
