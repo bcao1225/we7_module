@@ -1,81 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns="http://www.w7.cc" versionCode="">
+	
+	<application setting='false'>
+		<name><![CDATA[	东莞市斐力机械设备有限公司]]></name>
+		<identifie><![CDATA[machine_feedback]]></identifie>
+		<version><![CDATA[1.0.0]]></version>
+		<ability><![CDATA[机械设备]]></ability>
+		<type><![CDATA[小程序]]></type>
+		<description><![CDATA[展示公司出厂机械设备的信息，包括技术配置文件、操作说明书、电气原理图等等信息。]]></description>
+		<author><![CDATA[3245096941@qq.com]]></author>
+		<url><![CDATA[https://www.miaowenzhao]]></url>
+		<setting><![CDATA[xxx]]></setting>
+	</application>
 
-    <application setting='false'>
-        <name><![CDATA[机器反馈]]></name>
+	<platform>
+		<rule embed="false" />
+		<rule embed="false" />
+		<supports>
+				<item type="wxapp" />
+		</supports>
+	</platform>
 
-        <identifie><![CDATA[machine_feedback]]></identifie>
-
-        <version><![CDATA[1.0.0]]></version>
-
-        <ability><![CDATA[xxx]]></ability>
-
-        <type><![CDATA[xxx]]></type>
-
-        <description><![CDATA[获取购买信息的反馈信息]]></description>
-
-        <author><![CDATA[QQRPazWaNPgW]]></author>
-
-        <url><![CDATA[xxx]]></url>
-
-        <setting><![CDATA[xxx]]></setting>
-
-    </application>
-
-    <platform>
-        <rule embed="false"/>
-        <rule embed="false"/>
-		<subscribes>
-			<message type="text"/>
-			<message type="image"/>
-			<message type="voice"/>
-			<message type="video"/>
-			<message type="shortvideo"/>
-			<message type="location"/>
-			<message type="link"/>
-			<message type="subscribe"/>
-			<message type="unsubscribe"/>
-			<message type="qr"/>
-			<message type="trace"/>
-			<message type="click"/>
-			<message type="view"/>
-			<message type="merchant_order"/>
-			<message type="user_get_card"/>
-			<message type="user_del_card"/>
-			<message type="user_consume_card"/>
-		</subscribes>
-		<handles>
-			<message type="text"/>
-			<message type="image"/>
-			<message type="voice"/>
-			<message type="video"/>
-			<message type="shortvideo"/>
-			<message type="location"/>
-			<message type="link"/>
-			<message type="subscribe"/>
-			<message type="unsubscribe"/>
-			<message type="qr"/>
-			<message type="trace"/>
-			<message type="click"/>
-			<message type="view"/>
-			<message type="merchant_order"/>
-			<message type="user_get_card"/>
-			<message type="user_del_card"/>
-			<message type="user_consume_card"/>
-		</handles>
-        <supports>
-            <item type="app"/>
-        </supports>
-    </platform>
-
-    <bindings>
+	<bindings>
 		<menu>
-			<entry title="机器管理" do="machine_manager"/>
+			<entry title="设备管理" do="machine_manager"/>
+			<entry title="权限管理" do="role_manager"/>
 			<entry title="系统设置" do="system_setting"/>
 		</menu>
-    </bindings>
+	</bindings>
 
-    <install><![CDATA[]]></install>
-    <uninstall><![CDATA[]]></uninstall>
-    <upgrade><![CDATA[]]></upgrade>
+	<install><![CDATA[
+			CREATE TABLE `ims_machine_feedback_machine` (
+			`id` int(11) NOT NULL AUTO_INCREMENT,
+			`name` varchar(255) NOT NULL DEFAULT '' COMMENT '客户名称',
+			`imgs` text NOT NULL COMMENT '机器图片',
+			`type` varchar(255) NOT NULL DEFAULT '' COMMENT '机器设备名称',
+			`delivery_time` varchar(100) NOT NULL DEFAULT '' COMMENT '出厂时间',
+			`option_file` varchar(255) NOT NULL DEFAULT '' COMMENT '技术配置文件路径',
+			`option_imgs` text NOT NULL COMMENT '技术配置文件图片',
+			`operation_file` varchar(255) NOT NULL DEFAULT '' COMMENT '操作说明书文件',
+			`operation_imgs` text NOT NULL COMMENT '操作说明书图片',
+			`theory_file` varchar(255) NOT NULL DEFAULT '' COMMENT '电器原理图文件路径',
+			`theory_imgs` text NOT NULL COMMENT '电气原理图图片',
+			`create_time` int(11) NOT NULL,
+			PRIMARY KEY (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+			CREATE TABLE `ims_machine_feedback_submit` (
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `user_id` int(11) DEFAULT NULL COMMENT '对应用户id',
+			  `machine_id` int(11) NOT NULL COMMENT '对应机器的id',
+			  `imgs` text NOT NULL COMMENT '图片列表',
+			  `voice` text NOT NULL COMMENT '语音',
+			  `video` varchar(255) NOT NULL DEFAULT '' COMMENT '视频',
+			  `text` text NOT NULL COMMENT '文字',
+			  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+			CREATE TABLE `ims_machine_feedback_user` (
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `nickname` varchar(255) NOT NULL DEFAULT '' COMMENT '昵称',
+			  `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
+			  `role` tinyint(4) DEFAULT '1' COMMENT '权限，1为普通用户，2为操作员， 3为最高管理员',
+			  `session_key` varchar(255) NOT NULL DEFAULT '',
+			  `openid` varchar(255) NOT NULL DEFAULT '',
+			  `create_time` int(11) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+		]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
 </manifest>

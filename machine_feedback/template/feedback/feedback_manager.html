@@ -1,0 +1,67 @@
+{template 'common_header'}
+
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th>头像</th>
+        <th>昵称</th>
+        <th>图片</th>
+        <th>视频</th>
+        <th>备注</th>
+        <th>提交时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $submit_list $key $submit}
+    <tr>
+        <td><img width="50" src="{$submit['user']['avatar']}" alt=""></td>
+        <td>{$submit['user']['nickname']}</td>
+        <td width="200">
+            <div class="imgs">
+                {loop $submit['imgs'] $img}
+                <img class="img" src="{$img}" alt="">
+                {/loop}
+            </div>
+        </td>
+        <td width="150">
+            <video controls style="width: 100%" src="{$submit['video']}"></video>
+        </td>
+        <td>
+            {if $submit['text']!==''}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {$submit['text']}
+                </div>
+            </div>
+            {else}
+            <div>
+                暂无备注信息
+            </div>
+            {/if}
+        </td>
+        <td>
+            {php echo date('Y-m-d',$submit['create_time'])}
+        </td>
+        <td>
+            <button class="btn btn-danger">删除</button>
+        </td>
+    </tr>
+    </tbody>
+    {/loop}
+</table>
+
+<style>
+    .imgs{
+        display: flex;
+    }
+
+    .imgs .img{
+        border: 1px solid #d2d2d2;
+        width: 33%;
+        padding: 3px;
+        cursor: pointer;
+    }
+</style>
+
+{template 'common/footer'}

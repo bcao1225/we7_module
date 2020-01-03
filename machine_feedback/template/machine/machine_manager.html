@@ -1,0 +1,206 @@
+{template 'common_header'}
+
+<script>
+    // 获取url信息
+    function parseURL(url) {
+        let a = document.createElement('a');
+        a.href = url;
+        return {
+            source: url,
+            protocol: a.protocol.replace(':', ''),
+            host: a.hostname,
+            port: a.port,
+            query: a.search,
+            params: (function () {
+                var ret = {},
+                    seg = a.search.replace(/^\?/, '').split('&'),
+                    len = seg.length, i = 0, s;
+                for (; i < len; i++) {
+                    if (!seg[i]) {
+                        continue;
+                    }
+                    s = seg[i].split('=');
+                    ret[s[0]] = s[1];
+                }
+                return ret;
+            })(),
+            file: (a.pathname.match(/([^/?#]+)$/i) || [, ''])[1],
+            hash: a.hash.replace('#', ''),
+            path: a.pathname.replace(/^([^/])/, '/$1'),
+            relative: (a.href.match(/tps?:\/[^/]+(.+)/) || [, ''])[1],
+            segments: a.pathname.replace(/^\//, '').split('/')
+        };
+    }
+
+    /*配置文件*/
+    function configuration(url, element, icon_element) {
+        let {file} = parseURL(url);
+        $(element).html(file);
+        let [name, postfix] = file.split('.');
+
+        switch (postfix) {
+            case 'doc':
+            case 'docx':
+                $(icon_element).attr('src', "{php echo MODULE_URL.'lib/icon/word.png'}");
+                break;
+            case 'xls':
+            case 'xlsx':
+                $(icon_element).attr('src', "{php echo MODULE_URL.'lib/icon/excel.png'}");
+                break;
+            case 'ppt':
+            case 'pptx':
+                $(icon_element).attr('src', "{php echo MODULE_URL.'lib/icon/ppt.png'}");
+                break
+        }
+    }
+</script>
+
+<div class="row">
+    <div class="col-md-3">
+        <a href="{php echo $this->createWebUrl('machine_manager').'&action=add_and_update'}" class="btn btn-success">添加新机器</a>
+    </div>
+
+    <div class="input-group col-md-5">
+        <input type="text" class="form-control" placeholder="输入客户名称">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button">搜索</button>
+      </span>
+    </div>
+</div>
+<hr>
+{loop $machine_list $index $machine}
+<div class="panel panel-default">
+    <div class="panel-heading">{$machine['name']}丨{$machine['delivery_time']}</div>
+    <div class="panel-body">
+        <div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="imgs">
+                        {loop $machine['imgs'] $img_key $img}
+                        <img class="img" src="{$img}" alt="">
+                        {/loop}
+                    </div>
+                    <table class="we7-table">
+                        <thead>
+                        <tr>
+                            <th>客户名称</th>
+                            <th>机械设备名称</th>
+                            <th>反馈</th>
+                            <th>出厂时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{$machine['name']}</td>
+                            <td>{$machine['type']}</td>
+                            <td>
+                                <span class="label label-success">{$machine['count']}</span>丨
+                                <a class="btn btn-default btn-xs"
+                                   href="{php echo $this->createWebUrl('feedback_manager').'&machine_id='.$machine['id']}">查看反馈</a>
+                            </td>
+                            <td>{$machine['delivery_time']}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--二维码-->
+                <div class="col-md-6">
+                    <img style="margin: 0 auto;display: block" width="150" src="{php echo MODULE_URL.'lib/qrcode.jpg'}"
+                         alt="">
+                </div>
+            </div>
+            <div class="row">
+                <!--技术配置文件-->
+                <div class="col-md-4">
+                    <h3 class="text-center">技术配置文件</h3>
+                    <hr>
+                    <div class="file">
+                        <img width="40" src="" alt="" class="option_icon_{$index}">
+                        <p style="margin: 10px" class="option_file_{$index}"></p>
+                        <a class="btn btn-link" href="{$machine['option_file']}">下载</a>
+                        <div class="imgs" style="width: 100%">
+                            {loop iunserializer($machine['option_imgs']) $img}
+                            <img class="img" src="{php echo tomedia($img)}" alt="">
+                            {/loop}
+                        </div>
+                    </div>
+                </div>
+                <!--技术配置文件js-->
+                <script>
+                    configuration("{$machine['option_file']}", ".option_file_{$index}", ".option_icon_{$index}")
+                </script>
+                <div class="col-md-4">
+                    <h3 class="text-center">操作说明书</h3>
+                    <hr>
+                    <div class="file">
+                        <img width="40" src="" alt="" class="operation_icon_{$index}">
+                        <p style="margin: 10px" class="operation_file_{$index}"></p>
+                        <a class="btn btn-link" href="{$machine['operation_file']}">下载</a>
+                        <div class="imgs" style="width: 100%">
+                            {loop iunserializer($machine['operation_imgs']) $img}
+                            <img class="img" src="{php echo tomedia($img)}" alt="">
+                            {/loop}
+                        </div>
+                    </div>
+                </div>
+                <!--操作说明书js-->
+                <script>
+                    configuration("{$machine['operation_file']}", ".operation_file_{$index}", ".operation_icon_{$index}")
+                </script>
+                <div class="col-md-4">
+                    <h3 class="text-center">电器原理</h3>
+                    <hr>
+                    <div class="file">
+                        <img width="40" src="" alt="" class="theory_icon_{$index}">
+                        <p style="margin: 10px" class="theory_file_{$index}"></p>
+                        <a class="btn btn-link" href="{$machine['theory_file']}">下载</a>
+                        <div class="imgs" style="width: 100%">
+                            {loop iunserializer($machine['theory_imgs']) $img}
+                            <img class="img" src="{php echo tomedia($img)}" alt="">
+                            {/loop}
+                        </div>
+                    </div>
+                </div>
+                <!--电器原理js-->
+                <script>
+                    configuration("{$machine['theory_file']}", ".theory_file_{$index}", ".theory_icon_{$index}")
+                </script>
+
+            </div>
+            <hr>
+            <div class="btn-group btn-group-sm">
+                <a class="btn btn-success"
+                   href="{php echo $this->createWebUrl('machine_manager').'&action=add_and_update&id='.$machine['id']}">修改</a>
+                <a class="btn btn-danger machine_delete_{$index}">删除</a>
+                <script>
+                    $('.machine_delete_{$index}').click(() => {
+                        if (!confirm('确定删除吗？')) return;
+                        window.location.href = "{php echo $this->createWebUrl('machine_manager').'&action=delete&id='.$machine['id']}"
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{/loop}
+
+<style>
+    .imgs {
+        display: flex;
+    }
+
+    .img {
+        border: 1px solid #d2d2d2;
+        width: 20%;
+        padding: 3px;
+        cursor: pointer;
+    }
+
+    .file {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+
+{template 'common/footer'}

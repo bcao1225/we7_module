@@ -1,0 +1,51 @@
+{template 'common_header'}
+
+<ul class="nav nav-tabs">
+    <li class="{php echo $_GPC['role']==='1'?'active':''} {php echo $_GPC['role']===null?'active':''}">
+        <a href="{php echo $this->createWebUrl('role_manager').'&action=select_role&role=1'}">普通用户</a>
+    </li>
+    <li class="{php echo $_GPC['role']==='2'?'active':''}">
+        <a href="{php echo $this->createWebUrl('role_manager').'&action=select_role&role=2'}">操作员</a>
+    </li>
+    <li class="{php echo $_GPC['role']==='3'?'active':''}">
+        <a href="{php echo $this->createWebUrl('role_manager').'&action=select_role&role=3'}">管理员</a>
+    </li>
+</ul>
+
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th>头像</th>
+        <th>昵称</th>
+        <th>openid</th>
+        <th>session_key</th>
+        <th>权限</th>
+        <th>反馈信息条数</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $user_list $user}
+    <tr>
+        <td><img width="40" class="img-circle" src="{$user['avatar']}" alt=""></td>
+        <td>{$user['nickname']}</td>
+        <td><span class="label label-success">{$user['openid']}</span></td>
+        <td><span class="label label-default">{$user['session_key']}</span></td>
+        <td>
+            <a class="btn {php echo $user['role']==='1'?'btn-default':'btn-warning'} btn-xs" href="{php echo $this->createWebUrl('role_manager').'&action=role&user_id='.$user['id'].'&role=1'}">普通用户</a>丨
+            <a class="btn {php echo $user['role']==='2'?'btn-default':'btn-success'} btn-xs" href="{php echo $this->createWebUrl('role_manager').'&action=role&user_id='.$user['id'].'&role=2'}">操作员</a>丨
+            <a class="btn {php echo $user['role']==='3'?'btn-default':'btn-primary'} btn-xs" href="{php echo $this->createWebUrl('role_manager').'&action=role&user_id='.$user['id'].'&role=3'}">管理员</a>
+        </td>
+        <td>
+            {php echo count($user['submit_list'])}
+        </td>
+        <td>
+            <button class="btn btn-success btn-xs">查看反馈信息</button>
+        </td>
+    </tr>
+    </tbody>
+    {/loop}
+
+</table>
+
+{template 'common/footer'}
