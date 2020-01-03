@@ -1,0 +1,34 @@
+{template 'common_header'}
+
+<form method="post" action="">
+    <input hidden type="text" name="id" value="{$system_setting['id']}">
+    <div class="form-group">
+        <label class="control-label col-sm-2">是否开启审核按钮</label>
+        <div class="form-controls col-sm-8">
+            <label class="radio-inline">
+                <input type="radio" name="open_audit" {php echo $system_setting['open_audit']==='1'?'checked':''}  value="1"> 开启
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="open_audit" {php echo $system_setting['open_audit']==='0'?'checked':''}  value="0"> 关闭
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">是否开启视频播放</label>
+        <div class="form-controls col-sm-8">
+            <label class="radio-inline">
+                <input type="radio" name="open_video" {php echo $system_setting['open_video']==='1'?'checked':''}  value="1"> 开启
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="open_video" {php echo $system_setting['open_video']==='0'?'checked':''}  value="0"> 关闭
+            </label>
+            <span id="helpBlock" class="help-block">播放视频需要视频资质，审核前先将视频关闭，审核完再打开</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-success" type="submit">保存</button>
+    </div>
+</form>
+
+{template 'common/footer'}

@@ -17,6 +17,7 @@ class Feedback extends Api
             'machine_id' => $_GPC['machine_id'],
             'imgs' => $_GPC['imgs'],
             'video' => $_GPC['video'],
+            'voice' => $_GPC['record'],
             'text' => $_GPC['text'],
             'create_time' => time()
         ]);

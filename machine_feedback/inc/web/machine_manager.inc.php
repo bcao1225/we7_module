@@ -56,7 +56,9 @@ switch ($_GPC['action']) {
     default:
         $machine_list = pdo_getall('ims_machine_feedback_machine');
         foreach ($machine_list as $key => $machine) {
-            $response = $this->account_api->getCodeUnlimit('machine_id=' . $machine['id'], 'page/index/index', 430);
+            $response = $this->account_api->getCodeUnlimit('id=' . $machine['id'], 'page/index/index', 150);
+
+            $machine_list[$key]['qrcode'] = base64_encode($response);
 
             //通过机器id获取每个机器的反馈
             $count = pdo_fetch('SELECT COUNT(1) as count FROM ims_machine_feedback_submit WHERE machine_id=' . $machine['id'])['count'];

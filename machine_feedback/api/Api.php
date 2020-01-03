@@ -3,6 +3,7 @@ require_once __DIR__ . '/File.php';
 require_once __DIR__ . '/Machine.php';
 require_once __DIR__ . '/User.php';
 require_once __DIR__ . '/Feedback.php';
+require_once __DIR__ . '/System_setting.php';
 
 defined('IN_IA') or exit('Access Denied');
 
@@ -15,7 +16,6 @@ class Api extends WeModuleWxapp
     public static function instant()
     {
         global $_GPC;
-
         $clazz_name = ucfirst($_GPC['clazz']);
         $clazz = new $clazz_name;
         call_user_func([$clazz, $_GPC['do']]);

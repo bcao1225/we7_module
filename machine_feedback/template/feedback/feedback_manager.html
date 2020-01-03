@@ -6,6 +6,7 @@
         <th>头像</th>
         <th>昵称</th>
         <th>图片</th>
+        <th>录音</th>
         <th>视频</th>
         <th>备注</th>
         <th>提交时间</th>
@@ -15,7 +16,7 @@
     <tbody>
     {loop $submit_list $key $submit}
     <tr>
-        <td><img width="50" src="{$submit['user']['avatar']}" alt=""></td>
+        <td><img width="40" class="img-circle" src="{$submit['user']['avatar']}" alt=""></td>
         <td>{$submit['user']['nickname']}</td>
         <td width="200">
             <div class="imgs">
@@ -23,6 +24,11 @@
                 <img class="img" src="{$img}" alt="">
                 {/loop}
             </div>
+        </td>
+        <td width="100">
+            <audio controls>
+                <source src="{$submit['voice']}">
+            </audio>
         </td>
         <td width="150">
             <video controls style="width: 100%" src="{$submit['video']}"></video>
@@ -52,11 +58,11 @@
 </table>
 
 <style>
-    .imgs{
+    .imgs {
         display: flex;
     }
 
-    .imgs .img{
+    .imgs .img {
         border: 1px solid #d2d2d2;
         width: 33%;
         padding: 3px;

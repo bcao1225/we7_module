@@ -17,7 +17,7 @@ class User extends Api
         $user = pdo_get('ims_machine_feedback_user', ['openid' => $content['openid']]);
 
         if ($user) {
-            $this->result(0, '获取成功', ['openid' => $content['openid'], 'session_key' => $content['session_key']]);
+            $this->result(0, '获取成功', $user);
         }
 
         //如果不存在则将信息保存在数据库中
@@ -25,23 +25,23 @@ class User extends Api
             'nickname' => $_GPC['nickname'],
             'avatar' => $_GPC['avatar'],
             'session_key' => $content['session_key'],
+            'openid'=>$content['openid'],
             'create_time' => time()
         ];
 
         //将用户信息保存在数据库，包括session_key,openid
-        $submit['openid'] = $content['openid'];
         pdo_insert('ims_machine_feedback_user', $submit);
 
-        $this->result(0, '保存成功', $content);
+        $user = pdo_get('ims_machine_feedback_user',['openid'=>$content['openid']]);
+
+        $this->result(0, '保存成功', $user);
     }
 
     //获取已存在的用户信息
     public function get_user_data()
     {
         global $_W, $_GPC;
-
-        $user = pdo_get('ims_machine_feedback_user', ['openid' => 'openid']);
-
+        $user = pdo_get('ims_machine_feedback_user', ['openid' => $_GPC['openid']]);
         $this->result(0, '获取成功', $user);
     }
 }
