@@ -230,6 +230,35 @@ pie_echarts.on('mouseout', (e)=>{
 });
 ```
 
+# 微擎和小程序前端上传交互
+```
+/*图片上传*/
+public function doPageUpload_img(){
+    load()->func('file');
+
+    /*图片名称*/
+    $img_name = time().'.jpeg';
+    //保存上传文件
+    file_move($_FILES['upload_img']['tmp_name'], MODULE_ROOT . '/lib/upload_img/'.$img_name);
+
+    $this->result(0,'上传成功',$img_name);
+}
+```
+
+```
+ wx.uploadFile({
+      filePath: file.file.path,
+      name: 'upload_img',
+      url: app.util.url('entry/wxapp/upload_img') + 'm=machine_feedback',
+      success(res){
+        console.log(res);
+      },
+      fail(error){
+        console.log(error);
+      }
+    })
+```
+
 
 
 
