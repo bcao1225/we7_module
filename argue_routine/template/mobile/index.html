@@ -1,0 +1,96 @@
+{template 'header'}
+
+<div id="app">
+    <div @click="enter_activity(item.id)" class="card" v-for="item in activity_list">
+        <p class="topic">热议话题</p>
+        <p class="join">{{item.count}}万人已参与</p>
+        <h4 class="title">{{item.title}}</h4>
+        <div class="text-center" style="margin: 30px 0">
+            <span class="box square" :style="{'background':item.square_color,'box-shadow':'-1px 1px 3px '+item.square_color}">
+                {{item.square}}
+            </span>
+            &nbsp;
+            vs
+            &nbsp;
+            <span class="box no_square" :style="{'background':item.no_square_color,'box-shadow':'1px 1px 3px '+item.no_square_color}">
+                {{item.no_square}}
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js'], (Vue) => {
+        new Vue({
+            el: '#app',
+            data: {
+                activity_list: []
+            },
+            methods: {
+                //进入活动
+                enter_activity(id) {
+                    window.location.href = "{php echo $this->createMobileUrl('index').'&template=activity&activity_id='}" + id
+                }
+            },
+            mounted() {
+                request("{php echo $this->createMobileUrl('activity')}", {
+                    action: 'get_activity_list'
+                }, 'post').then(data => {
+                    this.activity_list = JSON.parse(data);
+                })
+            }
+        })
+    })
+</script>
+
+<style>
+    .box {
+        color: #fff;
+        padding: 7px 20px;
+        border-radius: 25px;
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+
+    .square {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .no_square {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .card {
+        margin: 5px;
+        padding: 20px;
+        background: #5cadff;
+        box-shadow: 1px 1px 5px #d2d2d2;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    .card .topic {
+        font-size: 10px;
+        margin-bottom: 3px;
+    }
+
+    .card .join {
+        background: rgba(238, 238, 238, 0.47);
+        font-size: 9px;
+        position: absolute;
+        right: 0;
+        top: 5px;
+        padding: 0 5px;
+        border-radius: 10px 0 0 10px;
+    }
+
+    .card .title {
+        color: #fff;
+        font-weight: bold;
+    }
+</style>
+
+{template 'common/footer'}

@@ -1,0 +1,64 @@
+{template 'common/header'}
+
+<a class="btn btn-success" href="{php echo $this->createWebUrl('activity_manager').'&action=edit_activity'}">创建活动</a>
+<hr>
+
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th width="400">活动信息</th>
+        <th width="400">正方反方</th>
+        <th>二维码</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $activity_list $activity_key $activity}
+    <tr>
+        <td>
+            <h3>{$activity['title']}</h3>
+            <p>{$activity['intro']}</p>
+            <p>活动时间：<span class="label label-primary">{$activity['start_time']} ~ {$activity['end_time']}</span></p>
+        </td>
+        <td>
+            <p><span class="box square">正方：{$activity['square']}</span> VS <span class="box no_square">反方：{$activity['no_square']}</span></p>
+        </td>
+        <!--二维码-->
+        <td>
+            <img width="130" src="{$activity['qrcode']}" alt="">
+        </td>
+        <td>
+            <div class="btn-group btn-group-vertical">
+                <a class="btn btn-success" href="{php echo $this->createWebUrl('activity_manager').'&action=edit_activity&id='.$activity['id']}">修改</a>
+                <a class="btn btn-danger">删除</a>
+            </div>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+<style>
+    .box{
+        color: #fff;
+        padding: 15px;
+        border-radius: 25px;
+        font-weight: bold;
+        box-shadow: 1px 1px 8px #d2d2d2;
+    }
+
+    .square{
+        background: {$activity['square_color']};
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .no_square{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background: {$activity['no_square_color']};
+    }
+</style>
+
+
+{template 'common/footer'}

@@ -1,0 +1,28 @@
+{template 'common/header'}
+<link rel="stylesheet" href="{php echo MODULE_URL.'lib/layer.css'}">
+
+<!--所有文件公共方法-->
+
+<script>
+    //ajax请求
+    function request(url, data = {}, method = 'get') {
+        return new Promise(resolve => {
+            $.ajax({
+                url,
+                data,
+                method,
+                success(res) {
+                    resolve(res);
+                }
+            })
+        })
+    }
+</script>
+
+<style>
+    body{
+        position: relative;
+        overflow-x: hidden;
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,84 @@
+<script>
+    const comment = {
+        props: {
+            data: {
+                //传入的数据，此对象中应该包含昵称，头像，评论内容
+                type: Object,
+                default() {
+                    return {};
+                }
+            },
+            //当前组件是否是一个评论，false为一个添加组件的按钮，true是一个评论
+            is_comment: {
+                type: Boolean,
+                default: true
+            },
+            //边框颜色
+            color: {
+                required: true
+            }
+        },
+        template: `<div>
+                        <div :style="{'background':color,'height':'1px'}"></div>
+                        <div @click="send_comment" v-if="is_play===false">
+                             <img style="display: block;margin: 20px auto" width="30" src="{php echo MODULE_URL.'lib/icon/pinglun.png'}" alt="">
+                            <p class="text-center">请说出你的观点</p>
+                        </div>
+                        <div v-else :style="{padding:'10px'}">
+                            <p class="user_setting"><img class="img-circle" width="20" :src="user.avatar" alt="">{{user.nickname}}</p>
+                            <p >{{user.comment}}</p>
+                        </div>
+                      </div>`,
+        data() {
+            return {
+                user: this.data,
+                is_play: this.is_comment
+            }
+        },
+        methods: {
+            send_comment() {
+                const index = this.$root.layer.open({
+                    type: 1,
+                    btns: ['提交'],
+                    anim: 'up',
+                    style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;',
+                    content: `<div style="padding: 20px;box-sizing: border-box">
+                                  <div style="width: 85%">
+                                    <textarea class="text_comment" placeholder="请输入您的观点" type="text" rows="4"></textarea>
+                                    <button class="btn btn-success btn-block submit_comment">提交</button>
+                                  </div>
+                              </div>`,
+                    success: () => {
+                        $(".submit_comment").click(() => {
+                            request("{php echo $this->createMobileUrl('user')}", {
+                                action: 'add_comment',
+                                activity_id: "{$_GPC['activity_id']}",
+                                comment: $(".text_comment").val(),
+                            }, 'post').then(data => {
+                                this.$parent.layer.open({
+                                    content: "发布观点成功"
+                                    ,skin: 'msg'
+                                    ,time: 2
+                                });
+                                this.user = JSON.parse(data).user;
+                                this.is_play = true;
+                                this.$parent.layer.close(index);
+                            })
+                        })
+                    }
+                })
+            }
+        },
+    }
+</script>
+<style>
+    .user_setting {
+        font-size: 16px;
+        color: #808695;
+    }
+
+    .user_setting img {
+        width: 25px;
+        margin-right: 10px;
+    }
+</style>

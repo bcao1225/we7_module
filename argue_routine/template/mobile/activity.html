@@ -1,0 +1,111 @@
+{template 'header'}
+
+<!--引入组件-->
+{template 'component/argue'}
+{template 'component/last_argue'}
+{template 'component/comment'}
+
+<div id="app">
+    <blockquote>
+        <h4>{{activity.title}}</h4>
+    </blockquote>
+    <p class="lead">{{activity.intro}}</p>
+    <p class="user">
+        <img width="15" src="{php echo MODULE_URL.'lib/icon/yonghu.png'}" alt="">{{activity.count}}万人参与
+    </p>
+    <hr>
+    <argue @func="get_user" :activity="activity" v-if="user===false"></argue>
+    <last_argue v-else></last_argue>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <comment v-show="user.viewpoint==='1' && user.comment===''" :color="activity.square_color"
+                     :is_comment="false"></comment>
+            <comment :data="item" v-for="item in comment" :color="activity.square_color" :is_comment="true"></comment>
+        </div>
+        <div class="col-xs-6">
+            <comment v-show="user.viewpoint==='0' && user.comment===''" :color="activity.no_square_color"
+                     :is_comment="false"></comment>
+            <comment :data="item" v-for="item in no_comment" :color="activity.no_square_color"
+                     :is_comment="true"></comment>
+        </div>
+    </div>
+</div>
+
+<script>
+    require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js', "{php echo MODULE_URL.'lib/layer.js'}"], (Vue, layer) => {
+        new Vue({
+            el: '#app',
+            data: {
+                layer,
+                //如果当前用户未参与参与活动，为false
+                user: {},
+                activity: {},
+                //正反方评论百分比
+                percent: {},
+                /*正方评论*/
+                comment: [],
+                /*反方评论*/
+                no_comment: [],
+            },
+            components: {
+                argue, last_argue, comment
+            },
+            methods: {
+                get_user({user}) {
+                    this.user = user;
+                    this.percent = user.percent;
+                }
+            },
+            async mounted() {
+                const index = this.layer.open({type: 2});
+
+                //获取当前活动的数据
+                this.activity = JSON.parse(await request("{php echo $this->createMobileUrl('activity')}", {
+                    activity_id: "{php echo $_GPC['activity_id']}",
+                    action: 'get_activity'
+                }, 'post'));
+
+                $("title").html(this.activity.title);
+
+                //获取当前用户的所有数据，没有数据则返回false
+                let {user} = JSON.parse(await request("{php echo $this->createMobileUrl('user')}", {
+                    activity_id: this.activity.id,
+                    action: 'get_user'
+                }, 'post'));
+                this.user = user;
+
+                //获取所有评论内容
+                request("{php echo $this->createMobileUrl('user')}", {
+                    action: 'get_comment_list',
+                    activity_id: this.activity.id,
+                }, 'post').then(data => {
+                    const {no_square, square} = JSON.parse(data);
+                    this.comment = square;
+                    this.no_comment = no_square;
+                });
+
+                //获取正反方对比百分率
+                request("{php echo $this->createMobileUrl('user')}", {
+                    action: 'get_percent',
+                    activity_id: this.activity.id
+                }, 'post').then(data => {
+                    this.percent = JSON.parse(data);
+                });
+
+                layer.close(index);
+            }
+        });
+    })
+</script>
+
+<style>
+    #app {
+        padding: 15px;
+    }
+
+    #app .user {
+        font-size: 10px;
+    }
+</style>
+{template 'common/footer'}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.w7.cc" versionCode="">
+
+    <application setting='false'>
+        <name><![CDATA[高谈剧论]]></name>
+        <identifie><![CDATA[argue_routine]]></identifie>
+        <version><![CDATA[1.0.0]]></version>
+        <ability><![CDATA[xxx]]></ability>
+        <type><![CDATA[xxx]]></type>
+        <description><![CDATA[正反方]]></description>
+        <author><![CDATA[QQRPazWaNPgW]]></author>
+        <url><![CDATA[xxx]]></url>
+        <setting><![CDATA[xxx]]></setting>
+    </application>
+
+    <platform>
+        <rule embed="false"/>
+        <rule embed="false"/>
+        <supports>
+            <subscribes>
+                <message type="text"/>
+                <message type="image"/>
+                <message type="voice"/>
+                <message type="video"/>
+                <message type="shortvideo"/>
+                <message type="location"/>
+                <message type="link"/>
+                <message type="subscribe"/>
+                <message type="unsubscribe"/>
+                <message type="qr"/>
+                <message type="trace"/>
+                <message type="click"/>
+                <message type="view"/>
+                <message type="merchant_order"/>
+                <message type="user_get_card"/>
+                <message type="user_del_card"/>
+                <message type="user_consume_card"/>
+            </subscribes>
+            <handles>
+                <message type="text"/>
+                <message type="image"/>
+                <message type="voice"/>
+                <message type="video"/>
+                <message type="shortvideo"/>
+                <message type="location"/>
+                <message type="link"/>
+                <message type="subscribe"/>
+                <message type="unsubscribe"/>
+                <message type="qr"/>
+                <message type="trace"/>
+                <message type="click"/>
+                <message type="view"/>
+                <message type="merchant_order"/>
+                <message type="user_get_card"/>
+                <message type="user_del_card"/>
+                <message type="user_consume_card"/>
+            </handles>
+            <item type="app"/>
+        </supports>
+    </platform>
+
+
+    <bindings>
+        <cover>
+            <entry title="微信页入口" do="index" state="" direct="false"/>
+        </cover>
+        <menu>
+            <entry title="活动管理" do="activity_manager"/>
+        </menu>
+    </bindings>
+
+    <install><![CDATA[
+        CREATE TABLE `ims_argue_routine_user` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
+          `nickname` varchar(255) DEFAULT '' COMMENT '昵称',
+          `openid` varchar(255) NOT NULL DEFAULT '',
+          `activity_id` int(11) NOT NULL COMMENT '对应活动id',
+          `comment` varchar(1000) NOT NULL DEFAULT '' COMMENT '评论',
+          `viewpoint` tinyint(4) NOT NULL COMMENT '观点，1表示正方，0表示反方',
+          `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_argue_routine_activity` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `title` varchar(255) NOT NULL DEFAULT '' COMMENT '活动标题',
+          `intro` varchar(1000) NOT NULL DEFAULT '' COMMENT '活动简介',
+          `virtual_user` int(11) NOT NULL DEFAULT '0' COMMENT '虚拟参加数',
+          `square` varchar(255) NOT NULL DEFAULT '' COMMENT '正方',
+          `square_color` varchar(255) DEFAULT NULL COMMENT '正方颜色',
+          `no_square` varchar(255) NOT NULL DEFAULT '' COMMENT '反方',
+          `no_square_color` varchar(255) DEFAULT NULL COMMENT '反方颜色',
+          `start_time` varchar(11) NOT NULL DEFAULT '' COMMENT '开始时间',
+          `end_time` varchar(11) NOT NULL DEFAULT '' COMMENT '结束时间',
+          `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+    ]]></install>
+    <uninstall><![CDATA[]]></uninstall>
+    <upgrade><![CDATA[]]></upgrade>
+</manifest>

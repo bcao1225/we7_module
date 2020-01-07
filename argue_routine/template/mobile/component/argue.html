@@ -1,0 +1,74 @@
+<!--正反方未选组件-->
+<script>
+    //这个对象必须唯一
+    const argue = {
+        props: {
+            activity: {
+                type: Object,
+                required: true
+            }
+        },
+        template: `<div id="argue">
+                    <div class="row text-center" style="padding: 0 20px">
+                        <div class="col-xs-5 click_square" style="padding: 0" @click="click_square(1)">
+                            <span class="box square" :style="{'background':activity.square_color,'box-shadow': '1px 1px 7px '+activity.square_color}">{{activity.square}}</span>
+                        </div>
+                        <div class="col-xs-2" style="padding: 0">
+                            <p class="vs">vs</p>
+                        </div>
+                        <div class="col-xs-5" style="padding: 0" @click="click_square(0)">
+                            <span class="box no_square" :style="{'background':activity.no_square_color,'box-shadow': '1px 1px 7px '+activity.no_square_color}">{{activity.no_square}}</span>
+                        </div>
+                    </div>
+                </div>`,
+        methods: {
+            //点击了正方或反方按钮
+            async click_square(viewpoint) {
+                request("{php echo $this->createMobileUrl('user')}", {
+                    activity_id: this.activity.id,
+                    action: 'add_viewpoint',
+                    viewpoint
+                }, 'post').then(data => {
+                    //提示
+                    this.$parent.layer.open({
+                        content: "选择成功"
+                        ,skin: 'msg'
+                        ,time: 2
+                    });
+                    this.$emit('func',JSON.parse(data));
+                })
+            }
+        }
+    };
+</script>
+
+<style>
+    #argue .box {
+        color: #fff;
+        padding: 15px 27px;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        display: block;
+    }
+
+    #argue .square {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+    }
+
+    #argue .no_square {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        box-shadow: 1px 1px 7px {$activity['no_square_color']};
+    }
+
+    .vs{
+        font-size: 34px;
+        font-style: italic;
+        height: 50px;
+        line-height: 50px;
+        font-weight: bold;
+    }
+</style>
