@@ -261,6 +261,33 @@ public function doPageUpload_img(){
     })
 ```
 
+# 微擎调用微信api获取小程序
+```
+$response = $this->account_api->getCodeUnlimit('id=' . $machine['id'], 'page/index/index', 150);
+$machine_list[$key]['qrcode'] = base64_encode($response);前端需将base64编码
+```
+在前端中调用
+```
+<img style="margin: 0 auto;display: block" width="90" src="data:image/png;base64,{$machine['qrcode']}"
+```
+
+```
+扫描二维码时，参数获取样子
+async onLoad(options) {
+        console.log(options);  //{scene:id%3D13}
+        //判断是否是扫码进入
+        if (options.scene === undefined) {
+            wx.redirectTo({
+                url: '/page/error/error'
+            });
+            return;
+        }
+        this.setData({
+            id: decodeURIComponent(options.scene).split("=")[1] /需要通过这个方法解码
+        });
+}
+```
+
 
 
 
