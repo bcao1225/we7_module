@@ -13,6 +13,7 @@
     <p class="user">
         <img width="15" src="{php echo MODULE_URL.'lib/icon/yonghu.png'}" alt="">{{activity.count}}万人参与
     </p>
+    <h1 class="text-center"><strong>{{activity.bonus_pools}}￥</strong></h1>
     <hr>
     <argue @func="get_user" :activity="activity" v-if="user===false"></argue>
     <last_argue v-else></last_argue>

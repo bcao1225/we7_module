@@ -24,6 +24,7 @@
         methods: {
             //点击了正方或反方按钮
             async click_square(viewpoint) {
+                const index = this.$parent.layer.open({type: 2});
                 request("{php echo $this->createMobileUrl('user')}", {
                     activity_id: this.activity.id,
                     action: 'add_viewpoint',
@@ -35,6 +36,7 @@
                         ,skin: 'msg'
                         ,time: 2
                     });
+                    this.$parent.layer.close(index);
                     this.$emit('func',JSON.parse(data));
                 })
             }

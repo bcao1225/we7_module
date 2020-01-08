@@ -13,14 +13,19 @@ switch ($_GPC['action']) {
                 'virtual_user' => $_GPC['virtual_user'],
                 /*正方*/
                 'square' => $_GPC['square'],
-                'square_color'=>$_GPC['square_color'],
+                'square_color' => $_GPC['square_color'],
                 /*反方*/
                 'no_square' => $_GPC['no_square'],
-                'no_square_color'=>$_GPC['no_square_color'],
+                'no_square_color' => $_GPC['no_square_color'],
+                /*广告*/
+                'advertising_img'=>$_GPC['advertising_img'],
+                'advertising_url'=>$_GPC['advertising_url'],
                 /*分享*/
-                'share_title'=>$_GPC['share_title'],
-                'share_body'=>$_GPC['share__body'],
-                'share_img'=>$_GPC['share_img'],
+                'share_title' => $_GPC['share_title'],
+                'share_body' => $_GPC['share_body'],
+                'share_img' => $_GPC['share_img'],
+                /*奖金池*/
+                'bonus_pools' => $_GPC['bonus_pools'],
                 /*开始时间*/
                 'start_time' => $_GPC['time']['start'],
                 /*结束时间*/
@@ -40,7 +45,7 @@ switch ($_GPC['action']) {
         $activity_list = pdo_getall('ims_argue_routine_activity');
         foreach ($activity_list as $activity_key => $activity) {
             $activity_list[$activity_key]['qrcode'] = $this->make_qrcode(
-                $_W['siteroot'].'app/'.$this->createMobileUrl('index') . '&template=activity&activity_id=' . $activity['id']
+                $_W['siteroot'] . 'app/' . $this->createMobileUrl('index') . '&template=activity&activity_id=' . $activity['id']
             );
         }
         include_once $this->template('activity/activity_manager');
