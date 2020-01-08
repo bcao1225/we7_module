@@ -4,6 +4,14 @@
 <!--所有文件公共方法-->
 
 <script>
+    //图标对象
+    const icon = {
+        like: "{php echo MODULE_URL.'lib/icon/like.png'}",
+        active_like: "{php echo MODULE_URL.'lib/icon/like-active-.png'}",
+        dislike: "{php echo MODULE_URL.'lib/icon/dislike.png'}",
+        active_dislike: "{php echo MODULE_URL.'lib/icon/dislike-active-.png'}"
+    };
+
     //ajax请求
     function request(url, data = {}, method = 'get') {
         return new Promise(resolve => {
@@ -20,7 +28,7 @@
 </script>
 
 <style>
-    body{
+    body {
         position: relative;
         overflow-x: hidden;
         width: 100%;

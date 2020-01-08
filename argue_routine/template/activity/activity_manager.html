@@ -21,7 +21,14 @@
             <p>活动时间：<span class="label label-primary">{$activity['start_time']} ~ {$activity['end_time']}</span></p>
         </td>
         <td>
-            <p><span class="box square">正方：{$activity['square']}</span> VS <span class="box no_square">反方：{$activity['no_square']}</span></p>
+            <p>
+                <span style="background: {$activity['square_color']};" class="box square">正方：{$activity['square']}</span>
+                VS
+                <span style="background: {$activity['no_square_color']};" class="box no_square">反方：{$activity['no_square']}</span>
+            </p>
+            <p>
+                <a class="btn btn-link" href="{php echo $this->createWebUrl('user').'&activity_id='.$activity['id']}">查看用户提交情况</a>
+            </p>
         </td>
         <!--二维码-->
         <td>
@@ -48,7 +55,6 @@
     }
 
     .square{
-        background: {$activity['square_color']};
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
     }
@@ -56,7 +62,6 @@
     .no_square{
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        background: {$activity['no_square_color']};
     }
 </style>
 

@@ -14,12 +14,13 @@ switch ($_GPC['action']) {
         exit(json_encode($activity_list));
     //获取一个活动的数据
     case 'get_activity':
-        $activity = pdo_get('ims_argue_routine_activity', $_GPC['activity_id']);
+        $activity = pdo_get('ims_argue_routine_activity', ['id' => $_GPC['activity_id']]);
         $activity['count'] = get_count($activity);
         exit(json_encode($activity));
 }
 
-function get_count($activity){
+function get_count($activity)
+{
     //实际参加本次活动的人数
     $practical_count = pdo_fetchall('SELECT COUNT(*) as count FROM ims_argue_routine_user WHERE activity_id=' . $activity['id'])['count'];
     $count = $practical_count + $activity['virtual_user'];

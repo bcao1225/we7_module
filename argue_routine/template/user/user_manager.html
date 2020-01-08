@@ -1,0 +1,39 @@
+{template 'common/header'}
+
+<div class="row">
+    {loop $user_list $item}
+    <!--正方-->
+    <div class="col-md-6">
+        <table class="we7-table">
+            <thead>
+            <tr>
+                <th>头像</th>
+                <th>昵称</th>
+                <th width="200">观点</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {loop $item $user}
+            <tr>
+                <td><img width="50" class="img-circle" src="{$user['avatar']}" alt=""></td>
+                <td>{$user['nickname']}</td>
+                <td>{$user['comment']}</td>
+                <td>
+                    <div class="btn-group btn-group-vertical">
+                        <a class="btn btn-primary" href="">仅删除观点</a>
+                        <a class="btn btn-danger" href="">删除全部</a>
+                    </div>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+    {/loop}
+</div>
+
+
+
+{template 'common/footer'}

@@ -21,12 +21,13 @@
         <div class="col-xs-6">
             <comment v-show="user.viewpoint==='1' && user.comment===''" :color="activity.square_color"
                      :is_comment="false"></comment>
-            <comment :data="item" v-for="item in comment" :color="activity.square_color" :is_comment="true"></comment>
+            <comment :key="index" :data="item" v-for="(item,index) in comment" :color="activity.square_color"
+                     :is_comment="true"></comment>
         </div>
         <div class="col-xs-6">
             <comment v-show="user.viewpoint==='0' && user.comment===''" :color="activity.no_square_color"
                      :is_comment="false"></comment>
-            <comment :data="item" v-for="item in no_comment" :color="activity.no_square_color"
+            <comment :key="index" :data="item" v-for="(item,index) in no_comment" :color="activity.no_square_color"
                      :is_comment="true"></comment>
         </div>
     </div>
@@ -76,22 +77,19 @@
                 this.user = user;
 
                 //获取所有评论内容
-                request("{php echo $this->createMobileUrl('user')}", {
+                const {no_square, square} = JSON.parse(await request("{php echo $this->createMobileUrl('user')}", {
                     action: 'get_comment_list',
                     activity_id: this.activity.id,
-                }, 'post').then(data => {
-                    const {no_square, square} = JSON.parse(data);
-                    this.comment = square;
-                    this.no_comment = no_square;
-                });
+                }, 'post'));
+
+                this.comment = square;
+                this.no_comment = no_square;
 
                 //获取正反方对比百分率
-                request("{php echo $this->createMobileUrl('user')}", {
+                this.percent = JSON.parse(await request("{php echo $this->createMobileUrl('user')}", {
                     action: 'get_percent',
                     activity_id: this.activity.id
-                }, 'post').then(data => {
-                    this.percent = JSON.parse(data);
-                });
+                }, 'post'));
 
                 layer.close(index);
             }

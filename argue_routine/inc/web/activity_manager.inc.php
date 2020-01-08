@@ -17,6 +17,10 @@ switch ($_GPC['action']) {
                 /*反方*/
                 'no_square' => $_GPC['no_square'],
                 'no_square_color'=>$_GPC['no_square_color'],
+                /*分享*/
+                'share_title'=>$_GPC['share_title'],
+                'share_body'=>$_GPC['share__body'],
+                'share_img'=>$_GPC['share_img'],
                 /*开始时间*/
                 'start_time' => $_GPC['time']['start'],
                 /*结束时间*/

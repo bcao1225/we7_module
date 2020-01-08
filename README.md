@@ -130,33 +130,33 @@ require(['{MODULE_URL}lib/echarts.min.js'],function (echarts) {
 * 并在html文件中进行配置，即可使用
   ```
     wx.config({
-            debug: false, //这里设置为true时，微信分享功能每个步骤都会弹框。
-            appId: '{$signPackage["appId"]}',
-            timestamp: '{$signPackage["timestamp"]}',
-            nonceStr: '{$signPackage["nonceStr"]}',
-            signature: '{$signPackage["signature"]}',
-            jsApiList: [
-                'checkJsApi',
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo',
-                'onMenuShareQZone'
-            ]
+        debug: false, //这里设置为true时，微信分享功能每个步骤都会弹框。
+        appId: '{$signPackage["appId"]}',
+        timestamp: '{$signPackage["timestamp"]}',
+        nonceStr: '{$signPackage["nonceStr"]}',
+        signature: '{$signPackage["signature"]}',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
+        ]
+    });
+
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+            title: "{$system_setting['share_title']}",
+            desc: "{$system_setting['share_desc']}",
+            link: document.location.href,
+            imgUrl: "{php echo tomedia($system_setting['share_img'])}",
+            success: function () {
+            },
+            cancel: function () {
+            }
         });
-    
-        wx.ready(function () {
-            wx.onMenuShareAppMessage({
-                title: "{$system_setting['share_title']}",
-                desc: "{$system_setting['share_desc']}",
-                link: document.location.href,
-                imgUrl: "{php echo tomedia($system_setting['share_img'])}",
-                success: function () {
-                },
-                cancel: function () {
-                }
-            });
-        });
+    });
   ```
 可参考别人的帖子：[在微擎调用微信JSSDK实现分享功能](https://blog.csdn.net/zhemejinnameyuanxc/article/details/81258584);
 

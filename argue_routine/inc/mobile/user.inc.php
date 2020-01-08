@@ -21,7 +21,6 @@ switch ($_GPC['action']) {
             'viewpoint' => $_GPC['viewpoint'],
             'create_time' => time()
         ]);
-
         $user = get_user($_GPC['activity_id']);
         $user['percent'] = percent($_GPC);
         exit(json_encode(['user' => $user]));
