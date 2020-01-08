@@ -25,12 +25,20 @@
                             <p class="text-center">请说出你的观点</p>
                         </div>
                         <div v-else :style="{padding:'10px'}">
-                            <p class="user_setting"><img class="img-circle" width="20" :src="user.avatar" alt="">{{user.nickname}}</p>
+                            <p class="user_setting"><img class="img-circle" width="20" :src="user.avatar" alt="">
+                                {{user.nickname}}
+                            </p>
                             <p>{{user.comment}}</p>
                             <div class="row">
-                                <img @click="like_or_dislike(1,user.id)" width="13" :src="like_icon.link" alt="">
+                                <img
+                                    @click="like_or_dislike(1,user.id)" width="13"
+                                    :src="is_click_like===false ? $parent.icon.like : $parent.icon.active_like"
+                                    alt="">
                                 <span style="margin-left: 2px">{{like}}</span>
-                                <img @click="like_or_dislike(0,user.id)" style="margin-left: 30px"width="13" :src="dislike_icon.link" alt="">
+                                <img @click="like_or_dislike(0,user.id)"
+                                    style="margin-left: 30px"width="13"
+                                    :src="is_click_dislike===false ? $parent.icon.dislike : $parent.icon.active_dislike"
+                                    alt="">
                                 <span style="margin-left: 2px">{{dislike}}</span>
                             </div>
                         </div>
@@ -41,16 +49,9 @@
                 is_play: this.is_comment,
                 like: 0,
                 dislike: 0,
-                like_icon: {
-                    link: icon.like,
-                    /*当前登录的用户是否选中喜欢按钮*/
-                    is_select: false
-                },
-                dislike_icon: {
-                    link: icon.dislike,
-                    /*当前登录的用户是否选中不喜欢按钮*/
-                    is_select: false
-                },
+                //true为选中
+                is_click_like: false,
+                is_click_dislike: false
             }
         },
         async mounted() {
@@ -60,24 +61,19 @@
                 user_id: this.user.id,
             }, 'post'));
             this.like = like.length;
+            this.dislike = dislike.length;
+
             like.forEach(item => {
                 /*当前用户存在于这个点赞列表里面*/
                 if (item.openid === "{$_W['fans']['openid']}") {
-                    this.like_icon = {
-                        link: icon.active_like,
-                        is_select: true
-                    }
+                    this.is_click_like = true;
                 }
             });
 
-            this.dislike = dislike.length;
             dislike.forEach(item => {
                 /*当前用户存在于这个点赞列表里面*/
                 if (item.openid === "{$_W['fans']['openid']}") {
-                    this.dislike_icon = {
-                        link: icon.active_dislike,
-                        is_select: true
-                    }
+                    this.is_click_dislike = true;
                 }
             });
         },
@@ -85,78 +81,43 @@
         methods: {
             //index：1喜欢，0不喜欢
             like_or_dislike(index, user_id) {
-                /*如果当前用户选中了喜欢*/
-                if (index === 1) {
-                    /*判断当前用户是否已经点击过点赞按钮*/
-                    if (this.like_icon.is_select) {
-                        //如果确实选中，取消点赞
-                        this.like_icon = {
-                            link: icon.like,
-                            is_select: false
-                        };
-                        /*将数字减1*/
-                        this.like -= 1;
-                    } else {
-                        /*点赞*/
-                        this.like_icon = {
-                            link: icon.active_like,
-                            is_select: true
-                        };
-                        /*将不喜欢按钮还原*/
-                        this.dislike_icon = {
-                            link: icon.dislike,
-                            is_select: false
-                        };
 
-                        if(this.dislike>0){
-                            this.dislike -= 1;
+                switch (index) {
+                    /*点击了点赞按钮*/
+                    case 1:
+                        if (!this.is_click_like) {
+                            this.is_click_like = true;
+                            this.like += 1
+                        }else{
+                            return;
                         }
-                        /*将数字加1*/
-                        this.like += 1;
-                    }
-                } else {
-                    //不喜欢按钮
-                    if (this.dislike_icon.is_select) {
-                        this.dislike_icon = {
-                            link: icon.dislike,
-                            is_select: false
-                        };
-                        /*将数字减1*/
-                        this.dislike -= 1;
-                    } else {
-                        /*点击不喜欢*/
-                        this.dislike_icon = {
-                            link: icon.active_dislike,
-                            is_select: true
-                        };
-                        /*将喜欢按钮还原*/
-                        this.like_icon = {
-                            link: icon.like,
-                            is_select: false
-                        };
-                        if(this.like>0){
-                            /*将喜欢数字-1*/
-                            this.like -= 1;
+
+                        if (this.is_click_dislike) {
+                            this.is_click_dislike = false;
+                            this.dislike -= 1
                         }
-                        /*将不喜欢数字+1*/
-                        this.dislike += 1;
-                    }
+                        break;
+                    /*点击了不喜欢按钮*/
+                    case 0:
+                        if (!this.is_click_dislike) {
+                            this.is_click_dislike = true;
+                            this.dislike += 1;
+                        }else{
+                            return;
+                        }
+
+                        if (this.is_click_like) {
+                            this.is_click_like = false;
+                            this.like -= 1
+                        }
+                        break;
                 }
 
                 request("{php echo $this->createMobileUrl('like')}", {
                     action: 'like_or_dislike',
-
-
-
-
-
-
-
-
-
                     user_id,
                     like_or_dislike: index,
-                    activity_id:"{$_GPC['activity_id']}"
+                    activity_id: "{$_GPC['activity_id']}"
                 }, 'post').then(data => {
                     console.log(data);
                 })
