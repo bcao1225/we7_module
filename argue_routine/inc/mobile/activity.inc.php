@@ -11,11 +11,13 @@ switch ($_GPC['action']) {
         foreach ($activity_list as $activity_key => $activity) {
             $activity_list[$activity_key]['count'] = get_count($activity);
         }
+
         exit(json_encode($activity_list));
     //获取一个活动的数据
     case 'get_activity':
         $activity = pdo_get('ims_argue_routine_activity', ['id' => $_GPC['activity_id']]);
         $activity['count'] = get_count($activity);
+        $activity['advertising_img'] = tomedia($activity['advertising_img']);
         exit(json_encode($activity));
 }
 

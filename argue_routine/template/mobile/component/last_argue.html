@@ -1,36 +1,42 @@
+{template 'component/progress'}
+
 <script>
     const last_argue = {
+        props: {
+            activity: {
+                type: Object,
+                required:true
+            }
+        },
+        components:{
+            progress_com
+        },
         template: `<div>
                         <div class="row">
-                            <div :style="{color:$parent.activity.square_color,'font-size':'30px'}" class="col-xs-6 text-left progress_text">
+                            <div :style="{color:activity.square_color,'font-size':'30px'}" class="col-xs-6 text-left progress_text">
                             {{$parent.percent.argue}}%
                             </div>
-                            <div :style="{color: $parent.activity.no_square_color,'font-size':'30px'}" class="col-xs-6 text-right progress_text">
+                            <div :style="{color: activity.no_square_color,'font-size':'30px'}" class="col-xs-6 text-right progress_text">
                             {{$parent.percent.no_argue}}%
                             </div>
                         </div>
-                        <div class="progress">
-                              <div  class="progress-bar"
-                              :style="{'width':$parent.percent.argue+'%','background':$parent.activity.square_color}"></div>
-                              <div class="progress-bar"
-                              :style="{'width':$parent.percent.no_argue+'%','background':$parent.activity.no_square_color}"></div>
-                        </div>
+                        <progress_com :activity="activity"></progress_com>
 
                          <div class="advertising row">
-                            <a href="{$activity['advertising_url']}">
-                                <img class="advertising_img" src="{php echo tomedia($activity['advertising_img'])}" alt="">
+                            <a :href="activity.advertising_url">
+                                <img class="advertising_img" :src="activity.advertising_img" alt="">
                             </a>
                         </div>
 
                         <div class="row">
                             <div class="col-xs-6" >
-                                <p :style="{color:$parent.activity.square_color}" class="text-center progress_text">
-                                {{$parent.activity.square}}
+                                <p :style="{color:activity.square_color}" class="text-center progress_text">
+                                {{activity.square}}
                                 </p>
                             </div>
                             <div class="col-xs-6">
-                                <p :style="{color: $parent.activity.no_square_color}" class="text-center progress_text">
-                                {{$parent.activity.no_square}}
+                                <p :style="{color: activity.no_square_color}" class="text-center progress_text">
+                                {{activity.no_square}}
                                 </p>
                             </div>
                         </div>
@@ -38,12 +44,6 @@
     }
 </script>
 <style>
-    .progress {
-        height: 50px;
-        box-shadow: 1px 1px 10px #eee;
-
-    }
-
     .progress_text {
         font-size: 15px;
         font-weight: bold;
@@ -60,6 +60,6 @@
     }
 
     .advertising_img {
-        width:100%
+        width: 100%
     }
 </style>

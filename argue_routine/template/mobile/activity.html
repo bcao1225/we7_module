@@ -16,7 +16,7 @@
     <h1 class="text-center"><strong>{{activity.bonus_pools}}￥</strong></h1>
     <hr>
     <argue @func="get_user" :activity="activity" v-if="user===false"></argue>
-    <last_argue v-else></last_argue>
+    <last_argue v-else :activity="activity"></last_argue>
 
     <div class="row">
         <div class="col-xs-6">

@@ -1,0 +1,26 @@
+{template 'activity/setting/header'}
+
+<form method="post" action="{php echo $this->createWebUrl('activity_setting').'&action=advertising'}">
+    <input type="text" name="activity_id" hidden value="{$activity['id']}">
+
+    <!--广告跳转路径-->
+    <div class="form-group">
+        <label class="control-label col-sm-2">广告跳转路径</label>
+        <div class="form-controls col-sm-10">
+            <input class="form-control" type="text" name="advertising_url" value="{$activity['advertising_url']}">
+        </div>
+    </div>
+    <!--广告图片-->
+    <div class="form-group">
+        <label class="control-label col-sm-2">广告描述</label>
+        <div class="form-controls col-sm-10">
+            {php echo tpl_form_field_image('advertising_img',$activity['advertising_img'])}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">保存</button>
+    </div>
+</form>
+
+{template 'common/footer'}

@@ -1,0 +1,22 @@
+<script>
+    //百分组件
+    const progress_com = {
+        props: {
+            activity: Object,
+            required: true
+        },
+        template: `<div class="progress">
+                              <div  class="progress-bar"
+                              :style="{'width':$root.percent.argue+'%','background':activity.square_color}"></div>
+                              <div class="progress-bar"
+                              :style="{'width':$root.percent.no_argue+'%','background':activity.no_square_color}"></div>
+                        </div>`
+    }
+</script>
+
+<style>
+    .progress {
+        height: 50px;
+        box-shadow: 1px 1px 10px #eee;
+    }
+</style>

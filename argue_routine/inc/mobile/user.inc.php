@@ -22,11 +22,11 @@ switch ($_GPC['action']) {
             'create_time' => time()
         ]);
         $user = get_user($_GPC['activity_id']);
-        $user['percent'] = percent($_GPC);
+        $user['percent'] = $this->percent($_GPC['activity_id']);
         exit(json_encode(['user' => $user]));
     //获得百分比
     case 'get_percent':
-        exit(json_encode(percent($_GPC)));
+        exit(json_encode($this->percent($_GPC['activity_id'])));
     //获取所有评论
     case 'get_comment_list':
         $comment_list = pdo_fetchall("SELECT * FROM ims_argue_routine_user WHERE activity_id=" . $_GPC['activity_id'] . " AND viewpoint=1 AND comment!=''");
@@ -41,21 +41,4 @@ function get_user($activity_id)
 {
     global $_W;
     return pdo_fetch('SELECT * FROM ims_argue_routine_user WHERE activity_id=' . $activity_id . " AND openid='" . $_W['fans']['openid'] . "'");
-}
-
-function percent($_GPC)
-{
-    //获取正反方百分比对比数据
-    $argue = pdo_fetch('SELECT COUNT(*) as count FROM ims_argue_routine_user WHERE activity_id=' . $_GPC['activity_id'] . ' AND viewpoint=1')['count'];
-    $no_argue = pdo_fetch('SELECT COUNT(*) as count FROM ims_argue_routine_user WHERE activity_id=' . $_GPC['activity_id'] . ' AND viewpoint=0')['count'];
-    //总数
-    $count = $argue + $no_argue;
-
-    if ($count === 0) {
-        return ['argue' => 0, 'no_argue' => 0];
-    }
-
-    $argue = number_format($argue / $count * 100, 0);
-
-    return ['argue' => $argue, 'no_argue' => 100 - $argue];
 }

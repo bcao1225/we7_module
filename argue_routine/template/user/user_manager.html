@@ -1,6 +1,22 @@
 {template 'common/header'}
 
 <div class="row">
+    <div class="col-md-6">
+        <h1 class="text-center">
+            {$percent['argue']}%
+        </h1>
+    </div>
+    <div class="col-md-6">
+        <h1 class="text-center">
+            {$percent['no_argue']}%
+        </h1>
+    </div>
+</div>
+<div>
+
+</div>
+
+<div class="row">
     {loop $user_list $item}
     <!--正方-->
     <div class="col-md-6">
@@ -10,6 +26,7 @@
                 <th>头像</th>
                 <th>昵称</th>
                 <th width="200">观点</th>
+                <th>赞次数</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -17,14 +34,59 @@
             <tbody>
             {loop $item $user}
             <tr>
-                <td><img width="50" class="img-circle" src="{$user['avatar']}" alt=""></td>
-                <td>{$user['nickname']}</td>
-                <td>{$user['comment']}</td>
+                <td><img width="40" class="img-circle" src="{$user['avatar']}" alt=""></td>
+                <td width="70" style="font-size: 10px">{$user['nickname']}</td>
+                <td style="font-size: 13px">{$user['comment']}</td>
+                <td></td>
                 <td>
-                    <div class="btn-group btn-group-vertical">
-                        <a class="btn btn-success" href="{php echo $this->createWebUrl('user').'&action=red_packet'}">发送现金红包（0.1元）</a>
-                        <a class="btn btn-primary" href="">仅删除观点</a>
-                        <a class="btn btn-danger" href="">删除全部</a>
+                    <div class="btn-group btn-group-vertical btn-group-xs">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#red_packet_{$user['id']}">发送现金红包
+                        </button>
+                        <!--红包金额模态框-->
+                        <div class="modal fade" id="red_packet_{$user['id']}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span
+                                                aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">填写红包金额</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-warning" role="alert">
+                                            当前奖金池中剩余 <strong>{$activity['bonus_pools']}</strong> 元
+                                        </div>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control input_red_packet_{$user['id']}">
+                                            <span class="input-group-addon">元</span>
+                                        </div>
+                                        <span id="helpBlock" class="help-block">金额范围在1~200元之间，在此之外设置无效</span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary send_red_packet_{$user['id']}">确定
+                                        </button>
+                                        <script>
+                                            $(".send_red_packet_{$user['id']}").click(() => {
+                                                const money = Number.parseInt($(".input_red_packet_{$user['id']}").val());
+
+                                                if (money === 0 || Number.isNaN(money)) {
+                                                    alert('不能填写0或空值');
+                                                    return;
+                                                }
+
+                                                if (money > Number.parseInt("{$activity['bonus_pools']}")) {
+                                                    alert('金额不能超过奖金池金额');
+                                                    return;
+                                                }
+                                                if (!confirm('确定发送红包吗?')) return;
+                                                window.location.href =
+                                                    "{php echo $this->createWebUrl('user').'&'.http_build_query(['action'=>'red_packet','activity_id'=>$_GPC['activity_id'],'user_id'=>$user['id'],'money'=>''])}" + money
+                                            })
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn btn-danger" href="">删除</a>
                     </div>
                 </td>
             </tr>
@@ -34,7 +96,6 @@
     </div>
     {/loop}
 </div>
-
 
 
 {template 'common/footer'}

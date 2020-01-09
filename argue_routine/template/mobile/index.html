@@ -2,19 +2,24 @@
 
 <div id="app">
     <div @click="enter_activity(item.id)" class="card" v-for="item in activity_list">
-        <p class="topic">热议话题</p>
+        <p class="topic"><img width="18" src="{php echo MODULE_URL.'lib/icon/huo.png'}" alt="">热议话题</p>
         <p class="join">{{item.count}}万人已参与</p>
         <h4 class="title">{{item.title}}</h4>
         <div class="text-center" style="margin: 30px 0">
-            <span class="box square" :style="{'background':item.square_color,'box-shadow':'-1px 1px 3px '+item.square_color}">
+            <span class="box square"
+                  :style="{'background':item.square_color,'box-shadow':'-1px 1px 3px '+item.square_color}">
                 {{item.square}}
             </span>
             &nbsp;
-            vs
+            <span class="vs">vs</span>
             &nbsp;
-            <span class="box no_square" :style="{'background':item.no_square_color,'box-shadow':'1px 1px 3px '+item.no_square_color}">
+            <span class="box no_square"
+                  :style="{'background':item.no_square_color,'box-shadow':'1px 1px 3px '+item.no_square_color}">
                 {{item.no_square}}
             </span>
+        </div>
+        <div class="text-right time">
+            截止时间：{{item.end_time}}
         </div>
     </div>
 </div>
@@ -24,7 +29,8 @@
         new Vue({
             el: '#app',
             data: {
-                activity_list: []
+                activity_list: [],
+                current_time: new Date().getTime()
             },
             methods: {
                 //进入活动
@@ -37,18 +43,34 @@
                     action: 'get_activity_list'
                 }, 'post').then(data => {
                     this.activity_list = JSON.parse(data);
-                })
+                });
+
+                console.log(this.current_time);
             }
         })
     })
 </script>
 
 <style>
+    body {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #eee;
+    }
+
+    .vs {
+        font-style: oblique;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
     .box {
+        background: #fff;
         color: #fff;
-        padding: 7px 20px;
+        padding: 13px 23px;
         border-radius: 25px;
-        font-size: 20px;
+        font-size: 19px;
         font-weight: bold;
 
     }
@@ -64,17 +86,17 @@
     }
 
     .card {
-        margin: 5px;
+        margin: 10px;
         padding: 20px;
-        background: #5cadff;
-        box-shadow: 1px 1px 5px #d2d2d2;
+        background: #fff;
+        box-shadow: 1px 5px 5px #d2d2d2;
         border-radius: 5px;
         position: relative;
     }
 
     .card .topic {
         font-size: 10px;
-        margin-bottom: 3px;
+        margin-bottom: 10px;
     }
 
     .card .join {
@@ -88,8 +110,15 @@
     }
 
     .card .title {
-        color: #fff;
+        font-size: 20px;
         font-weight: bold;
+    }
+
+    .card .time {
+        font-size: 10px;
+        margin: 0;
+        padding: 0;
+        color: #515a6e;
     }
 </style>
 

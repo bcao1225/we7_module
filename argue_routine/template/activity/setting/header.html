@@ -1,0 +1,19 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+    <li class="{php echo $_GPC['action']==='base'?'active':''}">
+        <a href="{php echo $this->createWebUrl('activity_setting').'&action=base&activity_id='.$_GPC['activity_id']}">基本设置</a>
+    </li>
+    <li class="{php echo $_GPC['action']==='both'?'active':''}">
+        <a href="{php echo $this->createWebUrl('activity_setting').'&action=both&activity_id='.$_GPC['activity_id']}">正反方</a>
+    </li>
+    <li class="{php echo $_GPC['action']==='advertising'?'active':''}">
+        <a href="{php echo $this->createWebUrl('activity_setting').'&action=advertising&activity_id='.$_GPC['activity_id']}">广告设置</a>
+    </li>
+    <li class="{php echo $_GPC['action']==='bonus'?'active':''}">
+        <a href="{php echo $this->createWebUrl('activity_setting').'&action=bonus&activity_id='.$_GPC['activity_id']}">奖金设置</a>
+    </li>
+    <li class="{php echo $_GPC['action']==='share'?'active':''}">
+        <a href="{php echo $this->createWebUrl('activity_setting').'&action=share&activity_id='.$_GPC['activity_id']}">分享设置</a>
+    </li>
+</ul>

@@ -1,0 +1,36 @@
+{template 'activity/setting/header'}
+
+<form method="post" action="{php echo $this->createWebUrl('activity_setting').'&action=bonus'}">
+    <input type="text" name="activity_id" hidden value="{$activity['id']}">
+
+    <!--奖金池-->
+    <div class="form-group">
+        <label class="control-label col-sm-2">奖金池</label>
+        <div class="form-controls col-sm-10">
+            <div class="input-group">
+                <input type="number" name="bonus_pools" class="form-control" value="{$activity['bonus_pools']}">
+                <span class="input-group-addon">元</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">红包商户名称</label>
+        <div class="form-controls col-sm-10">
+            <input type="text" name="bonus_name" class="form-control" value="{$activity['bonus_name']}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">祝福语</label>
+        <div class="form-controls col-sm-10">
+            <input type="text" name="bonus_desc" class="form-control" value="{$activity['bonus_desc']}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">保存</button>
+    </div>
+</form>
+
+{template 'common/footer'}

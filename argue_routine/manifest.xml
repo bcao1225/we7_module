@@ -66,6 +66,7 @@
         </cover>
         <menu>
             <entry title="活动管理" do="activity_manager"/>
+            <entry title="红包记录" do="red_packet_record"/>
         </menu>
     </bindings>
 
