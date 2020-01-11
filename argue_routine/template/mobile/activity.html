@@ -11,9 +11,17 @@
     </blockquote>
     <p class="lead">{{activity.intro}}</p>
     <p class="user">
-        <img width="15" src="{php echo MODULE_URL.'lib/icon/yonghu.png'}" alt="">{{activity.count}}万人参与
+        <img width="15" src="{php echo MODULE_URL.'lib/icon/yonghu.png'}" alt="">{{activity.count}}人参与
     </p>
-    <h1 class="text-center"><strong>{{activity.bonus_pools}}￥</strong></h1>
+    <div>
+        <div class="rule" @click="rule">
+            <img width="20" src="{php echo MODULE_URL.'lib/icon/shuoming.png'}" alt="">
+            <p>规则说明</p>
+        </div>
+
+        <h1 class="text-center" style="font-weight: bold;font-style: italic">￥{{activity.bonus_pools}}</h1>
+        <h4 class="text-center">奖金池</h4>
+    </div>
     <hr>
     <argue @func="get_user" :activity="activity" v-if="user===false"></argue>
     <last_argue v-else :activity="activity"></last_argue>
@@ -59,6 +67,13 @@
                 get_user({user}) {
                     this.user = user;
                     this.percent = user.percent;
+                },
+                rule() {
+                    //信息框
+                    layer.open({
+                        content: `<div style="height: 400px;overflow: auto">${this.activity.bonus_content}</div>`,
+                        btn: '我知道了'
+                    });
                 }
             },
             async mounted() {
@@ -85,8 +100,9 @@
                     activity_id: this.activity.id,
                 }, 'post'));
 
-                this.comment = square;
                 this.no_comment = no_square;
+                this.comment = square;
+
 
                 //获取正反方对比百分率
                 this.percent = JSON.parse(await request("{php echo $this->createMobileUrl('user')}", {
@@ -107,6 +123,24 @@
 
     #app .user {
         font-size: 10px;
+    }
+
+    .rule {
+        position: absolute;
+        right: 20px;
+        border-radius: 50%;
+        box-shadow: 1px 1px 5px #d2d2d2;
+        width: 50px;
+        height: 50px;
+        font-size: 10px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .rule p {
+        margin: 0;
+        padding: 0;
+        font-size: 7px;
     }
 </style>
 {template 'common/footer'}

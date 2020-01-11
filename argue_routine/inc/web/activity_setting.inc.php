@@ -28,21 +28,23 @@ switch ($_GPC['action']) {
     /*正反方设置*/
     case 'both':
         if ($_W['ispost']) {
-        pdo_update('ims_argue_routine_activity', [
-            /*正方*/
-            'square' => $_GPC['square'],
-            'square_color' => $_GPC['square_color'],
-            /*反方*/
-            'no_square' => $_GPC['no_square'],
-            'no_square_color' => $_GPC['no_square_color'],
-            /*开始时间*/
-            'start_time' => $_GPC['time']['start'],
-            /*结束时间*/
-            'end_time' => $_GPC['time']['end'],
-        ], ['id' => $_GPC['id']]);
+            pdo_update('ims_argue_routine_activity', [
+                /*正方*/
+                'square' => $_GPC['square'],
+                'square_color' => $_GPC['square_color'],
+                /*反方*/
+                'no_square' => $_GPC['no_square'],
+                'no_square_color' => $_GPC['no_square_color'],
+                /*开始时间*/
+                'start_time' => $_GPC['time']['start'],
+                /*结束时间*/
+                'end_time' => $_GPC['time']['end'],
+            ], ['id' => $_GPC['id']]);
 
-        message('保存成功', $this->createWebUrl('activity_setting') . '&action=both&activity_id=' . $_GPC['activity_id']);
-    }
+            message('保存成功', $this->createWebUrl('activity_setting') . '&action=both&activity_id=' . $_GPC['id']);
+        }
+
+        $activity['time'] = ['start' => $activity['start_time'], 'end' => $activity['end_time']];
         include_once $this->template('activity/setting/both_setting');
         break;
     /*广告设置*/
@@ -66,6 +68,7 @@ switch ($_GPC['action']) {
                 'bonus_pools' => $_GPC['bonus_pools'],
                 'bonus_name' => $_GPC['bonus_name'],
                 'bonus_desc' => $_GPC['bonus_desc'],
+                'bonus_content'=>$_GPC['bonus_content']
             ], ['id' => $_GPC['activity_id']]);
             message('保存成功', $this->createWebUrl('activity_setting') . '&action=bonus&activity_id=' . $_GPC['activity_id']);
         }

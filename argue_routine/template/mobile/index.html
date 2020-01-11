@@ -1,9 +1,15 @@
 {template 'header'}
 
 <div id="app">
-    <div @click="enter_activity(item.id)" class="card" v-for="item in activity_list">
+    <div @click="enter_activity(item)" class="card" v-for="item in activity_list">
+        <!--蒙版，用于提示是否开始还是是否结束-->
+        <div v-show="item.is_end||item.is_start===false" class="masking">
+            <p class="hint" v-show="item.is_start===false">暂未开始</p>
+            <p class="hint" v-show="item.is_end===true">活动已结束</p>
+        </div>
+
         <p class="topic"><img width="18" src="{php echo MODULE_URL.'lib/icon/huo.png'}" alt="">热议话题</p>
-        <p class="join">{{item.count}}万人已参与</p>
+        <p class="join">{{item.count}}人已参与</p>
         <h4 class="title">{{item.title}}</h4>
         <div class="text-center" style="margin: 30px 0">
             <span class="box square"
@@ -25,17 +31,25 @@
 </div>
 
 <script>
-    require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js'], (Vue) => {
+    require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js', "{php echo MODULE_URL.'lib/layer.js'}"], (Vue, layer) => {
         new Vue({
             el: '#app',
             data: {
-                activity_list: [],
-                current_time: new Date().getTime()
+                activity_list: []
             },
             methods: {
                 //进入活动
-                enter_activity(id) {
-                    window.location.href = "{php echo $this->createMobileUrl('index').'&template=activity&activity_id='}" + id
+                enter_activity(activity) {
+                    if (activity.is_start === false) {
+                        layer.open({
+                            content: "活动暂未开始", skin: 'msg', time: 2
+                        });
+                        return;
+                    }
+                    if (activity.is_end) {
+
+                    }
+                    window.location.href = "{php echo $this->createMobileUrl('index').'&template=activity&activity_id='}" + activity.id
                 }
             },
             mounted() {
@@ -43,9 +57,8 @@
                     action: 'get_activity_list'
                 }, 'post').then(data => {
                     this.activity_list = JSON.parse(data);
+                    console.log(this.activity_list);
                 });
-
-                console.log(this.current_time);
             }
         })
     })
@@ -58,6 +71,7 @@
         height: 100%;
         background: #eee;
     }
+
 
     .vs {
         font-style: oblique;
@@ -92,6 +106,24 @@
         box-shadow: 1px 5px 5px #d2d2d2;
         border-radius: 5px;
         position: relative;
+        overflow: hidden;
+    }
+
+    .card .masking {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.82);
+        left: 0;
+        top: 0;
+    }
+
+    .card .masking .hint {
+        font-size: 40px;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 90px;
     }
 
     .card .topic {

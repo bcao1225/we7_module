@@ -1,20 +1,30 @@
 {template 'common/header'}
 
-<div class="row">
-    <div class="col-md-6">
-        <h1 class="text-center">
-            {$percent['argue']}%
-        </h1>
-    </div>
-    <div class="col-md-6">
-        <h1 class="text-center">
-            {$percent['no_argue']}%
-        </h1>
-    </div>
-</div>
 <div>
+    <div class="row">
+        <div class="col-md-6 text">
+            {$activity['square']}
+        </div>
+        <div class="col-md-6 text-right text">
+            {$activity['no_square']}
+        </div>
+    </div>
 
+    <div class="progress" style="height: 50px">
+        <div class="progress-bar" style="width: {$percent['argue']}%;background: {$activity['square_color']}">
+            <span class="text">{$percent['argue']}%</span>
+        </div>
+        <div class="progress-bar" style="width: {$percent['no_argue']}%;background: {$activity['no_square_color']}">
+            <span class="text">{$percent['no_argue']}%</span>
+        </div>
+    </div>
 </div>
+
+<style>
+    .text {
+        font-size: 20px;
+    }
+</style>
 
 <div class="row">
     {loop $user_list $item}
@@ -37,10 +47,11 @@
                 <td><img width="40" class="img-circle" src="{$user['avatar']}" alt=""></td>
                 <td width="70" style="font-size: 10px">{$user['nickname']}</td>
                 <td style="font-size: 13px">{$user['comment']}</td>
-                <td></td>
+                <td>{$user['like']}</td>
                 <td>
                     <div class="btn-group btn-group-vertical btn-group-xs">
-                        <button class="btn btn-success" data-toggle="modal" data-target="#red_packet_{$user['id']}">发送现金红包
+                        <button class="btn btn-success" data-toggle="modal" data-target="#red_packet_{$user['id']}">
+                            发送现金红包
                         </button>
                         <!--红包金额模态框-->
                         <div class="modal fade" id="red_packet_{$user['id']}" tabindex="-1">
@@ -86,7 +97,13 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="btn btn-danger" href="">删除</a>
+                        <button class="btn btn-danger delete_{$user['id']}">删除</button>
+                        <script>
+                            $(".delete_{$user['id']}").click(() => {
+                                if (!confirm('确定删除吗？')) return;
+                                window.location.href = "{php echo $this->createWebUrl('user').'&'.http_build_query(['action'=>'delete','activity_id'=>$_GPC['activity_id'],'user_id'=>$user['id']])}"
+                            })
+                        </script>
                     </div>
                 </td>
             </tr>

@@ -21,10 +21,18 @@
         </div>
     </div>
 
+
     <div class="form-group">
         <label class="control-label col-sm-2">祝福语</label>
         <div class="form-controls col-sm-10">
             <input type="text" name="bonus_desc" class="form-control" value="{$activity['bonus_desc']}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">奖励规则</label>
+        <div class="form-controls col-sm-10">
+            {php echo tpl_ueditor('bonus_content',$activity['bonus_content'])}
         </div>
     </div>
 

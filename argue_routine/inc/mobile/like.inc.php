@@ -25,6 +25,11 @@ switch ($_GPC['action']) {
             'create_time' => time()
         ]);
 
+        $like_num = count(pdo_getall('ims_argue_routine_like', ['user_id' => $_GPC['user_id'], 'like_or_dislike' => 1]));
+
+        /*将当前评论的喜欢数加1*/
+        pdo_query('UPDATE ims_argue_routine_user SET like_num='.$like_num.' WHERE id=' . $_GPC['user_id']);
+
         exit('');
     /*通过评论获取当前喜欢和不喜欢的数字*/
     case 'get_like_and_dislike':

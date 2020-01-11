@@ -29,8 +29,10 @@ switch ($_GPC['action']) {
         exit(json_encode($this->percent($_GPC['activity_id'])));
     //获取所有评论
     case 'get_comment_list':
-        $comment_list = pdo_fetchall("SELECT * FROM ims_argue_routine_user WHERE activity_id=" . $_GPC['activity_id'] . " AND viewpoint=1 AND comment!=''");
-        $no_comment_list = pdo_fetchall("SELECT * FROM ims_argue_routine_user WHERE activity_id=" . $_GPC['activity_id'] . " AND viewpoint=0 AND comment!=''");
+        $sql = "SELECT * FROM ims_argue_routine_user WHERE activity_id=" . $_GPC['activity_id'] . " AND viewpoint=1 AND comment!='' ORDER BY like_num DESC";
+        $comment_list = pdo_fetchall($sql);
+        $sql = "SELECT * FROM ims_argue_routine_user WHERE activity_id=" . $_GPC['activity_id'] . " AND viewpoint=0 AND comment!='' ORDER BY like_num DESC";
+        $no_comment_list = pdo_fetchall($sql);
         exit(json_encode(['square' => $comment_list, 'no_square' => $no_comment_list]));
     //获取当前用户的在当前活动中的所有数据
     case 'get_user':
