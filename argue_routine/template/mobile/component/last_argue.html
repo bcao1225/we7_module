@@ -14,10 +14,10 @@
         template: `<div>
                         <div class="row">
                             <div :style="{color:activity.square_color,'font-size':'30px'}" class="col-xs-6 text-left progress_text">
-                            {{$parent.percent.argue}}%
+                            <span class="argue_number"></span>%
                             </div>
                             <div :style="{color: activity.no_square_color,'font-size':'30px'}" class="col-xs-6 text-right progress_text">
-                            {{$parent.percent.no_argue}}%
+                            <span class="no_argue_number"></span>%
                             </div>
                         </div>
                         <progress_com :activity="activity"></progress_com>
@@ -41,6 +41,9 @@
                             </div>
                         </div>
                    </div>`,
+        mounted(){
+
+        }
     }
 </script>
 <style>

@@ -28,11 +28,22 @@
             </p>
             <p>
                 <a class="btn btn-link" href="{php echo $this->createWebUrl('user').'&activity_id='.$activity['id']}">查看用户提交情况</a>
+
             </p>
         </td>
         <!--二维码-->
         <td>
             <img width="130" src="{$activity['qrcode']}" alt="">
+            <button class="copy{$activity['id']} btn btn-link">复制路径</button>
+            <input class="url_value{$activity['id']}" type="text" value="{$activity['url']}">
+            <script>
+                $(`.copy{$activity['id']}`).click(function () {
+                    let copyText = $(".url_value{$activity['id']}");//获取对象
+                    copyText.select();//选择
+                    document.execCommand("Copy");//执行复制
+                    alert("复制成功！");
+                })
+            </script>
         </td>
         <td>
             <div class="btn-group btn-group-vertical">

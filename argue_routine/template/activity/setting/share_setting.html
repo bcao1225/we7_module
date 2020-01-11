@@ -1,5 +1,9 @@
 {template 'activity/setting/header'}
 
+<div class="alert alert-warning" role="alert">
+    需在公众号<strong>JS接口安全域名</strong>中配置本站域名，即可生效。
+</div>
+
 <form method="post" action="{php echo $this->createWebUrl('activity_setting').'&action=share'}">
     <input type="text" name="activity_id" hidden value="{$activity['id']}">
 

@@ -19,7 +19,7 @@
             <p>规则说明</p>
         </div>
 
-        <h1 class="text-center" style="font-weight: bold;font-style: italic">￥{{activity.bonus_pools}}</h1>
+        <h1 class="text-center" style="font-weight: bold;font-style: italic">￥<span class="bonus_pools"></span></h1>
         <h4 class="text-center">奖金池</h4>
     </div>
     <hr>
@@ -109,6 +109,25 @@
                     action: 'get_percent',
                     activity_id: this.activity.id
                 }, 'post'));
+
+                /*数字滚动，这个元素在last_argue组件里*/
+                $(".argue_number").numberRock({
+                    lastNumber:this.percent.argue,
+                    duration:1000,
+                    easing:'swing',
+                });
+
+                $(".no_argue_number").numberRock({
+                    lastNumber:this.percent.no_argue,
+                    duration:1000,
+                    easing:'swing',
+                });
+
+                $(".bonus_pools").numberRock({
+                    lastNumber:this.activity.bonus_pools,
+                    duration:2000,
+                    easing:'swing',
+                });
 
                 layer.close(index);
             }

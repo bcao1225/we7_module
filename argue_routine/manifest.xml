@@ -71,18 +71,6 @@
     </bindings>
 
     <install><![CDATA[
-        CREATE TABLE `ims_argue_routine_user` (
-          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-          `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
-          `nickname` varchar(255) DEFAULT '' COMMENT '昵称',
-          `openid` varchar(255) NOT NULL DEFAULT '',
-          `activity_id` int(11) NOT NULL COMMENT '对应活动id',
-          `comment` varchar(1000) NOT NULL DEFAULT '' COMMENT '评论',
-          `viewpoint` tinyint(4) NOT NULL COMMENT '观点，1表示正方，0表示反方',
-          `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-          PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
-
         CREATE TABLE `ims_argue_routine_activity` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `title` varchar(255) NOT NULL DEFAULT '' COMMENT '活动标题',
@@ -92,11 +80,52 @@
           `square_color` varchar(255) DEFAULT NULL COMMENT '正方颜色',
           `no_square` varchar(255) NOT NULL DEFAULT '' COMMENT '反方',
           `no_square_color` varchar(255) DEFAULT NULL COMMENT '反方颜色',
+          `share_title` varchar(255) NOT NULL DEFAULT '' COMMENT '分享标题',
+          `share_body` varchar(1000) DEFAULT '' COMMENT '分享内容',
+          `share_img` varchar(255) NOT NULL DEFAULT '' COMMENT '分享图片',
+          `advertising_img` varchar(255) NOT NULL DEFAULT '' COMMENT '广告标题',
+          `advertising_url` varchar(255) NOT NULL DEFAULT '' COMMENT '广告路径',
+          `bonus_pools` varchar(255) NOT NULL DEFAULT '0' COMMENT '奖金池',
+          `bonus_name` varchar(255) NOT NULL DEFAULT '' COMMENT '红包商户名称',
+          `bonus_content` text NOT NULL COMMENT '奖励规则',
+          `bonus_desc` varchar(255) NOT NULL DEFAULT '' COMMENT '红包祝福语',
           `start_time` varchar(11) NOT NULL DEFAULT '' COMMENT '开始时间',
           `end_time` varchar(11) NOT NULL DEFAULT '' COMMENT '结束时间',
           `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+        ) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_argue_routine_like` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `openid` varchar(255) NOT NULL DEFAULT '',
+          `user_id` int(11) DEFAULT NULL COMMENT '所点赞的评论，对应的user表id',
+          `activity_id` int(11) DEFAULT NULL COMMENT '对应活动id',
+          `like_or_dislike` tinyint(4) NOT NULL COMMENT '喜欢和不喜欢，1：喜欢，0：不喜欢',
+          `create_time` int(11) DEFAULT NULL,
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_argue_routine_red_packet` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `user_id` int(11) NOT NULL COMMENT '对应用户表id',
+          `order_number` varchar(100) NOT NULL COMMENT '订单号',
+          `money` varchar(255) NOT NULL DEFAULT '0' COMMENT '金额',
+          `create_time` int(11) NOT NULL COMMENT '创建时间',
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `ims_argue_routine_user` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
+          `nickname` varchar(255) DEFAULT '' COMMENT '昵称',
+          `openid` varchar(255) NOT NULL DEFAULT '',
+          `like_num` int(11) DEFAULT '0' COMMENT '点赞次数',
+          `activity_id` int(11) NOT NULL COMMENT '对应活动id',
+          `comment` varchar(1000) NOT NULL DEFAULT '' COMMENT '评论',
+          `viewpoint` tinyint(4) NOT NULL COMMENT '观点，1表示正方，0表示反方',
+          `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=73 DEFAULT CHARSET=utf8;
     ]]></install>
     <uninstall><![CDATA[]]></uninstall>
     <upgrade><![CDATA[]]></upgrade>

@@ -40,6 +40,7 @@
             methods: {
                 //进入活动
                 enter_activity(activity) {
+                    const index = layer.open({type: 2});
                     if (activity.is_start === false) {
                         layer.open({
                             content: "活动暂未开始", skin: 'msg', time: 2
@@ -49,7 +50,9 @@
                     if (activity.is_end) {
 
                     }
-                    window.location.href = "{php echo $this->createMobileUrl('index').'&template=activity&activity_id='}" + activity.id
+                    window.location.href = "{php echo $this->createMobileUrl('index').'&template=activity&activity_id='}" + activity.id;
+
+                    layer.close(index);
                 }
             },
             mounted() {

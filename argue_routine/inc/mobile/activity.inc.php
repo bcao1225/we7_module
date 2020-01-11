@@ -35,6 +35,7 @@ function tidy_activity($activity)
     $activity['is_end'] = strcmp(date('Y-m-d', time()), $activity['end_time']) === 1;
     /*将奖励规则解码*/
     $activity['bonus_content'] = htmlspecialchars_decode($activity['bonus_content']);
+    /*结束天数*/
 
     return $activity;
 }
