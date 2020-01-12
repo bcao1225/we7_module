@@ -6,8 +6,9 @@
 {template 'component/comment'}
 
 <div id="app">
+    <img class="back" src="{php echo MODULE_URL.'lib/img/back.jpg'}" alt="">
     <blockquote>
-        <h4>{{activity.title}}</h4>
+        <h4 style="font-weight: bold">{{activity.title}}</h4>
     </blockquote>
     <p class="lead">{{activity.intro}}</p>
     <p class="user">
@@ -111,21 +112,21 @@
 
                 /*数字滚动，这个元素在last_argue组件里*/
                 $(".argue_number").numberRock({
-                    lastNumber:this.percent.argue,
-                    duration:1000,
-                    easing:'swing',
+                    lastNumber: this.percent.argue,
+                    duration: 1000,
+                    easing: 'swing',
                 });
 
                 $(".no_argue_number").numberRock({
-                    lastNumber:this.percent.no_argue,
-                    duration:1000,
-                    easing:'swing',
+                    lastNumber: this.percent.no_argue,
+                    duration: 1000,
+                    easing: 'swing',
                 });
 
                 $(".bonus_pools").numberRock({
-                    lastNumber:this.activity.bonus_pools,
-                    duration:2000,
-                    easing:'swing',
+                    lastNumber: this.activity.bonus_pools,
+                    duration: 2000,
+                    easing: 'swing',
                 });
 
                 layer.close(index);
@@ -135,6 +136,18 @@
 </script>
 
 <style>
+    body {
+        background: #fff;
+    }
+
+    .back {
+        z-index: -1;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%
+    }
+
     #app {
         padding: 15px;
     }
@@ -144,6 +157,7 @@
     }
 
     .rule {
+        background: #fff;
         position: absolute;
         right: 20px;
         border-radius: 50%;

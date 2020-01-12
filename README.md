@@ -387,7 +387,24 @@ public function setSign($arr)
     return $arr;
 }
 ```
-
+# AMD写法
+```
+//定义模块
+define(['依赖模块路径，本地路径和网络路径都可以'],()=>{
+    return {
+        template:`div`,
+        mounted(){
+            console.log('123');
+        }
+    }
+});
+```
+```
+//引入模块
+require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js'], (Vue) => {
+    //...
+}
+```
 
 
 
