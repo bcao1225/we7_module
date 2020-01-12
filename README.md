@@ -287,6 +287,9 @@ async onLoad(options) {
         });
 }
 ```
+***
+# vue和微擎模板组合，主要用于需要大量ajax撑起的前端页面
+[vue组合微擎模板](https://www.miaowenzhao.cn/particulars/22)
 
 
 
