@@ -12,6 +12,7 @@ switch ($_GPC['action']) {
                 'title' => $_GPC['title'],
                 'intro' => $_GPC['intro'],
                 'virtual_user' => $_GPC['virtual_user'],
+                'back_img'=>$_GPC['back_img']
             ];
 
             if ($activity !== false) {

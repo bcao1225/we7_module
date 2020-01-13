@@ -16,6 +16,13 @@
             <input class="form-control" type="text" name="intro" value="{$activity['intro']}">
         </div>
     </div>
+    <!--活动背景图-->
+    <div class="form-group">
+        <label class="control-label col-sm-2">活动背景图</label>
+        <div class="form-controls col-sm-8">
+            {php echo tpl_form_field_image('back_img',$activity['back_img'])}
+        </div>
+    </div>
     <!--虚拟参加数-->
     <div class="form-group">
         <label class="control-label col-sm-2">虚拟参加数</label>

@@ -26,6 +26,8 @@ switch ($_GPC['action']) {
  */
 function tidy_activity($activity)
 {
+    /*背景图*/
+    $activity['back_img'] = tomedia($activity['back_img']);
     /*全部参加人数，虚拟人数加实际人数*/
     $activity['count'] = count(pdo_getall('ims_argue_routine_user', ['activity_id' => $activity['id']])) + $activity['virtual_user'];
     $activity['advertising_img'] = tomedia($activity['advertising_img']);
@@ -35,7 +37,6 @@ function tidy_activity($activity)
     $activity['is_end'] = strcmp(date('Y-m-d', time()), $activity['end_time']) === 1;
     /*将奖励规则解码*/
     $activity['bonus_content'] = htmlspecialchars_decode($activity['bonus_content']);
-    /*结束天数*/
 
     return $activity;
 }

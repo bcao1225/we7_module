@@ -34,24 +34,11 @@ switch ($_GPC['action']) {
         }
         break;
     default:
-        $argue_list = pdo_fetchall('SELECT * FROM ims_argue_routine_user WHERE activity_id=' . $_GPC['activity_id'] . ' AND viewpoint=1');
+        $argue_list = pdo_fetchall('SELECT * FROM ims_argue_routine_user WHERE activity_id=' . $_GPC['activity_id'] . ' AND viewpoint=1 ORDER BY like_num DESC');
 
-        /*获取点赞数*/
-        foreach ($argue_list as $key => $item) {
-            if ($item['comment'] === '') continue;
-            $argue_list[$key]['like'] =
-                count(pdo_getall('ims_argue_routine_like', ['user_id' => $item['id'], 'like_or_dislike' => 1]));
-        }
+        $no_argue_list = pdo_fetchall('SELECT * FROM ims_argue_routine_user WHERE activity_id=' . $_GPC['activity_id'] . ' AND viewpoint=0 ORDER BY like_num DESC');
 
-        $no_argue_list = pdo_fetchall('SELECT * FROM ims_argue_routine_user WHERE activity_id=' . $_GPC['activity_id'] . ' AND viewpoint=0');
-
-        /*获取反方点赞数*/
-        foreach ($argue_list as $key => $item) {
-            if ($item['comment'] === '') continue;
-            $no_argue_list[$key]['like'] =
-                count(pdo_getall('ims_argue_routine_like', ['user_id' => $item['id'], 'like_or_dislike' => 1]));
-        }
-
+        /*获取百分比*/
         $percent = $this->percent($_GPC['activity_id']);
         $user_list = [$argue_list, $no_argue_list];
 

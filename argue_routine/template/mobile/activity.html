@@ -6,7 +6,7 @@
 {template 'component/comment'}
 
 <div id="app">
-    <img class="back" src="{php echo MODULE_URL.'lib/img/back.jpg'}" alt="">
+    <img class="back" :src="activity.back_img" alt="">
     <blockquote>
         <h4 style="font-weight: bold">{{activity.title}}</h4>
     </blockquote>
