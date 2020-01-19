@@ -5,16 +5,44 @@
 
     <!--广告跳转路径-->
     <div class="form-group">
-        <label class="control-label col-sm-2">广告跳转路径</label>
+        <label class="control-label col-sm-2">广告类型</label>
         <div class="form-controls col-sm-10">
-            <input class="form-control" type="text" name="advertising_url" value="{$activity['advertising_url']}">
+            <label class="checkbox-inline">
+                <input type="radio" name="advertising_type" value="page" checked> 页面跳转
+            </label>
+            <label class="checkbox-inline">
+                <input type="radio" name="advertising_type" value="video"> 视频播放
+            </label>
         </div>
     </div>
-    <!--广告图片-->
-    <div class="form-group">
-        <label class="control-label col-sm-2">广告描述</label>
-        <div class="form-controls col-sm-10">
-            {php echo tpl_form_field_image('advertising_img',$activity['advertising_img'])}
+
+    <div class="advertising_page">
+        <!--广告页面跳转-->
+        <div class="form-group">
+            <label class="control-label col-sm-2">广告跳转路径</label>
+            <div class="form-controls col-sm-10">
+                <input class="form-control" type="text" name="advertising_url" value="{$activity['advertising_url']}">
+            </div>
+        </div>
+
+        <!--广告图片-->
+        <div class="form-group">
+            <label class="control-label col-sm-2">广告描述</label>
+            <div class="form-controls col-sm-10">
+                {php echo tpl_form_field_image('advertising_img',$activity['advertising_img'])}
+            </div>
+        </div>
+    </div>
+
+    <div class="advertising_video" style="display: none">
+        <!--广告视频-->
+        <div class="form-group">
+            <label class="control-label col-sm-2">选择视频</label>
+            <div class="form-controls col-sm-10">
+                <div class="input-group">
+                    {php echo tpl_form_field_video('advertising_video')}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -22,5 +50,21 @@
         <button type="submit" class="btn btn-success">保存</button>
     </div>
 </form>
+
+<script>
+    $("input[name='advertising_type']").click(function () {
+        switch ($(this).val()) {
+            case 'page':
+                $(".advertising_page").show();
+                $(".advertising_video").hide();
+                break;
+            case 'video':
+                $(".advertising_page").hide();
+                $(".advertising_video").show();
+                break;
+
+        }
+    })
+</script>
 
 {template 'common/footer'}
