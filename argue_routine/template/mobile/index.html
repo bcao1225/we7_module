@@ -1,11 +1,12 @@
 {template 'header'}
 
 <div id="app">
-    <div @click="enter_activity(item)" class="card" v-for="item in activity_list">
+    <div @click="enter_activity(item)" class="card" v-for="item in activity_list" v-cloak>
         <!--蒙版，用于提示是否开始还是是否结束-->
-        <div v-show="item.is_end||item.is_start===false" class="masking">
-            <p class="hint" v-show="item.is_start===false">暂未开始</p>
-            <p class="hint" v-show="item.is_end===true">活动已结束</p>
+        <div v-show="item.start_time_timestamp > current_time || item.end_time_timestamp < current_time"
+             class="masking">
+            <p class="hint" v-show="item.start_time_timestamp > current_time">暂未开始</p>
+            <p class="hint" v-show="item.end_time_timestamp < current_time">活动已结束</p>
         </div>
 
         <p class="topic"><img width="18" src="{php echo MODULE_URL.'lib/icon/huo.png'}" alt="">热议话题</p>
@@ -35,20 +36,21 @@
         new Vue({
             el: '#app',
             data: {
-                activity_list: []
+                activity_list: [],
+                current_time: Number.parseInt(new Date().getTime() / 1000)
             },
             methods: {
                 //进入活动
                 enter_activity(activity) {
                     const index = layer.open({type: 2});
-                    if (activity.is_start === false) {
+                    if (activity.start_time_timestamp > this.current_time) {
                         layer.open({
                             content: "活动暂未开始", skin: 'msg', time: 2
                         });
                         layer.close(index);
                         return;
                     }
-                    if (activity.is_end) {
+                    if (activity.end_time_timestamp < this.current_time) {
                         layer.open({
                             content: "活动已结束", skin: 'msg', time: 2
                         });
@@ -56,7 +58,6 @@
                         return;
                     }
                     window.location.href = "{php echo $this->createMobileUrl('index').'&template=activity&activity_id='}" + activity.id;
-
                     layer.close(index);
                 }
             },
@@ -65,6 +66,7 @@
                     action: 'get_activity_list'
                 }, 'post').then(data => {
                     this.activity_list = JSON.parse(data);
+                    console.log(this.activity_list);
                 });
             }
         })

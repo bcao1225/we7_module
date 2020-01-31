@@ -24,11 +24,11 @@
                              <img style="display: block;margin: 20px auto" width="30" src="{php echo MODULE_URL.'lib/icon/pinglun.png'}" alt="">
                             <p class="text-center">请说出你的观点</p>
                         </div>
-                        <div v-else :style="{padding:'10px'}">
+                        <div class="comment" v-else :style="{'background':colorRgba(color, 0.05)}">
                             <p class="user_setting"><img class="img-circle" width="20" :src="user.avatar" alt="">
                                 {{user.nickname}}
                             </p>
-                            <p>{{user.comment}}</p>
+                            <p style="color:#515a6e">{{user.comment}}</p>
                             <div class="row">
                                 <img
                                     @click="like_or_dislike(1,user.id)" width="13"
@@ -36,7 +36,7 @@
                                     alt="">
                                 <span style="margin-left: 2px">{{like}}</span>
                                 <img @click="like_or_dislike(0,user.id)"
-                                    style="margin-left: 30px"width="13"
+                                    style="margin-left: 30px" width="13"
                                     :src="is_click_dislike===false ? $parent.icon.dislike : $parent.icon.active_dislike"
                                     alt="">
                                 <span style="margin-left: 2px">{{dislike}}</span>
@@ -53,6 +53,9 @@
                 is_click_like: false,
                 is_click_dislike: false
             }
+        },
+        computed:{
+
         },
         async mounted() {
             /*获取评论的喜欢和不喜欢的次数*/
@@ -77,8 +80,34 @@
                 }
             });
         },
-
         methods: {
+            /*
+            * @sHex rgb颜色或argb颜色
+            * @alpha 不透明度
+            * */
+            colorRgba(sHex, alpha){
+                // 十六进制颜色值的正则表达式
+                let reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+                /* 16进制颜色转为RGB格式 */
+                let sColor = sHex.toLowerCase();
+                if (sColor && reg.test(sColor)) {
+                    if (sColor.length === 4) {
+                        let sColorNew = '#';
+                        for (let i = 1; i < 4; i += 1) {
+                            sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1))
+                        }
+                        sColor = sColorNew
+                    }
+                    // 处理六位的颜色值
+                    let sColorChange = [];
+                    for (let i = 1; i < 7; i += 2) {
+                        sColorChange.push(parseInt('0x' + sColor.slice(i, i + 2)))
+                    }
+                    return 'rgba(' + sColorChange.join(',') + ',' + alpha + ')'
+                } else {
+                    return sColor
+                }
+            },
             //index：1喜欢，0不喜欢
             like_or_dislike(index, user_id) {
                 switch (index) {
@@ -87,7 +116,7 @@
                         if (!this.is_click_like) {
                             this.is_click_like = true;
                             this.like += 1
-                        }else{
+                        } else {
                             return;
                         }
 
@@ -101,7 +130,7 @@
                         if (!this.is_click_dislike) {
                             this.is_click_dislike = true;
                             this.dislike += 1;
-                        }else{
+                        } else {
                             return;
                         }
 
@@ -157,11 +186,14 @@
 <style>
     .user_setting {
         font-size: 16px;
-        color: #808695;
     }
 
     .user_setting img {
         width: 25px;
         margin-right: 10px;
+    }
+
+    .comment {
+        padding: 10px;
     }
 </style>
