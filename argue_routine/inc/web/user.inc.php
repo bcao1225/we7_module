@@ -14,7 +14,6 @@ switch ($_GPC['action']) {
     /*发送红包*/
     case 'red_packet':
         $user = pdo_get('ims_argue_routine_user', ['id' => $_GPC['user_id']]);
-
         $content = $this->send_redpacket($_GPC['activity_id'], $user['openid'], $_GPC['money']);
 
         if ($content['return_msg'] === '发放成功') {

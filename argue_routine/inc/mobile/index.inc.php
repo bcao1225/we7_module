@@ -3,8 +3,8 @@
 global $_W, $_GPC;
 
 //如果是普通浏览器访问
-if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false ) {
-    message('请使用微信打开','','error');
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) {
+    message('请使用微信打开', '', 'error');
 }
 
 
@@ -17,14 +17,11 @@ if (empty($_W['fans']['nickname'])) {
 switch ($_GPC['template']) {
     case 'activity':
         $activity = pdo_get('ims_argue_routine_activity', ['id' => $_GPC['activity_id']]);
-        /*自定义分享*/
         $_share = array(
             'desc' => $activity['share_body'],
             'title' => $activity['share_title'],
-            'imgUrl' => tomedia($activity['share_img']),
-        );
-
-        include_once $this->template('activity');
+            'imgUrl' => tomedia($activity['share_img'])
+        );          include_once $this->template('activity');
         break;
     default:
         include_once $this->template('index');
