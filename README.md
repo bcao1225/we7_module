@@ -7,7 +7,7 @@
 * zhls_sun 律师小程序，对应前端：[律师小程序](https://github.com/qq3245096941/zhls_sun_weapp)
 * gather_feedback 收集反馈，公众号程序，h5页面
 * machine_feedback 斐力机械，小程序，对应前端：[斐力科技](https://github.com/qq3245096941/fljx)
-* argue_routine 辩论，公众号程序，h5页面
+* argue_routine 辩论，公众号程序，h5页面，使用cdn引入vue到每个页面中，实现``vue``和``微擎``进行整合。
 
 
 ***
@@ -292,7 +292,7 @@ async onLoad(options) {
 [vue组合微擎模板](https://www.miaowenzhao.cn/particulars/22)
 
 # 微信现金红包开发
-```
+```php
 //网络请求，主要作用于现金红包发放
 function postData($url, $postfields)
 {
@@ -388,7 +388,7 @@ public function setSign($arr)
 }
 ```
 # AMD写法
-```
+```javascript
 //定义模块
 define(['依赖模块路径，本地路径和网络路径都可以'],()=>{
     return {
@@ -399,10 +399,17 @@ define(['依赖模块路径，本地路径和网络路径都可以'],()=>{
     }
 });
 ```
-```
+```javascript
 //引入模块
 require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js'], (Vue) => {
     //...
+})
+```
+# 前端判断是否是微信客户端打开网页
+```php
+//如果是普通浏览器访问
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) {
+    message('请使用微信打开', '', 'error');
 }
 ```
 
