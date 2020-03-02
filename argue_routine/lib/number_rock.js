@@ -19,7 +19,5 @@
                 $(this).html(parseInt(b.pos * opts.lastNumber));
             }
         });
-
     }
-
 })(jQuery);

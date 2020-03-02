@@ -6,25 +6,28 @@
 {template 'component/comment'}
 
 <div id="app" v-cloak>
-    <img class="back" :src="activity.back_img" alt="">
-    <blockquote>
-        <h4 style="font-weight: bold">{{activity.title}}</h4>
-    </blockquote>
-    <p class="lead">{{activity.intro}}</p>
-    <p class="user">
-        <img width="15" src="{php echo MODULE_URL.'lib/icon/yonghu.png'}" alt="">{{activity.count}}人参与
-    </p>
-    <div>
-        <div class="rule" @click="rule">
-            <img width="20" src="{php echo MODULE_URL.'lib/icon/shuoming.png'}" alt="">
-            <p>规则说明</p>
-        </div>
-
-        <h1 class="text-center" style="font-weight: bold;font-style: italic">￥<span class="bonus_pools"></span></h1>
+    <img class="back_img" src="{php echo tomedia($activity['back_img'])}" alt="">
+    <div class="box activity_title">
+        <blockquote>
+            <h4 style="font-weight: bold">{{activity.title}}</h4>
+        </blockquote>
+        <p>{{activity.intro}}</p>
+        <p class="user">
+            <img width="15" src="{php echo MODULE_URL.'lib/icon/yonghu.png'}" alt="">{{activity.count}}人参与
+        </p>
     </div>
-    <hr>
-    <argue @func="get_user" :activity="activity" v-if="user===false"></argue>
-    <last_argue v-else :activity="activity"></last_argue>
+    <div class="box bonus_pools_div">
+        <!--奖金-->
+        <h3 class="text-center">奖金池<button @click="rule" class="btn btn-link">规则说明</button></h3>
+        <div class="num_box">
+            <div class="num" v-for="num in bonus_pools_list">
+                {{num}}
+            </div>
+        </div>
+        <hr>
+        <argue @func="get_user" :activity="activity" v-if="user===false"></argue>
+        <last_argue v-else :activity="activity"></last_argue>
+    </div>
 
     <div class="row">
         <div class="col-xs-6">
@@ -43,7 +46,7 @@
 </div>
 
 <script>
-    require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js',"{php echo MODULE_URL.'lib/layer.js'}"], (Vue,layer) => {
+    require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js', "{php echo MODULE_URL.'lib/layer.js'}"], (Vue, layer) => {
         new Vue({
             el: '#app',
             data: {
@@ -74,6 +77,13 @@
                         content: `<div style="height: 400px;overflow: auto">${this.activity.bonus_content}</div>`,
                         btn: '我知道了'
                     });
+                }
+            },
+            computed: {
+                /*将奖金池的数字转换成单数字的数组*/
+                bonus_pools_list() {
+                    let str = this.activity.bonus_pools + '';
+                    return [...str];
                 }
             },
             async mounted() {
@@ -108,7 +118,7 @@
                     action: 'get_percent',
                     activity_id: this.activity.id
                 }, 'post'));
-
+                
                 /*数字滚动，这个元素在last_argue组件里*/
                 $(".argue_number").numberRock({
                     lastNumber: this.percent.argue,
@@ -122,12 +132,6 @@
                     easing: 'swing',
                 });
 
-                $(".bonus_pools").numberRock({
-                    lastNumber: this.activity.bonus_pools,
-                    duration: 2000,
-                    easing: 'swing',
-                });
-
                 layer.close(index);
             }
         });
@@ -136,42 +140,60 @@
 
 <style>
     body {
-        background: #fff;
-    }
-
-    .back {
-        z-index: -1;
-        top: 0;
-        left: 0;
-        position: absolute;
-        width: 100%
+        background: #eee;
     }
 
     #app {
-        padding: 15px;
+        padding: 10px;
+        position: relative;
     }
 
     #app .user {
         font-size: 10px;
+        margin: 0;
     }
 
-    .rule {
-        background: #fff;
+    #app .back_img{
         position: absolute;
-        right: 20px;
-        border-radius: 50%;
-        box-shadow: 1px 1px 5px #d2d2d2;
-        width: 50px;
-        height: 50px;
-        font-size: 10px;
-        padding: 5px;
-        text-align: center;
-    }
-
-    .rule p {
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: -1;
         margin: 0;
         padding: 0;
-        font-size: 7px;
+    }
+
+    .box {
+        background: #fff;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .activity_title {
+        margin-bottom: 10px;
+    }
+
+    .bonus_pools_div{
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .num_box {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .num_box .num{
+        width: 50px;
+        height: 50px;
+        background: #fff;
+        margin-left: 5px;
+        text-align: center;
+        line-height: 50px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        font-size: 20px;
     }
 </style>
 {template 'common/footer'}
