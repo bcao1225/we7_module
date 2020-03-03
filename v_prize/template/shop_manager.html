@@ -7,7 +7,10 @@
     <tr>
         <th>id</th>
         <th>商品名称</th>
-        <th>商品图片</th>
+        <th>轮播图</th>
+        <th>价格</th>
+        <th>库存</th>
+        <th>描述</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -16,9 +19,22 @@
     <tr>
         <td>{$shop['id']}</td>
         <td>{$shop['name']}</td>
-        <td><img width="100" src="{media $shop['img']}" alt=""></td>
         <td>
-            <div class="btn-group-vertical">
+            {loop $shop['imgs'] $img}
+            <img width="100" src="{php echo tomedia($img)}" class="img-rounded">
+            {/loop}
+        </td>
+        <td>
+            <span class="label label-success">{$shop['price']}￥</span>
+        </td>
+        <td>
+            {$shop['inventory']}
+        </td>
+        <td>
+            {$shop['trace']}
+        </td>
+        <td>
+            <div class="btn-group btn-group-sm">
                 <a class="btn btn-success" href="{php echo $this->createWebUrl('add_shop').'&id='.$shop['id']}">编辑</a>
                 <a class="btn btn-danger" href="{php echo $this->createWebUrl('shop_manager').'&id='.$shop['id'].'&shop_state=delete'}">删除</a>
             </div>

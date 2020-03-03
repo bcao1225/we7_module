@@ -1,0 +1,30 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('system_setting')}">常规设置</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('company_setting')}">公司简介</a></li>
+</ul>
+
+<form class="we7-form" method="post" action="{php echo $this->createWebUrl('company_setting')}">
+    <input type="hidden" name="id" value="{$system_setting['id']}" />
+    <div class="convention">
+        <div class="form-group">
+            <label class="control-label col-sm-2">首页公司简介图片</label>
+            <div class="form-controls col-sm-8">
+                {php echo tpl_form_field_image('company_img',$system_setting['company_img'])}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">公司简介</label>
+            <div class="form-controls col-sm-8">
+                {php echo tpl_ueditor('company_particulars',$system_setting['company_particulars'])}
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <button class="btn btn-success" type="submit">提交</button>
+</form>
+
+{template 'common/footer'}

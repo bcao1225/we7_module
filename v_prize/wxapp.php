@@ -39,13 +39,13 @@ class V_prizeModuleWxapp extends WeModuleWxapp
 
         pdo_insert("ims_v_prize_winning_code",
             [
-                "prize_code"=>$current_prize_code,
-                'nickname'=>$_GPC['nickname'],
-                'create_time'=>time()
+                "prize_code" => $current_prize_code,
+                'nickname' => $_GPC['nickname'],
+                'create_time' => time()
             ]
         );
-        
-        return $this->result(0, "以获取抽奖号码",$current_prize_code);
+
+        return $this->result(0, "以获取抽奖号码", $current_prize_code);
     }
 
     /**
@@ -59,13 +59,14 @@ class V_prizeModuleWxapp extends WeModuleWxapp
         }
         return implode($prize_code);
     }
-  
+
     /**
      * 获取当前用户所有抽奖码，传入参数为nickname
      */
-    public function doPageUser_prize_code(){
-        global $_W,$_GPC;
-        return $this->result(0,'获取抽奖码成功',pdo_getall("ims_v_prize_winning_code",['nickname'=>$_GPC['nickname']]));
+    public function doPageUser_prize_code()
+    {
+        global $_W, $_GPC;
+        return $this->result(0, '获取抽奖码成功', pdo_getall("ims_v_prize_winning_code", ['nickname' => $_GPC['nickname']]));
     }
 
     /**
@@ -87,7 +88,7 @@ class V_prizeModuleWxapp extends WeModuleWxapp
         }
         return $this->result(0, "保存用户成功", $user);
     }
-  
+
     /**
      * 保存用户真实姓名，插入的参数为：nickname,name
      */
@@ -150,6 +151,8 @@ class V_prizeModuleWxapp extends WeModuleWxapp
         foreach ($system_setting['slideshow'] as $key => $img) {
             $system_setting["slideshow"][$key] = tomedia($img);
         }
+
+        $system_setting['company_img'] = tomedia($system_setting['company_img']);
         return $this->result(0, "获取成功", $system_setting);
     }
 
@@ -160,23 +163,48 @@ class V_prizeModuleWxapp extends WeModuleWxapp
     {
         $shops = pdo_getall("ims_v_prize_shop");
         foreach ($shops as $key => $shop) {
-            $shops[$key]['img'] = tomedia($shop['img']);
+            $imgs = iunserializer($shop['imgs']);
+            foreach ($imgs as $index => $img) {
+                $imgs[$index] = tomedia($img);
+            }
+            $shops[$key]['imgs'] = $imgs;
+            $shops[$key]['img'] = $imgs[0];
         }
         return $this->result(0, "获取成功", array_reverse($shops));
     }
 
     /**
+     * 获取单个商品，传入id即可
+     */
+    public function doPageGet_shop()
+    {
+        global $_GPC, $_W;
+        $shop = pdo_get('ims_v_prize_shop', ['id' => $_GPC['id']]);
+        $imgs = iunserializer($shop['imgs']);
+        foreach ($imgs as $key => $img) {
+            $imgs[$key] = tomedia($img);
+        }
+
+        $shop['imgs'] = $imgs;
+        $shop['particulars'] = htmlspecialchars_decode($shop['particulars']);
+
+        return $this->result(0, '获取成功', $shop);
+    }
+
+    /**
      * 获取缓存中的随机数，将用户扫码进入后，传入的随机数进行对比，不想等则此缓存的随机数是过期随机数
      */
-    public function doPageGet_ran(){
-        return $this->result(0,"获取随机数成功",cache_read("ran"));
+    public function doPageGet_ran()
+    {
+        return $this->result(0, "获取随机数成功", cache_read("ran"));
     }
 
     /**
      * 将缓存中的随机数设置为空
      */
-    public function doPageSet_ran(){
-        cache_write("ran",'');
-        return $this->result(0,"设置成功",cache_write('ran'));
+    public function doPageSet_ran()
+    {
+        cache_write("ran", '');
+        return $this->result(0, "设置成功", cache_write('ran'));
     }
 }

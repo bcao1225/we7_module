@@ -109,10 +109,13 @@
 		CREATE TABLE `ims_v_prize_winning_code` (
 		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `prize_code` varchar(7) NOT NULL DEFAULT '',
+		  `nickname` varchar(255) NOT NULL,
+		  `create_time` int(11) NOT NULL,
+		  `is_winning_code` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是中奖码，0位抽奖码，1位中奖码',
 		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+		) ENGINE=MyISAM AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 
 	]]></install>
 	<uninstall><![CDATA[]]></uninstall>
-	<upgrade><![CDATA[]]></upgrade>
+	<upgrade><![CDATA[upgrade.php]]></upgrade>
 </manifest>
