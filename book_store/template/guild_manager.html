@@ -1,0 +1,80 @@
+{template 'common/header'}
+
+<h3>所有馆别丨
+    <button class="btn btn-success" data-toggle="modal" data-target="#add_guild">添加会馆</button>
+</h3>
+
+<!-- Modal -->
+<div class="modal fade" id="add_guild" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">添加馆别</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{php echo $this->createWebUrl('guild_manager').'&action=add'}">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">馆别名称</label>
+                        <div class="form-controls col-sm-8">
+                            <input class="form-control" type="text" name="guild_name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">馆别编号</label>
+                        <div class="form-controls col-sm-8">
+                            <input class="form-control" type="number" name="guild_id">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-success" type="submit">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th>馆别名称</th>
+        <th>馆别编号</th>
+        <th>入口二维码</th>
+        <th width="100">书架</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $guild_list $index $guild}
+    <tr>
+        <td>{$guild['name']}</td>
+        <td>{$guild['id']}</td>
+        <td>
+            <img width="130" src="{$guild['qr_code']}" alt="">
+        </td>
+        <td>
+            <a href="{php echo $this->createWebUrl('bookrack_manager').'&guild_id='.$guild['id']}" class="btn btn-link">
+                查看书架
+            </a>
+        </td>
+        <td>
+            <div class="btn-group">
+                <button class="btn btn-success">修改</button>
+                <button class="btn btn-danger delete_guild_{$index}">删除</button>
+                <script>
+                    $(".delete_guild_{$index}").click(() => {
+                        if (!confirm('确定删除吗?')) return;
+                        window.location.href = "{php echo $this->createWebUrl('guild_manager').'&action=delete&id='.$guild['id']}"
+                    })
+                </script>
+            </div>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+{template 'common/footer'}

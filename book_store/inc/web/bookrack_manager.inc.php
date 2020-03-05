@@ -1,0 +1,54 @@
+<?php
+
+/*书架管理*/
+global $_W, $_GPC;
+
+cache_write('guild_id', $_GPC['guild_id']);
+
+$guild_id = cache_read('guild_id');
+
+switch ($_GPC['action']) {
+    /*添加书架*/
+    case 'add':
+        if ($_W['ispost']) {
+            pdo_insert('ims_book_store_bookrack', ['id' => $_GPC['id'], 'guild_id' => $guild_id]);
+
+            /*添加书架后，直接在书架中填充100本书*/
+            for ($i = 1; $i <= 100; $i++) {
+                pdo_insert('ims_book_store_book',
+                    [
+                        'guild_id' => $guild_id,
+                        'bookrack_id' => $_GPC['id'],
+                        'id' => $i
+                    ]
+                );
+            }
+
+            message('保存成功', $this->createWebUrl('bookrack_manager'));
+        }
+        include_once $this->template('bookrack/add_bookrack');
+        break;
+    /*删除书架*/
+    case 'delete':
+        pdo_delete('ims_book_store_bookrack', ['guild_id' => $guild_id, 'id' => $_GPC['id']]);
+        message('删除成功',$this->createWebUrl('bookrack_manager'),'success');
+        break;
+    default:
+        $bookrack_list = pdo_getall('ims_book_store_bookrack', ['guild_id' => $guild_id]);
+
+        /*获取书架中所有图书*/
+        foreach ($bookrack_list as $index => $bookrack) {
+            $books = pdo_getall('ims_book_store_book', ['guild_id' => $guild_id, 'bookrack_id' => $bookrack['id']]);
+
+            /*获取类型*/
+            foreach ($books as $book_key => $book) {
+                $books[$book_key]['type'] = pdo_get('ims_book_store_type', ['id' => $book['type']]);
+            }
+
+            $bookrack_list[$index]['books'] = $books;
+        }
+
+        $type_list = pdo_getall('ims_book_store_type');
+
+        include_once $this->template('bookrack/bookrack_manager');
+}

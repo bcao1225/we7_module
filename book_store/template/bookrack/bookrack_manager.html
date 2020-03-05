@@ -1,0 +1,97 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('bookrack_manager')}">所有书架</a></li>
+    <li><a href="{php echo $this->createWebUrl('bookrack_manager').'&action=add'}">添加书架</a></li>
+</ul>
+
+<h2>正在操作馆别编号为：<code>{$guild_id}</code></h2>
+
+{loop $bookrack_list  $index $bookrack}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">书架编号：{$bookrack['id']}
+            <button class="btn btn-link bookrack_delete_{$index}">删除书架</button>
+        </h3>
+        <script>
+            $(".bookrack_delete_{$index}").click(function () {
+                if (!confirm('确定删除吗?')) return;
+                window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=delete&id='.$bookrack['id']}"
+            })
+        </script>
+    </div>
+
+    <div class="panel-body">
+        <div class="btn-group">
+            {loop $type_list $type}
+            <button class="btn type_button_{$index}" data-type="{$type[id]}"
+                    style="background: {$type['color']};color: #fff">
+                {$type['name']}
+            </button>
+            {/loop}
+        </div>
+        <hr>
+        <div class="book_box book_box_{$index}">
+            {loop $bookrack['books'] $book}
+            <span data-type="{php echo $book['type']['id']}" style="background: {$book['type']['color']}">
+                {$book['id']}
+            </span>
+            {/loop}
+        </div>
+        <!--点击按钮触发-->
+        <script>
+            $('.type_button_{$index}').each((index, element) => {
+                $(element).click(function () {
+                    $(".book_box_{$index}").children('span').css({
+                        'background': '#fff',
+                        'color': '#000'
+                    });
+                    $(".book_box_{$index}").children(`span[data-type='${$(this).attr('data-type')}']`).css({
+                            'background': $(this).css('background'),
+                            'color': '#fff'
+                        }
+                    );
+                })
+            });
+
+            $(".book_box_{$index} span").each((index,element)=>{
+                $(element).click(function(){
+
+                })
+            })
+        </script>
+    </div>
+</div>
+{/loop}
+
+<style>
+    .book_box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .book_box span {
+        border-radius: 3px;
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 5px;
+        color: #000;
+        cursor: pointer;
+        border: 1px solid #eee;
+    }
+
+    .book_box span:hover{
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+</style>
+
+
+{template 'common/footer'}

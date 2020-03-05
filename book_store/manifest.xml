@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.w7.cc" versionCode="">
+	
+	<application setting='false'>
+		<name><![CDATA[图书盘库]]></name>
+		<identifie><![CDATA[book_store]]></identifie>
+		<version><![CDATA[1.0.0]]></version>
+		<ability><![CDATA[xxx]]></ability>
+		<type><![CDATA[xxx]]></type>
+		<description><![CDATA[图书盘库]]></description>
+		<author><![CDATA[追风的牧羊人3245096941@qq.com]]></author>
+		<url><![CDATA[]]></url>
+		<setting><![CDATA[]]></setting>
+	</application>
+
+	<platform>
+		<handles>
+			<message type="text" />
+			<message type="image" />
+			<message type="voice" />
+			<message type="video" />
+			<message type="shortvideo" />
+			<message type="location" />
+			<message type="link" />
+			<message type="qr" />
+			<message type="click" />
+			<message type="merchant_order" />
+			<message type="user_get_card" />
+			<message type="user_del_card" />
+			<message type="user_consume_card" />
+			<message type="trace" />
+			<message type="subscribe" />
+		</handles>
+		<rule embed="false" />
+		<rule embed="false" />
+	<supports>
+			<item type="app" />
+	</supports>
+
+	</platform>
+
+	<bindings>
+		<menu>
+			<entry title="馆别管理" do="guild_manager"/>
+			<entry title="类型管理" do="type_manager"/>
+		</menu>
+	</bindings>
+
+	<install><![CDATA[]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>
