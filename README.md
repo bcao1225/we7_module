@@ -8,7 +8,7 @@
 * gather_feedback 收集反馈，公众号程序，h5页面
 * machine_feedback 斐力机械，小程序，对应前端：[斐力科技](https://github.com/qq3245096941/fljx)
 * argue_routine 辩论，公众号程序，h5页面，使用cdn引入vue到每个页面中，实现``vue``和``微擎``进行整合。
-
+* book_store 图片仓库，公众号程序
 
 ***
 # ``jz_movie``模块将wxapp文件进行模块划分
