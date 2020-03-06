@@ -6,6 +6,7 @@
 </ul>
 
 <form method="post" action="{php echo $this->createWebUrl('type_manager').'&action=add'}">
+    <input type="text" hidden name="id" value="{$type['id']}">
     <div class="form-group">
         <label class="control-label col-sm-2">类型名称</label>
         <div class="form-controls col-sm-8">

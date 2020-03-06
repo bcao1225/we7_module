@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$guild['name']}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .book_box {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .book_box .book {
+            font-size: 12px;
+            border-radius: 5px;
+            margin-left: 8px;
+            margin-bottom: 8px;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+        }
+
+        .btns {
+            background: #fff;
+            position: sticky;
+            top: 0;
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d2d2d2;
+        }
+
+        .btns span {
+            padding: 8px;
+            color: #fff;
+        }
+
+        .export {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            background: #67C23A;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="btns">
+        <span
+                v-show="type.hidden==='1'"
+                :style="{'background':type.color}"
+                @click="select_type_btn(type.id)"
+                v-for="type in type_list">{{type.name}}
+            </span>
+        <span style="color: #000" @click="get_bookrack_and_book">还原</span>
+    </div>
+
+
+    <el-collapse accordion>
+        <el-collapse-item v-for="(bookrack,index) in bookrack_list" :title="'书架编号为：'+bookrack.id" :name="bookrack.id">
+
+
+            <div class="book_box">
+            <span
+                    @click="click_book(book.id,bookrack.id)"
+                    class="book"
+                    v-for="book in bookrack.books"
+                    :style="{background:book.type.color}">
+                {{book.id}}
+            </span>
+            </div>
+        </el-collapse-item>
+    </el-collapse>
+
+    <p class="export" @click="export_excel">导出</p>
+</div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="{php echo MODULE_URL.'template/mobile/export.js'}"></script>
+<script>
+    const guild_id = "{$guild['id']}";
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                /*所有书架，和所有书*/
+                bookrack_list: [],
+                /*所有类型*/
+                type_list: [],
+                current_type_id: ''
+            }
+        },
+        methods: {
+            export_excel() {
+                tableToExcel(this.bookrack_list, {
+                    'guild_name': "{$guild['name']}",
+                    guild_id
+                });
+            },
+            request(url, data, method = 'post') {
+                return new Promise((resolve => {
+                    $.ajax({
+                        url,
+                        data,
+                        method,
+                        success(res) {
+                            resolve(JSON.parse(res));
+                        },
+                        error(error) {
+                            console.log(error)
+                        }
+                    })
+                }));
+            },
+
+            /*当前书架选择查看哪种类型的书*/
+            async select_type_btn(type_id) {
+                await this.get_bookrack_and_book();
+                this.current_type_id = type_id;
+
+                this.bookrack_list = this.bookrack_list.map(bookrack => {
+                    bookrack.books = bookrack.books.map(book => {
+                        if (!book.type) {
+                            return book;
+                        }
+
+                        if (book.type.id !== type_id) {
+                            book.type.color = '#fff';
+                        }
+
+                        return book;
+                    });
+                    return bookrack;
+                });
+            },
+            /*点击书本，设置书本类型*/
+            click_book(book_id, bookrack_id) {
+
+                if (this.current_type_id === '') {
+                    this.$notify.error({
+                        title: '请选择一个类型',
+                        duration: 2000
+                    });
+                    return;
+                }
+
+                this.request("{php echo $this->createMobileUrl('book_manager')}", {
+                    action: 'update_type',
+                    guild_id,
+                    bookrack_id,
+                    book_id,
+                    type_id: this.current_type_id
+                }).then(({data: type}) => {
+                    /*通过书架id找到书架*/
+                    this.bookrack_list = this.bookrack_list.map(bookrack => {
+                        if (bookrack_id !== bookrack.id) {
+                            return bookrack;
+                        }
+                        /*然后通过书本id找到书本*/
+                        bookrack.books = bookrack.books.map(book => {
+                            if (book_id !== book.id) {
+                                return book;
+                            }
+                            book.type = type;
+                            return book;
+                        });
+
+                        return bookrack;
+                    });
+                })
+            },
+            async get_bookrack_and_book() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                /*获取所有书架*/
+                let {data: bookrack_list} = await this.request("{php echo $this->createMobileUrl('bookrack_manager')}", {
+                    action: 'get_all',
+                    guild_id
+                });
+
+                /*通过书架获取所有书籍*/
+                for (let bookrack of bookrack_list) {
+                    let {data: book_list} = await this.request("{php echo $this->createMobileUrl('book_manager')}", {
+                        guild_id,
+                        bookrack_id: bookrack.id,
+                        action: 'get_all'
+                    });
+                    /*当前书架上正在操作的类型*/
+                    Reflect.set(bookrack, 'current_select_type_id', '');
+                    Reflect.set(bookrack, 'books', book_list);
+                }
+
+                this.bookrack_list = bookrack_list;
+                loading.close();
+            }
+        },
+        async created() {
+            await this.get_bookrack_and_book();
+
+            /*获取所有类型*/
+            this.request("{php echo $this->createMobileUrl('type_manager')}", {
+                action: 'get_all'
+            }).then(({data}) => {
+                this.type_list = data;
+            });
+        }
+    })
+</script>
+</html>

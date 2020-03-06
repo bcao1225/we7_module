@@ -412,6 +412,23 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) {
     message('请使用微信打开', '', 'error');
 }
 ```
+# bootstrap弹出层的使用
+```javascript
+$(function () {
+    $("[data-toggle='popover']").popover(); //激活
+
+    $(".book_box_{$index} span").each((index, element) => {
+        $(element).popover({
+            trigger:'click',
+            placement:'auto',
+            title:'请选择类型',
+            html:true, //必须设置才能使用html
+            content:`<div>123</div>`
+        });
+    });
+});
+```
+
 
 
 
