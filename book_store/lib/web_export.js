@@ -31,16 +31,19 @@ function tableToExcel(json, {guild_name, guild_id}) {
                 </table>
              </body>
         </html>`;
-    let excelBlob = new Blob([excelHtml], {type: 'application/vnd.ms-excel'})
+
+    let excelBlob = new Blob([excelHtml], {type: 'application/vnd.ms-excel'});
 
     // 创建一个a标签
     let oA = document.createElement('a');
+
     // 利用URL.createObjectURL()方法为a元素生成blob URL
-    oA.href = URL.createObjectURL(excelBlob);
+    let url = URL.createObjectURL(blob);
+    oA.href = url;
     // 给文件命名
     oA.download = `${guild_name}.xls`;
     // 模拟点击
-    oA.click()
+    oA.click();
 }
 
 function formatZero(num, len) {

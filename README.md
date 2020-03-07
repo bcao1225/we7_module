@@ -407,9 +407,9 @@ require(['https://cdn.jsdelivr.net/npm/vue/dist/vue.js'], (Vue) => {
 ```
 # 前端判断是否是微信客户端打开网页
 ```php
-//如果是普通浏览器访问
-if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false) {
-    message('请使用微信打开', '', 'error');
+//如果是普通浏览器访问，或企业微信
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false || strpos($_SERVER['HTTP_USER_AGENT'], 'wxwork') === false) {
+    message('请使用普通微信或企业微信打开');
 }
 ```
 # bootstrap弹出层的使用

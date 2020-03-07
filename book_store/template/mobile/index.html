@@ -79,14 +79,15 @@
             </div>
         </el-collapse-item>
     </el-collapse>
-
-    <p class="export" @click="export_excel">导出</p>
+    <!--将按钮隐藏-->
+    <!--<p class="export" @click="export_excel">导出</p>-->
 </div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="{php echo MODULE_URL.'template/mobile/export.js'}"></script>
+<script src="https://cdn.bootcss.com/require.js/2.3.6/require.min.js"></script>
+<script src="{php echo MODULE_URL.'lib/web_export.js'}"></script>
 <script>
     const guild_id = "{$guild['id']}";
 
@@ -102,11 +103,9 @@
             }
         },
         methods: {
+            /*导出为execl*/
             export_excel() {
-                tableToExcel(this.bookrack_list, {
-                    'guild_name': "{$guild['name']}",
-                    guild_id
-                });
+                tableToExcel(this.bookrack_list,{guild_name:"{$guild['name']}",guild_id:"{$guild_id}"})
             },
             request(url, data, method = 'post') {
                 return new Promise((resolve => {
@@ -123,6 +122,7 @@
                     })
                 }));
             },
+            /*还原*/
             restore() {
                 this.current_type_id = '';
                 this.get_bookrack_and_book();

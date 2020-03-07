@@ -1,6 +1,6 @@
 {template 'common/header'}
 
-<script src="{php echo MODULE_URL.'template/mobile/export.js'}"></script>
+<script src="{php echo MODULE_URL.'lib/web_export.js'}"></script>
 
 <ul class="nav nav-tabs">
     <li class="active"><a href="{php echo $this->createWebUrl('bookrack_manager')}">所有书架</a></li>
@@ -21,9 +21,19 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">书架编号：{$bookrack['id']}
-            <button class="btn btn-link bookrack_delete_{$index}">删除书架</button>
+            <div class="btn-group">
+                <button class="btn btn-link bookrack_empty_{$index}">清空书架</button>
+                <button class="btn btn-link bookrack_delete_{$index}">删除书架</button>
+            </div>
         </h3>
         <script>
+            /*清空书架*/
+            $(".bookrack_empty_{$index}").click(function () {
+                if (!confirm('确定清空吗?')) return;
+                window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=empty&bookrack_id='.$bookrack['id']}"
+            });
+
+            /*删除书架*/
             $(".bookrack_delete_{$index}").click(function () {
                 if (!confirm('确定删除吗?')) return;
                 window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=delete&id='.$bookrack['id']}"
@@ -43,7 +53,6 @@
             </button>
             {/loop}
             <button class="btn btn-default type_btn_restore_{$index}">还原</button>
-
         </div>
         <hr>
         <div class="book_box book_box_{$index}">
@@ -59,64 +68,18 @@
         </div>
         <!--点击按钮触发-->
         <script>
+            let current_select_type_id{$index} = '';
+
             /*点击了还原按钮*/
             $(".type_btn_restore_{$index}").click(function () {
                 $(".book_box_{$index} span").each((index, element) => {
                     $(element).css('background', $(element).attr('data-color'));
                 });
+
+                current_select_type_id{$index} = '';
             });
 
-            $(function () {
-                $("[data-toggle='popover']").popover(); //激活
-
-                $(".book_box_{$index} span").each((index, element) => {
-                    $(element).popover({
-                        trigger: 'click',
-                        placement: 'auto',
-                        title: '请选择类型',
-                        html: true, //必须设置才能使用html
-                        content: `
-                            <div style="width: 150px">
-                                <select class="form-control select_type">
-                                    <option value="">选择类型</option>
-                                    {loop $type_list $type}
-                                    <option value="{$type['id']}">{$type['name']}</option>
-                                    {/loop}
-                                </select>
-                            </div>`
-                    });
-
-                    $(element).on('shown.bs.popover', function () {
-                        $(".select_type").change(function () {
-                            const value = $(this).val();
-
-                            $.ajax({
-                                method: 'post',
-                                url: "{php echo $this->createWebUrl('book_manager').'&action=update_type'}",
-                                data: {
-                                    book_id: $(element).attr('data-id'),
-                                    type_id: value,
-                                    bookrack_id: "{$bookrack['id']}",
-                                },
-                                success(res) {
-                                    const data = JSON.parse(res);
-                                    $(element).css({
-                                        'background': data.data.type.color,
-                                        'color': '#fff'
-                                    });
-
-                                    $(element).attr({
-                                        'data-color': data.data.type.color,
-                                        'data-type': data.data.type.id
-                                    });
-                                    $(element).popover('hide');
-                                }
-                            })
-                        })
-                    })
-                });
-            });
-
+            /*按钮组点击*/
             $('.type_button_{$index}').each((index, element) => {
                 $(element).click(function () {
                     $(".book_box_{$index}").children('span').css({
@@ -128,6 +91,38 @@
                             'color': '#fff'
                         }
                     );
+                    current_select_type_id{$index} = $(this).attr('data-type');
+                })
+            });
+
+            /*书本点击*/
+            $(".book_box_{$index} span").each((index, span) => {
+                $(span).click(function () {
+                    if(current_select_type_id{$index}===''){
+                        console.log('当前未选中按钮');
+                        return;
+                    }
+
+                    $.ajax({
+                        method:'post',
+                        url:"{php echo $this->createWebUrl('book_manager')}",
+                        data:{
+                            action:'update_type',
+                            guild_id:"{$guild_id}",
+                            bookrack_id:"{$bookrack['id']}",
+                            book_id:$(this).attr('data-id'),
+                            type_id:current_select_type_id{$index}
+                        },
+                        success:(res)=>{
+                            const {type} = JSON.parse(res).data;
+                            $(this).css({
+                                'background':type.color,
+                                'color':'#000'
+                            });
+                            $(this).attr('data-color',type.color);
+                            $(this).attr('data-type',type.id);
+                        }
+                    })
                 })
             });
         </script>

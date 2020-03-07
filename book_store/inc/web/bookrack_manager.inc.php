@@ -8,6 +8,11 @@ cache_write('guild_id', $_GPC['guild_id']);
 $guild_id = cache_read('guild_id');
 
 switch ($_GPC['action']) {
+    /*清空书架*/
+    case 'empty':
+        pdo_update('ims_book_store_book', ['type' => null], ['guild_id' => $guild_id, 'bookrack_id'=>$_GPC['bookrack_id']]);
+        message('清空成功',$this->createWebUrl('bookrack_manager'),'success');
+        break;
     /*添加书架*/
     case 'add':
         if ($_W['ispost']) {
