@@ -47,7 +47,43 @@
 		</menu>
 	</bindings>
 
-	<install><![CDATA[]]></install>
+	<install><![CDATA[
+		CREATE TABLE `ims_book_store_book` (
+		  `id` int(11) DEFAULT NULL COMMENT '书本编号',
+		  `guild_id` int(11) DEFAULT NULL COMMENT '馆别id',
+		  `bookrack_id` int(11) DEFAULT NULL COMMENT '书架id',
+		  `type` int(11) DEFAULT NULL COMMENT '类型'
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+		CREATE TABLE `ims_book_store_bookrack` (
+		  `id` int(11) DEFAULT NULL COMMENT '书架编号',
+		  `guild_id` int(11) DEFAULT NULL COMMENT '馆别id',
+		  `book_num` int(11) DEFAULT '100' COMMENT '书架的书数量，最高不会超过100'
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+		CREATE TABLE `ims_book_store_guild` (
+		  `id` int(11) NOT NULL COMMENT '会馆编号',
+		  `name` varchar(255) DEFAULT NULL COMMENT '会馆名称',
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+		CREATE TABLE `ims_book_store_type` (
+		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '类型名称',
+		  `color` varchar(255) NOT NULL DEFAULT '' COMMENT '颜色',
+		  `hidden` int(1) NOT NULL DEFAULT '1' COMMENT '是否禁用，1为启用，0位禁用',
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+		CREATE TABLE `ims_book_store_user` (
+		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		  `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
+		  `nickname` varchar(255) NOT NULL DEFAULT '' COMMENT '昵称',
+		  `openid` varchar(255) NOT NULL DEFAULT '',
+		  `is_pass` int(1) DEFAULT '0' COMMENT '是否通过，1表示通过，0表示禁止',
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+	]]></install>
 	<uninstall><![CDATA[]]></uninstall>
 	<upgrade><![CDATA[]]></upgrade>
 </manifest>

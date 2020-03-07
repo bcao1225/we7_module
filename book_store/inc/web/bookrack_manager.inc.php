@@ -30,11 +30,17 @@ switch ($_GPC['action']) {
         break;
     /*删除书架*/
     case 'delete':
+        /*先删除当前书架对应的书*/
+        pdo_delete('ims_book_store_book', ['guild_id' => $guild_id, 'bookrack_id' => $_GPC['id']]);
+        /*再删除书架*/
         pdo_delete('ims_book_store_bookrack', ['guild_id' => $guild_id, 'id' => $_GPC['id']]);
-        message('删除成功',$this->createWebUrl('bookrack_manager'),'success');
+
+        message('删除成功', $this->createWebUrl('bookrack_manager'), 'success');
         break;
     default:
         $bookrack_list = pdo_getall('ims_book_store_bookrack', ['guild_id' => $guild_id]);
+
+        $guild = pdo_get('ims_book_store_guild', ['id' => $guild_id]);
 
         /*获取书架中所有图书*/
         foreach ($bookrack_list as $index => $bookrack) {

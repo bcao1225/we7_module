@@ -63,14 +63,11 @@
                 @click="select_type_btn(type.id)"
                 v-for="type in type_list">{{type.name}}
             </span>
-        <span style="color: #000" @click="get_bookrack_and_book">还原</span>
+        <span style="color: #000" @click="restore">还原</span>
     </div>
-
 
     <el-collapse accordion>
         <el-collapse-item v-for="(bookrack,index) in bookrack_list" :title="'书架编号为：'+bookrack.id" :name="bookrack.id">
-
-
             <div class="book_box">
             <span
                     @click="click_book(book.id,bookrack.id)"
@@ -126,7 +123,10 @@
                     })
                 }));
             },
-
+            restore() {
+                this.current_type_id = '';
+                this.get_bookrack_and_book();
+            },
             /*当前书架选择查看哪种类型的书*/
             async select_type_btn(type_id) {
                 await this.get_bookrack_and_book();
@@ -149,7 +149,6 @@
             },
             /*点击书本，设置书本类型*/
             click_book(book_id, bookrack_id) {
-
                 if (this.current_type_id === '') {
                     this.$notify.error({
                         title: '请选择一个类型',
@@ -214,7 +213,6 @@
         },
         async created() {
             await this.get_bookrack_and_book();
-
             /*获取所有类型*/
             this.request("{php echo $this->createMobileUrl('type_manager')}", {
                 action: 'get_all'

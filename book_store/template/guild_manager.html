@@ -1,7 +1,8 @@
 {template 'common/header'}
 
+
 <h3>所有馆别丨
-    <button class="btn btn-success" data-toggle="modal" data-target="#add_guild">添加会馆</button>
+    <button class="btn btn-success" data-toggle="modal" data-target="#add_guild">添加馆别</button>
 </h3>
 
 <!-- Modal -->
@@ -61,16 +62,13 @@
             </a>
         </td>
         <td>
-            <div class="btn-group">
-                <button class="btn btn-success">修改</button>
-                <button class="btn btn-danger delete_guild_{$index}">删除</button>
-                <script>
-                    $(".delete_guild_{$index}").click(() => {
-                        if (!confirm('确定删除吗?')) return;
-                        window.location.href = "{php echo $this->createWebUrl('guild_manager').'&action=delete&id='.$guild['id']}"
-                    })
-                </script>
-            </div>
+            <button class="btn btn-danger delete_guild_{$index}">删除</button>
+            <script>
+                $(".delete_guild_{$index}").click(() => {
+                    if (!confirm('确定删除吗?')) return;
+                    window.location.href = "{php echo $this->createWebUrl('guild_manager').'&action=delete&id='.$guild['id']}"
+                })
+            </script>
         </td>
     </tr>
     {/loop}

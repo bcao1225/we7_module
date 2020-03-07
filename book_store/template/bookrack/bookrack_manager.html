@@ -1,11 +1,21 @@
 {template 'common/header'}
 
+<script src="{php echo MODULE_URL.'template/mobile/export.js'}"></script>
+
 <ul class="nav nav-tabs">
     <li class="active"><a href="{php echo $this->createWebUrl('bookrack_manager')}">所有书架</a></li>
     <li><a href="{php echo $this->createWebUrl('bookrack_manager').'&action=add'}">添加书架</a></li>
 </ul>
 
-<h2>正在操作馆别编号为：<code>{$guild_id}</code></h2>
+<h2>正在操作馆别编号为：<code>{$guild_id}</code>
+    <button class="btn btn-success export">导出为excel</button>
+</h2>
+<script>
+    $(".export").click(() => {
+        let json = `{php echo json_encode($bookrack_list)}`;
+        tableToExcel(JSON.parse(json), {guild_name: "{$guild['name']}", guild_id: "{$guild_id}"});
+    })
+</script>
 
 {loop $bookrack_list  $index $bookrack}
 <div class="panel panel-default">
