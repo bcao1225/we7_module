@@ -1,7 +1,5 @@
 {template 'common/header'}
 
-
-
 <table class="we7-table">
     <thead>
     <tr>
@@ -9,8 +7,6 @@
         <th>昵称</th>
         <th>openid</th>
         <th>管理管别</th>
-        <th>是否通过</th>
-        <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -25,14 +21,15 @@
                     <h4 class="modal-title" id="myModalLabel">选择馆别</h4>
                 </div>
                 <div class="modal-body">
-
                     <form method="post" action="{php echo $this->createWebUrl('user_manager').'&action=update_guild'}">
+
                         <input type="text" hidden name="user_id" value="{$user['id']}">
-                        <select class="form-control" name="guild_id">
-                            {loop $guild_list $guild}
-                            <option value="{$guild['id']}">{$guild['name']}</option>
-                            {/loop}
-                        </select>
+                        {loop $guild_list $guild}
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="{$guild['id']}" name="guild_id[]"> {$guild['name']}
+                        </label>
+                        {/loop}
+
                         <hr>
                         <button type="submit" class="btn btn-success">确定</button>
                     </form>
@@ -45,26 +42,15 @@
         <td>{$user['nickname']}</td>
         <td>{$user['openid']}</td>
         <td>
-            {if $user['admin']===null}
+            {if count($user['guild_list'])===0}
             暂未管理丨
             <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#select_guild_{$index}">选择馆别</button>
             {else}
-            {$user['guild']['name']}丨
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#select_guild_{$index}">更换馆别</button>
+            {loop $user['guild_list'] $guild}
+            {$guild['name']}丨
+            {/loop}
+            <!--<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#select_guild_{$index}">增加馆别</button>-->
             {/if}
-        </td>
-        <td>{php echo $user['is_pass']==='1'?'通过':'禁止'}</td>
-        <td>
-            <div class="btn-group">
-                <a href="{php echo $this->createWebUrl('user_manager').'&action=update&user_id='.$user['id'].'&is_pass=1'}"
-                   class="btn btn-success">
-                    通过
-                </a>
-                <a href="{php echo $this->createWebUrl('user_manager').'&action=update&user_id='.$user['id'].'&is_pass=0'}"
-                   class="btn btn-danger">
-                    禁止
-                </a>
-            </div>
         </td>
     </tr>
     {/loop}

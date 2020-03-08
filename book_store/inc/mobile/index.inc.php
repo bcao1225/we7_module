@@ -22,16 +22,23 @@ if (empty($_W['fans']['nickname'])) {
     }
 }
 
-
 $user = pdo_get('ims_book_store_user', ['openid' => $_W['fans']['openid']]);
 
-if ($user['is_pass'] === '0') {
-    message('您没有权限访问');
-    exit();
+$relation_list = pdo_getall('ims_book_store_relation', ['user_id' => $user['id']]);
+
+if (count($relation_list) === 0) {
+    message('您不是此馆别的管理员');
 }
 
-if ($user['admin'] !== $_GPC['id']) {
-    message('您不是当前馆别的管理员');
+foreach ($relation_list as $index => $relation) {
+    if ($relation['guild_id'] !== $_GPC['id']) {
+
+        if ($index === (count($relation_list) - 1)) {
+            message('您不是此馆别的管理员');
+            exit();
+        }
+        continue;
+    }
 }
 
 switch ($_GPC['action']) {

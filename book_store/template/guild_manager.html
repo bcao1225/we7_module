@@ -55,11 +55,12 @@
         <td>{$guild['name']}</td>
         <td>{$guild['id']}</td>
         <td>
-            {if $guild['user']===false}
-                暂无管理员
+            {if count($guild['user_list'])===0}
+            暂无管理员
             {else}
-            <img width="50" src="{$guild['user']['avatar']}" alt="">
-            <p style="font-size: 12px">{$guild['user']['nickname']}</p>
+            {loop $guild['user_list'] $user}
+            <img width="50" src="{$user['avatar']}" alt="">
+            {/loop}
             {/if}
         </td>
         <td width="200">

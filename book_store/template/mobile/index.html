@@ -39,28 +39,44 @@
             color: #fff;
         }
 
-        .tab {
+        .btns {
+            overflow: hidden;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
             position: sticky;
             top: 0;
         }
 
-        .tab .example{
-            width: 13px;
-            height: 13px;
-            display: inline-block;
+        .btns p {
+            width: 20%;
+            height: 0;
+            line-height: 0;
+            text-align: center;
+            padding-top: 20%;
+            margin: 0;
+            position: relative;
+            color: #fff;
+            font-size: 10px;
         }
 
+        .btns span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
 <div id="app">
-    <div class="tab">
-        <el-tabs type="border-card" @tab-click="tab_click">
-            <el-tab-pane label="统计" name="0"></el-tab-pane>
-            <el-tab-pane v-for="(type,index) in type_list" :disabled="type.hidden==='0'" :key="index" :label="type.name" :name="type.id">
-                {{type.name}} <span class="example" :style="{'background':type.color}"></span>
-            </el-tab-pane>
-        </el-tabs>
+    <div class="btns">
+        <p v-show="type.hidden==='1'" @click="tab_click(type.id)" :style="{'background':type.color}" v-for="(type,index) in type_list">
+            <span>{{type.name}}</span>
+        </p>
+        <p @click="tab_click(0)" style="background: #d2d2d2"><span>统计</span></p>
     </div>
 
 
@@ -172,10 +188,10 @@
                 return data;
             },
             /*选中哪个颜色的按钮*/
-            async tab_click({name: type_id}) {
-                if(type_id==='0'){
+            async tab_click(type_id) {
+                if (type_id === 0) {
                     this.current.type_id = '';
-                }else{
+                } else {
                     this.current.type_id = type_id;
                 }
 

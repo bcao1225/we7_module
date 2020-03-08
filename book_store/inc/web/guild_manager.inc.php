@@ -29,8 +29,16 @@ switch ($_GPC['action']) {
             $qr_code_url = $_W['siteroot'] . 'app/' . $this->createMobileUrl('index') . '&id=' . $item['id'];
             $guild_list[$index]['qr_code_url'] = $qr_code_url;
             $guild_list[$index]['qr_code'] = $this->make_qrcode($qr_code_url);
-            $user = pdo_get('ims_book_store_user',['admin'=>$item['id']]);
-            $guild_list[$index]['user'] = $user;
+
+            /*关系表*/
+            $relation_list = pdo_getall('ims_book_store_relation', ['guild_id' => $item['id']]);
+
+            $user_list = [];
+            foreach ($relation_list as $relation) {
+                array_push($user_list, pdo_get('ims_book_store_user', ['id' => $relation['user_id']]));
+            }
+
+            $guild_list[$index]['user_list'] = $user_list;
         }
 
         include_once $this->template('guild_manager');
