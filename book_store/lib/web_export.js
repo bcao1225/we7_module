@@ -32,7 +32,7 @@ function tableToExcel(json, {guild_name, guild_id}) {
              </body>
         </html>`;
 
-    let excelBlob = new Blob([excelHtml], {type: 'application/vnd.ms-excel'});
+    let blob = new Blob([excelHtml], {type: 'application/vnd.ms-excel'});
 
     // 创建一个a标签
     let oA = document.createElement('a');

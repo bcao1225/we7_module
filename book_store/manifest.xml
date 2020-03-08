@@ -81,8 +81,9 @@
 		  `nickname` varchar(255) NOT NULL DEFAULT '' COMMENT '昵称',
 		  `openid` varchar(255) NOT NULL DEFAULT '',
 		  `is_pass` int(1) DEFAULT '0' COMMENT '是否通过，1表示通过，0表示禁止',
+		  `admin` int(11) DEFAULT NULL COMMENT '当前管理哪个馆别',
 		  PRIMARY KEY (`id`)
-		) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+		) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 	]]></install>
 	<uninstall><![CDATA[]]></uninstall>
 	<upgrade><![CDATA[]]></upgrade>

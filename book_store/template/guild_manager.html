@@ -43,6 +43,7 @@
     <tr>
         <th>馆别名称</th>
         <th>馆别编号</th>
+        <th>管理员</th>
         <th>入口二维码</th>
         <th width="100">书架</th>
         <th>操作</th>
@@ -54,7 +55,29 @@
         <td>{$guild['name']}</td>
         <td>{$guild['id']}</td>
         <td>
+            {if $guild['user']===false}
+                暂无管理员
+            {else}
+            <img width="50" src="{$guild['user']['avatar']}" alt="">
+            <p style="font-size: 12px">{$guild['user']['nickname']}</p>
+            {/if}
+        </td>
+        <td width="200">
             <img width="130" src="{$guild['qr_code']}" alt="">
+            <div class="input-group">
+                <input type="text" class="form-control" name="url_{$index}" value="{$guild['qr_code_url']}">
+                <span class="input-group-btn">
+                <button class="btn btn-default cope_url_{$index}" type="button">复制</button>
+                <script>
+                    $(".cope_url_{$index}").click(function () {
+                        let copyText = $("input[name='url_{$index}']");//获取对象
+                        copyText.select();//选择
+                        document.execCommand("Copy");//执行复制
+                        alert("复制成功！");
+                    })
+                </script>
+              </span>
+            </div>
         </td>
         <td>
             <a href="{php echo $this->createWebUrl('bookrack_manager').'&guild_id='.$guild['id']}" class="btn btn-link">

@@ -29,6 +29,8 @@ switch ($_GPC['action']) {
             $qr_code_url = $_W['siteroot'] . 'app/' . $this->createMobileUrl('index') . '&id=' . $item['id'];
             $guild_list[$index]['qr_code_url'] = $qr_code_url;
             $guild_list[$index]['qr_code'] = $this->make_qrcode($qr_code_url);
+            $user = pdo_get('ims_book_store_user',['admin'=>$item['id']]);
+            $guild_list[$index]['user'] = $user;
         }
 
         include_once $this->template('guild_manager');

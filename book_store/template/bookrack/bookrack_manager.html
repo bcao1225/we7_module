@@ -5,6 +5,31 @@
 <ul class="nav nav-tabs">
     <li class="active"><a href="{php echo $this->createWebUrl('bookrack_manager')}">所有书架</a></li>
     <li><a href="{php echo $this->createWebUrl('bookrack_manager').'&action=add'}">添加书架</a></li>
+    <li><a href="javascript:;" data-toggle="modal" data-target="#add_batch_bookrack">批量添加书架</a></li>
+    <!-- Modal -->
+    <div class="modal fade" id="add_batch_bookrack" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">批量添加书架</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" method="post" action="{php echo $this->createWebUrl('bookrack_manager').'&action=batch'}">
+                        <div class="form-group">
+                            <label class="sr-only" for="min">最小值</label>
+                            <input type="number" name="min" class="form-control" id="min" placeholder="最小值">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="max">最大值</label>
+                            <input type="number" name="max" class="form-control" id="max" placeholder="最大值">
+                        </div>
+                        <button type="submit" class="btn btn-success">创建</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </ul>
 
 <h2>正在操作馆别编号为：<code>{$guild_id}</code>
@@ -23,6 +48,7 @@
         <h3 class="panel-title">书架编号：{$bookrack['id']}
             <div class="btn-group">
                 <button class="btn btn-link bookrack_empty_{$index}">清空书架</button>
+                <button class="btn btn-link export_bookrack_{$index}">导出书架</button>
                 <button class="btn btn-link bookrack_delete_{$index}">删除书架</button>
             </div>
         </h3>
@@ -31,6 +57,10 @@
             $(".bookrack_empty_{$index}").click(function () {
                 if (!confirm('确定清空吗?')) return;
                 window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=empty&bookrack_id='.$bookrack['id']}"
+            });
+
+            $(".export_bookrack_{$index}").click(function () {
+                tableToExcel([JSON.parse(`{php echo json_encode($bookrack)}`)],{guild_name:"{$guild['name']}",guild_id:"{$guild_id}"})
             });
 
             /*删除书架*/
@@ -52,7 +82,7 @@
                 {$type['name']}
             </button>
             {/loop}
-            <button class="btn btn-default type_btn_restore_{$index}">还原</button>
+            <button class="btn btn-default type_btn_restore_{$index}">统计</button>
         </div>
         <hr>
         <div class="book_box book_box_{$index}">

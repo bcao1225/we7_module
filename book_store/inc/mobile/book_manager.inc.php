@@ -26,6 +26,7 @@ switch ($_GPC['action']) {
      * @bookrack_id 书架id
      * @book_id 书本id
      * @type_id 类型id
+     * @is_cancel 是否是取消，1为取消，0为更改
      */
     case 'update_type':
         $arr = [
@@ -34,18 +35,13 @@ switch ($_GPC['action']) {
             'id' => $_GPC['book_id']
         ];
 
-        /*判断需要做更改的书本是否已经存在了类型*/
-        $book = pdo_get('ims_book_store_book', $arr);
-
-        if ($book['type']) {
-            pdo_update('ims_book_store_book', ['type' => null], $arr);
-            $type = pdo_get('ims_book_store_type', $book['type']);
-            $type['color'] = '#fff';
-            $this->result(0, '取消成功', $type);
+        if ($_GPC['is_cancel'] === '0') {
+            pdo_update('ims_book_store_book', ['type' => $_GPC['type_id']], $arr, 'AND');
+            $this->result(0, '更改成功', pdo_get('ims_book_store_type', ['id' => $_GPC['type_id']]));
+        } else {
+            pdo_update('ims_book_store_book', ['type' => null], $arr, 'AND');
+            $this->result(0, '更改成功', ['type' => null]);
         }
 
-        pdo_update('ims_book_store_book', ['type' => $_GPC['type_id']], $arr, 'AND');
-
-        $this->result(0, '更改成功', pdo_get('ims_book_store_type', ['id' => $_GPC['type_id']]));
         break;
 }

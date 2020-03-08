@@ -10,8 +10,27 @@ $guild_id = cache_read('guild_id');
 switch ($_GPC['action']) {
     /*清空书架*/
     case 'empty':
-        pdo_update('ims_book_store_book', ['type' => null], ['guild_id' => $guild_id, 'bookrack_id'=>$_GPC['bookrack_id']]);
-        message('清空成功',$this->createWebUrl('bookrack_manager'),'success');
+        pdo_update('ims_book_store_book', ['type' => null], ['guild_id' => $guild_id, 'bookrack_id' => $_GPC['bookrack_id']]);
+        message('清空成功', $this->createWebUrl('bookrack_manager'), 'success');
+        break;
+    /*批量添加书架*/
+    case 'batch':
+        for ($i = $_GPC['min']; $i <= $_GPC['max']; $i++) {
+            pdo_insert('ims_book_store_bookrack', ['id' => $i, 'guild_id' => $guild_id]);
+
+            /*添加书架后，直接在书架中填充100本书*/
+            for ($j = 1; $j <= 100; $j++) {
+                pdo_insert('ims_book_store_book',
+                    [
+                        'guild_id' => $guild_id,
+                        'bookrack_id' => $i,
+                        'id' => $j
+                    ]
+                );
+            }
+        }
+
+        message('保存成功', $this->createWebUrl('bookrack_manager'));
         break;
     /*添加书架*/
     case 'add':
