@@ -73,10 +73,12 @@
 <body>
 <div id="app">
     <div class="btns">
-        <p v-show="type.hidden==='1'" @click="tab_click(type.id)" :style="{'background':type.color}" v-for="(type,index) in type_list">
+        <p v-show="type.hidden==='1'" @click="tab_click(type.id)" :style="{'background':type.color}"
+           v-for="(type,index) in type_list">
             <span>{{type.name}}</span>
         </p>
         <p @click="tab_click(0)" style="background: #d2d2d2"><span>统计</span></p>
+        <p @click="empty" style="background: red"><span>清空</span></p>
     </div>
 
 
@@ -128,6 +130,33 @@
             /*导出为execl*/
             export_excel() {
                 tableToExcel(this.bookrack_list, {guild_name: "{$guild['name']}", guild_id: "{$guild_id}"})
+            },
+            /*清空当前书架*/
+            empty() {
+                if (this.current.bookrack_id === '') {
+                    this.$notify.error({
+                        title: '请选择一个书架',
+                        duration: 2000
+                    });
+                    return;
+                }
+
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在清空',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+
+                this.request("{php echo $this->createMobileUrl('bookrack_manager')}", {
+                    action: 'empty',
+                    bookrack_id: this.current.bookrack_id,
+                    guild_id
+                }).then(({data}) => {
+                    this.current.books = data;
+                });
+
+                loading.close();
             },
             request(url, data, method = 'post') {
                 return new Promise((resolve => {
