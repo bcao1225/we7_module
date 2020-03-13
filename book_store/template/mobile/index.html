@@ -141,6 +141,8 @@
                     return;
                 }
 
+                if (!confirm('确定清空吗?')) return;
+
                 const loading = this.$loading({
                     lock: true,
                     text: '正在清空',

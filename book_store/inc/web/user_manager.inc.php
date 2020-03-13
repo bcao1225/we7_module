@@ -3,6 +3,11 @@
 global $_W, $_GPC;
 
 switch ($_GPC['action']) {
+    /*生成添加馆别管理员的二维码，ajax请求*/
+    case 'create_admin':
+        $url = $this->make_qrcode($_W['siteroot'] . 'app/' . $this->createMobileUrl('index') . '&action=add_admin&guild_id=' . $_GPC['guild_id']);
+        $this->result(0, '获取成功', $url);
+        break;
     /*更改用户的管别*/
     case 'update_guild':
         /*保存在关系表中*/

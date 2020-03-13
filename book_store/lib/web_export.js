@@ -9,7 +9,6 @@ function tableToExcel(json, {guild_name, guild_id}) {
     //循环遍历，每行加入tr标签，每个单元格加td标签
     json.forEach(item => {
         item.books.forEach(book => {
-            guild_id = formatZero(Number.parseInt(guild_id), 4) + '';
             let bookrack = formatZero(Number.parseInt(item.id), 3) + '';
             let book_id = formatZero(Number.parseInt(book.id), 3) + '';
             str += '<tr>';

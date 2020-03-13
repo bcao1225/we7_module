@@ -5,9 +5,9 @@
 		<name><![CDATA[图书盘库]]></name>
 		<identifie><![CDATA[book_store]]></identifie>
 		<version><![CDATA[1.0.0]]></version>
-		<ability><![CDATA[xxx]]></ability>
-		<type><![CDATA[xxx]]></type>
-		<description><![CDATA[图书盘库]]></description>
+		<ability><![CDATA[图书盘库系统]]></ability>
+		<type><![CDATA[webapp]]></type>
+		<description><![CDATA[图书盘库，用于图书馆图书整理、记录，导出]]></description>
 		<author><![CDATA[追风的牧羊人3245096941@qq.com]]></author>
 		<url><![CDATA[]]></url>
 		<setting><![CDATA[]]></setting>
@@ -62,10 +62,11 @@
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 		CREATE TABLE `ims_book_store_guild` (
-		  `id` int(11) NOT NULL COMMENT '馆别编号',
-		  `name` varchar(255) DEFAULT NULL COMMENT '馆别名称',
+		  `id` varchar(11) NOT NULL DEFAULT '' COMMENT '会馆编号',
+		  `name` varchar(255) DEFAULT NULL COMMENT '会馆名称',
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 		CREATE TABLE `ims_book_store_relation` (
 		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

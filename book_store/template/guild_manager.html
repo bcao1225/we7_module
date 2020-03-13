@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">馆别编号</label>
                         <div class="form-controls col-sm-8">
-                            <input class="form-control" type="number" name="guild_id">
+                            <input class="form-control" type="text" name="guild_id">
                         </div>
                     </div>
 
@@ -43,7 +43,10 @@
     <tr>
         <th>馆别名称</th>
         <th>馆别编号</th>
-        <th>管理员</th>
+        <th>
+            管理员
+
+        </th>
         <th>入口二维码</th>
         <th width="100">书架</th>
         <th>操作</th>
@@ -62,14 +65,47 @@
             <img width="50" src="{$user['avatar']}" alt="">
             {/loop}
             {/if}
+            <p>
+                <button class="btn btn-link" data-toggle="modal" data-target="#add_admin{$index}">扫码添加管理员</button>
+            </p>
         </td>
+        <!-- 添加管理员二维码 -->
+        <div class="modal fade" id="add_admin{$index}" tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="text-center">扫描下面二维码为<code>{$guild['name']}</code>添加管理员</h3>
+                        <img width="200" style="display: block;margin: 0 auto" id="add_admin_img_{$index}" src="" alt="">
+                        <script>
+                            $.ajax({
+                                url: "{php echo $this->createWebUrl('user_manager')}",
+                                method: 'post',
+                                data: {
+                                    action: "create_admin",
+                                    guild_id: "{$guild['id']}"
+                                },
+                                success(res) {
+                                    let {data} = JSON.parse(res);
+                                    $("#add_admin_img_{$index}").attr('src', data);
+                                }
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
         <td width="200">
             <img width="130" src="{$guild['qr_code']}" alt="">
             <div class="input-group">
                 <input type="text" class="form-control" name="url_{$index}" value="{$guild['qr_code_url']}">
                 <span class="input-group-btn">
                 <button class="btn btn-default cope_url_{$index}" type="button">复制</button>
-                <script>
+                <script> 
                     $(".cope_url_{$index}").click(function () {
                         let copyText = $("input[name='url_{$index}']");//获取对象
                         copyText.select();//选择
