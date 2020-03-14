@@ -2,6 +2,11 @@
 
 global $_W, $_GPC;
 
+$root_url = [
+    'url' => $_W['siteroot'] . 'app/' . $this->createMobileUrl('index'),
+    'qrcode' => $this->make_qrcode($root_url['url'])
+];
+
 switch ($_GPC['action']) {
     /*添加馆别*/
     case 'add':
@@ -17,6 +22,11 @@ switch ($_GPC['action']) {
         }
         include_once $this->template('add_guild');
         break;
+    /*移除用户权限*/
+    case 'delete_admin':
+        pdo_delete('ims_book_store_relation', ['guild_id' => $_GPC['guild_id'], 'user_id' => $_GPC['user_id']]);
+        message('删除成功', $this->createWebUrl('guild_manager'), 'success');
+        break;
     /*删除会馆*/
     case 'delete':
         pdo_delete('ims_book_store_guild', ['id' => $_GPC['id']]);
@@ -26,7 +36,7 @@ switch ($_GPC['action']) {
         $guild_list = pdo_getall('ims_book_store_guild');
 
         foreach ($guild_list as $index => $item) {
-            $qr_code_url = $_W['siteroot'] . 'app/' . $this->createMobileUrl('index') . '&id=' . $item['id'];
+            $qr_code_url = $_W['siteroot'] . 'app/' . $this->createMobileUrl('index') . '&action=qrcode_guild&guild_id=' . $item['id'];
             $guild_list[$index]['qr_code_url'] = $qr_code_url;
             $guild_list[$index]['qr_code'] = $this->make_qrcode($qr_code_url);
 

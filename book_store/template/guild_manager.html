@@ -5,6 +5,22 @@
     <button class="btn btn-success" data-toggle="modal" data-target="#add_guild">添加馆别</button>
 </h3>
 
+
+<div class="input-group">
+    <input type="text" class="form-control" name="root_url" value="{$root_url['url']}">
+    <span class="input-group-btn">
+    <button class="btn btn-success root_url_btn" type="button">复制</button>
+    <script>
+        $(".root_url_btn").click(function () {
+            let copyText = $("input[name='root_url']");//获取对象
+            copyText.select();//选择
+            document.execCommand("Copy");//执行复制
+            alert("复制成功！");
+        })
+    </script>
+  </span>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="add_guild" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -45,7 +61,6 @@
         <th>馆别编号</th>
         <th>
             管理员
-
         </th>
         <th>入口二维码</th>
         <th width="100">书架</th>
@@ -61,13 +76,54 @@
             {if count($guild['user_list'])===0}
             暂无管理员
             {else}
-            {loop $guild['user_list'] $user}
-            <img width="50" src="{$user['avatar']}" alt="">
-            {/loop}
-            {/if}
-            <p>
+            <div>
+                {loop $guild['user_list'] $user}
+                <img width="50" src="{$user['avatar']}" alt="">
+                {/loop}
+            </div>
+            <div class="btn-group btn-group-xs">
                 <button class="btn btn-link" data-toggle="modal" data-target="#add_admin{$index}">扫码添加管理员</button>
-            </p>
+                <button class="btn btn-link" data-toggle="modal" data-target="#delete_admin{$index}">删除管理员</button>
+                <!--删除管理员弹框-->
+                <div class="modal fade" id="delete_admin{$index}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">当前管理员</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table class="we7-table">
+                                    <thead>
+                                    <tr>
+                                        <th>头像</th>
+                                        <th>昵称</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {loop $guild['user_list'] $user}
+                                    <tr>
+                                        <td><img width="50" src="{$user['avatar']}" alt=""></td>
+                                        <td>{$user['nickname']}</td>
+                                        <td>
+                                            <a href="{php echo $this->createWebUrl('guild_manager').'&action=delete_admin&guild_id='.$guild['id'].'&user_id='.$user['id']}"
+                                               class="btn btn-danger btn-xs">
+                                                移出管理员
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {/loop}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/if}
         </td>
         <!-- 添加管理员二维码 -->
         <div class="modal fade" id="add_admin{$index}" tabindex="-1">
@@ -80,7 +136,8 @@
                     </div>
                     <div class="modal-body">
                         <h3 class="text-center">扫描下面二维码为<code>{$guild['name']}</code>添加管理员</h3>
-                        <img width="200" style="display: block;margin: 0 auto" id="add_admin_img_{$index}" src="" alt="">
+                        <img width="200" style="display: block;margin: 0 auto" id="add_admin_img_{$index}" src=""
+                             alt="">
                         <script>
                             $.ajax({
                                 url: "{php echo $this->createWebUrl('user_manager')}",

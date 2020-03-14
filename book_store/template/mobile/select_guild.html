@@ -1,0 +1,19 @@
+{template 'common/header'}
+
+<div class="content">
+    <div class="list-group">
+        {loop $relation_list $relation}
+        <a href="{php echo $this->createMobileUrl('index').'&action=qrcode_guild&guild_id='.$relation['guild_id']}" class="list-group-item">
+            {php echo pdo_get('ims_book_store_guild',['id'=>$relation['guild_id']])['name']}
+        </a>
+        {/loop}
+    </div>
+</div>
+
+<style>
+    .content{
+        padding: 5px;
+    }
+</style>
+
+{template 'common/footer'}

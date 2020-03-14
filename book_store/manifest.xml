@@ -40,6 +40,9 @@
 	</platform>
 
 	<bindings>
+		<cover>
+			<entry title="微信页入口" do="index" state="" direct="false" />
+		</cover>
 		<menu>
 			<entry title="馆别管理" do="guild_manager"/>
 			<entry title="人员管理" do="user_manager"/>

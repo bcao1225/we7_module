@@ -68,12 +68,19 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
+        .no_active{
+            background: #fff !important;
+            color: #000 !important;
+        }
+
     </style>
 </head>
 <body>
 <div id="app">
     <div class="btns">
         <p v-show="type.hidden==='1'" @click="tab_click(type.id)" :style="{'background':type.color}"
+           :class="current.type_id!==''&&current.type_id!==type.id?'no_active':''"
            v-for="(type,index) in type_list">
             <span>{{type.name}}</span>
         </p>
@@ -201,25 +208,11 @@
                 });
                 loading.close();
 
-                /*如果我已经选中了带颜色的按钮，那么只输出那种颜色的书籍*/
-                if (this.current.type_id !== '') {
-                    data = data.map(book => {
-                        if (!book.type) {
-                            return book;
-                        }
-
-                        if (book.type.id !== this.current.type_id) {
-                            book.type.color = '#fff';
-                        }
-
-                        return book;
-                    });
-                }
-
                 return data;
             },
             /*选中哪个颜色的按钮*/
             async tab_click(type_id) {
+
                 if (type_id === 0) {
                     this.current.type_id = '';
                 } else {
@@ -227,7 +220,7 @@
                 }
 
                 /*重新获取一次书架的书信息*/
-                this.current.books = await this.get_books_by_bookrack_id(this.current.bookrack_id);
+               /* this.current.books = await this.get_books_by_bookrack_id(this.current.bookrack_id);*/
             },
             /*点击书本，设置书本类型*/
             click_book(book, bookrack_id) {
