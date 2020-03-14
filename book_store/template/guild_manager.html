@@ -74,13 +74,14 @@
         <td>{$guild['id']}</td>
         <td>
             {if count($guild['user_list'])===0}
-            暂无管理员
+            <code>暂无管理员</code>
             {else}
-            <div>
+            <div class="avatar_box">
                 {loop $guild['user_list'] $user}
                 <img width="50" src="{$user['avatar']}" alt="">
                 {/loop}
             </div>
+            {/if}
             <div class="btn-group btn-group-xs">
                 <button class="btn btn-link" data-toggle="modal" data-target="#add_admin{$index}">扫码添加管理员</button>
                 <button class="btn btn-link" data-toggle="modal" data-target="#delete_admin{$index}">删除管理员</button>
@@ -123,7 +124,6 @@
                     </div>
                 </div>
             </div>
-            {/if}
         </td>
         <!-- 添加管理员二维码 -->
         <div class="modal fade" id="add_admin{$index}" tabindex="-1">
@@ -191,5 +191,18 @@
     {/loop}
     </tbody>
 </table>
+
+<style>
+    .avatar_box{
+        width: 200px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .avatar_box img{
+        width: 25%;
+    }
+</style>
 
 {template 'common/footer'}
