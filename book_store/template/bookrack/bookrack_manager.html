@@ -32,13 +32,13 @@
     </div>
 </ul>
 
-<h2>正在操作馆别编号为：<code>{$guild_id}</code>
+<h2>正在操作馆别编号为：<code>{$_GPC['guild_id']}</code>
     <button class="btn btn-success export">导出为excel</button>
 </h2>
 <script>
     $(".export").click(() => {
         let json = `{php echo json_encode($bookrack_list)}`;
-        tableToExcel(JSON.parse(json), {guild_name: "{$guild['name']}", guild_id: "{$guild_id}"});
+        tableToExcel(JSON.parse(json), {guild_name: "{$guild['name']}", guild_id: "{$_GPC['guild_id']}"});
     })
 </script>
 
@@ -60,7 +60,7 @@
             });
 
             $(".export_bookrack_{$index}").click(function () {
-                tableToExcel([JSON.parse(`{php echo json_encode($bookrack)}`)],{guild_name:"{$guild['name']}",guild_id:"{$guild_id}"})
+                tableToExcel([JSON.parse(`{php echo json_encode($bookrack)}`)],{guild_name:"{$guild['name']}",guild_id:"{$_GPC['guild_id']}"})
             });
 
             /*删除书架*/
@@ -138,7 +138,7 @@
                         url:"{php echo $this->createWebUrl('book_manager')}",
                         data:{
                             action:'update_type',
-                            guild_id:"{$guild_id}",
+                            guild_id:"{$_GPC['guild_id']}",
                             bookrack_id:"{$bookrack['id']}",
                             book_id:$(this).attr('data-id'),
                             type_id:current_select_type_id{$index}

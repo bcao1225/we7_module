@@ -4,7 +4,7 @@
 	<application setting='false'>
 		<name><![CDATA[图书盘库]]></name>
 		<identifie><![CDATA[book_store]]></identifie>
-		<version><![CDATA[1.1.0]]></version>
+		<version><![CDATA[1.2.0]]></version>
 		<ability><![CDATA[图书盘库系统]]></ability>
 		<type><![CDATA[webapp]]></type>
 		<description><![CDATA[图书盘库，用于图书馆图书整理、记录，导出]]></description>
@@ -93,6 +93,13 @@
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 	]]></install>
-	<uninstall><![CDATA[]]></uninstall>
+	<uninstall><![CDATA[
+		DROP TABLE IF EXISTS `ims_book_store_book`;
+		DROP TABLE IF EXISTS `ims_book_store_bookrack`;
+		DROP TABLE IF EXISTS `ims_book_store_guild`;
+		DROP TABLE IF EXISTS `ims_book_store_relation`;
+		DROP TABLE IF EXISTS `ims_book_store_type`;
+		DROP TABLE IF EXISTS `ims_book_store_user`;
+	]]></uninstall>
 	<upgrade><![CDATA[]]></upgrade>
 </manifest>
