@@ -4,7 +4,7 @@
 	<application setting='false'>
 		<name><![CDATA[图书盘库]]></name>
 		<identifie><![CDATA[book_store]]></identifie>
-		<version><![CDATA[1.2.0]]></version>
+		<version><![CDATA[1.3.0]]></version>
 		<ability><![CDATA[图书盘库系统]]></ability>
 		<type><![CDATA[webapp]]></type>
 		<description><![CDATA[图书盘库，用于图书馆图书整理、记录，导出]]></description>

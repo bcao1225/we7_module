@@ -14,7 +14,7 @@ switch ($_GPC['action']) {
      */
     case 'update_type':
 
-        $arr = ['guild_id' => cache_read('guild_id'), 'bookrack_id' => $_GPC['bookrack_id'], 'id' => $_GPC['book_id']];
+        $arr = ['guild_id' => $_GPC['guild_id'], 'bookrack_id' => $_GPC['bookrack_id'], 'id' => $_GPC['book_id']];
         $book = pdo_get('ims_book_store_book', $arr);
 
         /*如果当前图书存在类型*/

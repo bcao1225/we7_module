@@ -30,6 +30,8 @@ switch ($_GPC['action']) {
     /*删除会馆*/
     case 'delete':
         pdo_delete('ims_book_store_guild', ['id' => $_GPC['id']]);
+        /*同时删除关系表中代表管别的条数*/
+        pdo_delete('ims_book_store_relation',['guild_id'=>$_GPC['id']]);
         message('删除成功', $this->createWebUrl('guild_manager'), 'success');
         break;
     default:

@@ -2,11 +2,12 @@
 
 <script src="{php echo MODULE_URL.'lib/web_export.js'}"></script>
 
+
 <ul class="nav nav-tabs">
-    <li class="active"><a href="{php echo $this->createWebUrl('bookrack_manager')}">所有书架</a></li>
-    <li><a href="{php echo $this->createWebUrl('bookrack_manager').'&action=add'}">添加书架</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('bookrack_manager').'&guild_id='.$_GPC['guild_id']}">所有书架</a></li>
+    <li><a href="{php echo $this->createWebUrl('bookrack_manager').'&action=add&guild_id='.$_GPC['guild_id']}">添加书架</a></li>
     <li><a href="javascript:;" data-toggle="modal" data-target="#add_batch_bookrack">批量添加书架</a></li>
-    <!-- Modal -->
+    <!--批量添加书架-->
     <div class="modal fade" id="add_batch_bookrack" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -16,6 +17,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-inline" method="post" action="{php echo $this->createWebUrl('bookrack_manager').'&action=batch'}">
+                        <input hidden name="guild_id" type="text" value="{$_GPC['guild_id']}">
                         <div class="form-group">
                             <label class="sr-only" for="min">最小值</label>
                             <input type="number" name="min" class="form-control" id="min" placeholder="最小值">
@@ -56,7 +58,7 @@
             /*清空书架*/
             $(".bookrack_empty_{$index}").click(function () {
                 if (!confirm('确定清空吗?')) return;
-                window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=empty&bookrack_id='.$bookrack['id']}"
+                window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=empty&bookrack_id='.$bookrack['id'].'&guild_id='.$_GPC['guild_id']}"
             });
 
             $(".export_bookrack_{$index}").click(function () {
@@ -66,7 +68,7 @@
             /*删除书架*/
             $(".bookrack_delete_{$index}").click(function () {
                 if (!confirm('确定删除吗?')) return;
-                window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=delete&id='.$bookrack['id']}"
+                window.location.href = "{php echo $this->createWebUrl('bookrack_manager').'&action=delete&id='.$bookrack['id'].'&guild_id='.$_GPC['guild_id']}"
             })
         </script>
     </div>
@@ -90,7 +92,7 @@
             <span
                     data-color="{$book['type']['color']}"
                     data-id="{$book['id']}"
-                    data-type="{php echo $book['type']['id']}"
+                    data-type="{$book['type']['id']}"
                     style="background: {$book['type']['color']}">
                 {$book['id']}
             </span>
@@ -129,7 +131,7 @@
             $(".book_box_{$index} span").each((index, span) => {
                 $(span).click(function () {
                     if(current_select_type_id{$index}===''){
-                        console.log('当前未选中按钮');
+                        alert('请先选择一个类型');
                         return;
                     }
 
@@ -144,6 +146,7 @@
                             type_id:current_select_type_id{$index}
                         },
                         success:(res)=>{
+                            console.log(JSON.parse(res));
                             const {type} = JSON.parse(res).data;
                             $(this).css({
                                 'background':type.color,

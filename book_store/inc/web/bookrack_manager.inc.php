@@ -7,7 +7,7 @@ switch ($_GPC['action']) {
     /*清空书架*/
     case 'empty':
         pdo_update('ims_book_store_book', ['type' => null], ['guild_id' => $_GPC['guild_id'], 'bookrack_id' => $_GPC['bookrack_id']]);
-        message('清空成功', $this->createWebUrl('bookrack_manager'), 'success');
+        message('清空成功', $this->createWebUrl('bookrack_manager') . '&guild_id=' . $_GPC['guild_id'], 'success');
         break;
     /*批量添加书架*/
     case 'batch':
@@ -26,7 +26,7 @@ switch ($_GPC['action']) {
             }
         }
 
-        message('保存成功', $this->createWebUrl('bookrack_manager'));
+        message('保存成功', $this->createWebUrl('bookrack_manager') . '&guild_id=' . $_GPC['guild_id'], 'success');
         break;
     /*添加书架*/
     case 'add':
@@ -44,7 +44,7 @@ switch ($_GPC['action']) {
                 );
             }
 
-            message('保存成功', $this->createWebUrl('bookrack_manager'));
+            message('保存成功', $this->createWebUrl('bookrack_manager') . '&guild_id=' . $_GPC['guild_id'], 'success');
         }
         include_once $this->template('bookrack/add_bookrack');
         break;
@@ -55,11 +55,10 @@ switch ($_GPC['action']) {
         /*再删除书架*/
         pdo_delete('ims_book_store_bookrack', ['guild_id' => $_GPC['guild_id'], 'id' => $_GPC['id']]);
 
-        message('删除成功', $this->createWebUrl('bookrack_manager'), 'success');
+        message('删除成功', $this->createWebUrl('bookrack_manager') . '&guild_id=' . $_GPC['guild_id'], 'success');
         break;
     default:
         $bookrack_list = pdo_getall('ims_book_store_bookrack', ['guild_id' => $_GPC['guild_id']]);
-
         $guild = pdo_get('ims_book_store_guild', ['id' => $_GPC['guild_id']]);
 
         /*获取书架中所有图书*/
