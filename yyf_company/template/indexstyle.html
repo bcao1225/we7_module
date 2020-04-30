@@ -1,0 +1,170 @@
+{template 'common/header'}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            全局样式
+        </h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" method="post" action="" name="submit">
+        	
+			<div class="form-group">
+				<label for="firstname" class="col-sm-2 control-label">网站主题颜色</label>
+				<div class="col-sm-6">
+					<!-- <input type="text" class="form-control"  name="tcolor" value="{$item['tcolor']}"> -->
+					
+					 {php echo tpl_form_field_color(tcolor, $item['tcolor']);}
+					<input type="hidden" name="token" value="{$_W['token']}">
+				</div>
+				<div class="col-sm-4">
+					必须设置!蓝色模板使用的是: #2d7dee
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="firstname" class="col-sm-2 control-label">首页幻灯片高度</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"  name="slide_height" value="{$item['slide_height']}">
+					
+				</div>
+				<div class="col-sm-5">
+					一般为330左右
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">首页导航样式</label>
+				<div class="col-sm-7">
+					<select class="form-control" name="nav_style" style="width: 100%;" id="myselect"> 
+					 	<option value="0" {if $item['nav_style'] == '0'}selected="selected"{/if}>一行四列小图标-默认版</option>
+					 	<option value="1" {if $item['nav_style'] == '1'}selected="selected"{/if}>一行两列大图</option>
+					 </select>
+				</div>
+				<div class="col-sm-3">
+					<a href="{url 'site/entry/NavExplain',array('m'=>'yyf_company')}" target="_blank"  style="margin-left: 10px; color: red; font-size: 18px;"> 导航样式说明</a>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">首页分类修饰样式</label>
+				<div class="col-sm-7">
+					<select class="form-control" name="title_style" style="width: 100%;" id="myselect"> 
+					 	<option value="0" {if $item['title_style'] == '0'}selected="selected"{/if}>默认版</option>
+					 	<option value="1" {if $item['title_style'] == '1'}selected="selected"{/if}>第二版</option>
+					 </select>
+				</div>
+				<div class="col-sm-3">
+					<a href="{url 'site/entry/TitleExplain',array('m'=>'yyf_company')}" target="_blank" style="margin-left: 10px; color: red; font-size: 18px;" > 分类修饰样式说明</a>
+				</div>
+			</div>
+
+			<div class="form-group" id="myisshow">
+				<label for="lastname" class="col-sm-2 control-label">是否隐藏幻灯片</label>
+				<div class="col-sm-7">
+					 <div class="checkbox">
+        				<label><input type="checkbox"  name="slide_close" {if $item['slide_close']} checked="checked"{/if} /></label>
+        			 </div>	
+				</div>
+			</div>
+
+			<div class="form-group" id="myisshow">
+				<label for="lastname" class="col-sm-2 control-label">是否隐藏导航栏</label>
+				<div class="col-sm-7">
+					 <div class="checkbox"> 
+        				<label><input type="checkbox"   name="nav_close" {if $item['nav_close']} checked="checked"{/if} /></label>
+        			 </div>	
+				</div>
+			</div>
+
+
+			<div class="form-group" id="myisshow">
+				<label for="lastname" class="col-sm-2 control-label">是否隐藏公告栏</label>
+				<div class="col-sm-7">
+					 <div class="checkbox">
+        				<label><input type="checkbox"   name="notice_close" {if $item['notice_close']} checked="checked"{/if} /></label>
+        			 </div>	
+				</div>
+			</div>
+
+			<div class="form-group" id="myisshow">
+				<label for="lastname" class="col-sm-2 control-label">是否隐藏在线客服</label>
+				<div class="col-sm-7">
+					 <div class="checkbox">
+        				<label><input type="checkbox"  name="custom_close" {if $item['custom_close']} checked="checked"{/if} /></label>
+        			 </div>	
+				</div>
+				<div class="col-sm-3">
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">首页公告栏上喇叭图标</label>
+				<div class="col-sm-8">
+					 {php echo tpl_form_field_image('horn',$item['horn']);}
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">联系我们页面logo</label>
+				<div class="col-sm-8">
+					 {php echo tpl_form_field_image('contact_logo',$item['contact_logo']);}
+				</div>
+			</div>
+				<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">联系我们页面上方图片</label>
+				<div class="col-sm-8">
+					 {php echo tpl_form_field_image('contact_background',$item['contact_background']);}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="firstname" class="col-sm-2 control-label">联系我们页面的公司名称</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control"  name="contact_name" value="{$item['contact_name']}">
+					
+				</div>
+			</div>
+		
+	
+		
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="submit" name="submit" class="btn btn-default" style="background: #428bca;color: #fff">
+					
+				</div>
+			</div>
+
+			<div>
+				<h2>说明：</h2>
+				设置的主题颜色如果不是默认的蓝色，那么会有一点瑕疵。在小程序里打开新页面的时候，会先显示蓝色，加载完成后，才会显示设置的主题颜色。如果服务器或者用户网速比较慢，会更加明显。这个解决的办法是：打开小程序根目录下的app.json文件，把下图中红框里的值也改成设置的主题颜色就好了。（注意不要删除标点符号，替换上去后按ctrl+s保存）。<span style="color: red">注意，修改app.json文件后，都是需要重新提交审核的</span>
+				<img src="{$appimg}" />
+				
+
+			</div>
+			<div>
+					联系我们的图片大小(600*360),联系我们的logo大小(100*100) 单位像素,喇叭的小图标可以到自定义底部栏目里提供的素材网站搜索下载
+					<img src="{$contactimg}" />
+			</div>	
+			
+	</form>
+	{$page}
+    </div>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#myselect').change(function(){
+			var value=$(this).children('option:selected').val();
+			if(value=='3'){
+				$('#mycontent').show();
+				$('#myisshow').hide();
+			}else{
+				$('#mycontent').hide();
+				$('#myisshow').show();
+			}	
+		})
+	})
+</script>
+
+{template 'common/footer'}

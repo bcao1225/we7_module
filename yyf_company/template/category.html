@@ -1,0 +1,66 @@
+{template 'common/header'}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            分类列表   <a href="{url 'site/entry/AddCat',array('m'=>'yyf_company')}" style="margin-left: 10px; color: red;">添加顶级分类</a>
+            {if $isson==false}<a href="{url 'site/entry/AddCat',array('m'=>'yyf_company','son'=>'son')}" style="margin-left: 10px; color: red;">添加子类</a>{/if}
+            {if $isson==true}<a href="{url 'site/entry/category',array('m'=>'yyf_company')}" style="margin-left: 10px; color: red;">返回</a>{/if}
+        </h3>
+    </div>
+    <div class="panel-body">
+       <form class="form-horizontal" role="form" method="post" action="" name="submit">
+            
+            <div class="table-responsive panel-body">
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                      <th>排序</th>
+                      <th>ID</th>
+                        <th>分类名称</th>
+                        <th>栏目图片</th>
+
+                       
+                        <th>子类管理</th>
+                        <th style="text-align:right;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="level-list">
+                    {loop $result $index $item}
+                     <tr>
+                     <td>
+                     <input type="text" class="form-control" style="width:50px"  value="{$item['sortrank']}" name="sortrank[]"/>
+                     <input type="hidden" class="form-control" style="width:50px"  value="{$item['id']}" name="id[]"/>
+                     <input type="hidden" name="token" value="{$_W['token']}">
+                     </td>
+                      <td><div class="type-parent">{$item['id']}</div></td>
+                       <td><div class="type-parent">{$item['name']}</div></td>
+                       <td><div class="type-parent"><img src="{php echo tomedia($item['thumb']);}" width="50" height="50" /></div></td>
+                        <td>{if $isson==false}<a class="btn btn-default btn-sm" href="{url 'site/entry/category',array('son'=>$item['id'],'m'=>'yyf_company')}" title="编辑">管理子类</a>{/if}</td>
+
+                        <td style="text-align:right;">
+                        {if $isson==false}    
+                        <a class="btn btn-default btn-sm" href="{url 'site/entry/EditCat',array('id'=>$item['id'],'m'=>'yyf_company')}" title="编辑">改</a>
+                        {else}
+                         <a class="btn btn-default btn-sm" href="{url 'site/entry/EditCat',array('id'=>$item['id'],'m'=>'yyf_company','son'=>'son')}" title="编辑">改</a>
+                         {/if}
+                        &nbsp;&nbsp;<a class="btn btn-default btn-sm" href="{url 'site/entry/DelCat',array('id'=>$item['id'],'m'=>'yyf_company')}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删</a></td>
+                    </tr>
+                    {/loop}   
+
+                    </tbody>
+                </table>
+                    <div class="form-group">
+                
+                <div class="col-sm-offset-0 col-sm-12">
+                    <input type="submit" name="submit" class="btn btn-default" value="排序">
+                    
+                </div>
+            </div>  
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{template 'common/footer'}

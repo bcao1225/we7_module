@@ -1,0 +1,193 @@
+{template 'common/header'}
+<style type="text/css">
+	.zhezhaoceng {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		z-index: 999;
+		animation: zoo 0.5s;
+		-moz-animation: zoo 0.5s;	/* Firefox */
+		-webkit-animation: zoo 0.5s;	/* Safari 和 Chrome */
+		-o-animation: zoo 0.5s;	/* Opera */
+	}
+	@keyframes zoo
+	{
+		from {
+			-webkit-transform: scale(0)
+		}
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
+	
+	@-moz-keyframes zoo /* Firefox */
+	{
+		from {
+			-webkit-transform: scale(0)
+		}
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
+	
+	@-webkit-keyframes zoo /* Safari 和 Chrome */
+	{
+		from {
+			-webkit-transform: scale(0)
+		}
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
+	
+	@-o-keyframes zoo /* Opera */
+	{
+		from {
+			-webkit-transform: scale(0)
+		}
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
+</style>
+<div class="panel panel-default" id="mubiao">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			传递统计
+			<span style="margin: 0 10px;font-weight: bold;color: darkred;">总传递人数：{$ren_sum['id']}人</span>
+			<span style="font-weight: bold;color: darkred;">总传递米数：{$sum}km</span>
+		</h3>
+	</div>
+	<div class="panel-body">
+		<form action="{url 'site/entry/Chuanditongji',array('m'=>'yyf_company')}" method="post">
+			<input type="text" name="name" placeholder="请输入姓名" />
+			<input type="text" name="tel" placeholder="请输入电话" />
+			<button>查询</button>
+		</form>
+		<form action="" method="post" class="form-horizontal form"> <input type="hidden" name="storeid" value="">
+			<div class="table-responsive panel-body">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+						<tr>
+							<th>id</th>
+							<th>微信头像</th>
+							<th>微信昵称</th>
+							<th>姓名/性别/电话</th>
+							<th>传旗参数</th>
+							<th style="text-align:right;">操作</th>
+						</tr>
+					</thead>
+					<tbody id="level-list"> 
+					{loop $list $index $item} 
+						<tr>
+							<td>
+								<div class="type-parent">{$item['id']}</div>
+							</td>
+							<td>
+								<div class="type-parent"><img src="{$item['photo']}" style="width: 50px;height: 50px;"></div>
+							</td>
+							<td>
+								<div class="type-parent">{$item['nickname']}</div>
+							</td>
+							<td>
+								<div class="type-parent">姓名：{$item['name']}</div>
+								<div class="type-parent">性别：{$item['sex']}</div>
+								<div class="type-parent">电话：{$item['tle']}</div>
+							</td>
+							<td>
+								<div class="type-parent">旗手顺序：<span style="font-weight: bold;color: red;">{$item['id']}</span></div>
+								<div class="type-parent">传递人数：<span style="font-weight: bold;color: red;">{$item['chuan_sum']}</span>人</div>
+								<div class="type-parent">传递米数：<span style="font-weight: bold;color: red;">{$item['sum']}</span>km</div>
+							</td>
+							<td style="text-align:right;">
+								<a href="javascript:;" class="chakanxiangqing" data-id="{$item['id']}" style="color: #428bca;">查看详情</a>
+							</td>
+						</tr> 
+					{/loop} 
+					</tbody>
+				</table> 
+				{$pager}
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(".chakanxiangqing").click(function() {
+		var id = $(this).attr("data-id");
+		$.post('./index.php?c=site&a=entry&do=Chuanqi_tongji&m=yyf_company',{id:id},function(res){
+			
+			var region = eval('(' + res + ')');
+			console.log(region);
+			var html = "";
+			html += '<div class="zhezhaoceng">';
+				html += '<div class="panel panel-default" style="box-shadow: #cfe4ff 0px 0px 20px 10px;width: 48%;">';
+					html += '<div class="panel-heading">';
+						html += '<h3 class="panel-title" style="position: relative;">';
+							html += '个人传旗记录';
+							html += '<span style="margin: 0 10px;font-weight: bold;color: darkred;">已传递人数：' + region[0].ren_sum_ci + '</span>';
+							html += '<a id="close" style="position: absolute;top: 20px;right: 20px;background-color: rgba(0,0,0,0.5);color: #fff;border-radius: 50%;height: 50px;width: 50px;font-size: 30px;display: flex;justify-content: center;align-items: center;">✕</a>';
+						html += '</h3>';
+					html += '</div>';
+					html += '<div class="panel-body">';
+						html += '<form action="" method="post" class="form-horizontal form"> <input type="hidden" name="storeid" value="">';
+							html += '<div class="table-responsive panel-body">';
+								html += '<table class="table table-hover">';
+									html += '<thead class="navbar-inner">';
+										html +=' <tr>';
+											html += '<th>id</th>';
+											html += '<th>微信头像</th>';
+											html += '<th>微信昵称</th>';
+											html += '<th>姓名/性别/电话</th>';
+											html += '<th>传旗时间</th>';
+										html += '</tr>';
+									html += '</thead>';
+									html += '<tbody id="level-list"> ';
+										
+										for (var i=0; i<region.length; i++) {
+											html += '<tr>';
+												html += '<td>';
+													html += '<div class="type-parent">' + region[i].id + '</div>';
+												html += '</td>';
+												html += '<td>';
+													html += '<div class="type-parent"><img src="' + region[i].photo + '" style="width: 50px;height: 50px;"></div>';
+												html += '</td>';
+												html += '<td>';
+													html += '<div class="type-parent">' + region[i].nickname + '</div>';
+												html += '</td>';
+												html += '<td>';
+													html += '<div class="type-parent">姓名：' + region[i].name + '</div>';
+													html += '<div class="type-parent">性别：' + region[i].sex + '</div>';
+													html += '<div class="type-parent">电话：' + region[i].tle + '</div>';
+												html += '</td>';
+												html += '<td>';
+													html += '<div class="type-parent">' + region[i].carttime + '</div>';
+												html += '</td>';
+											html += '</tr>';
+										}
+										
+									html += '</tbody>';
+								html += '</table>';
+							html += '</div>';
+						html += '</form>';
+					html += '</div>';
+				html += '</div>';
+			html += '</div>';
+			$("#mubiao").append(html);
+
+
+		});	
+		
+		
+		
+	});
+	
+	$("body").on("click","#close",function(){
+		$(".zhezhaoceng").remove();
+	});
+</script>
+{template 'common/footer'}

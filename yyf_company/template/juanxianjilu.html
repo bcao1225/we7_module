@@ -1,0 +1,100 @@
+{template 'common/header'}
+<style type="text/css">
+	.shoudao {
+		color: #fff;
+		background-color: green;
+		border-radius: 3px;
+		text-align: center;
+	}
+	.weishou {
+		color: #fff;
+		background-color: brown;
+		border-radius: 3px;
+		text-align: center;
+	}
+	.xianshang {
+		color: #fff;
+		background-color: dodgerblue;
+		border-radius: 3px;
+		text-align: center;
+	}
+	.xianxia {
+		color: #fff;
+		background-color: yellowgreen;
+		border-radius: 3px;
+		text-align: center;
+	}
+</style>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">捐献记录</h3>
+	</div>
+	<div class="panel-body">
+		<form action="{url 'site/entry/Juanxianjilu',array('m'=>'yyf_company')}" method="post"> 
+			<input type="text" name="name" placeholder="请输入姓名" />
+			<input type="text" name="tel" placeholder="请输入电话" />
+			<button>查询</button>
+		</form>
+		<form action="" method="post" class="form-horizontal form"> <input type="hidden" name="storeid" value="">
+			<div class="table-responsive panel-body">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+						<tr>
+							<th>id</th>
+							<th>微信头像</th>
+							<th>昵称</th>
+							<th>姓名/电话</th>
+							<th>个人信息</th>
+							<th>支付相关</th>
+							<th>状态</th>
+							<!-- <th style="text-align:right;">操作</th> -->
+						</tr>
+					</thead>
+					<tbody id="level-list"> 
+						{loop $list $index $item} 
+						<tr>
+							<td>
+								<div class="type-parent">{$item['aid']}</div>
+							</td>
+							<td>
+								<div class="type-parent"><img src="{$item['photo']}" style="width: 50px;height: 50px;"></div>
+							</td>
+							<td>
+								<div class="type-parent">昵称：{$item['nickname']}</div>
+							</td>
+							<td>
+								<div class="type-parent">姓名：{$item['name']}</div>
+								<div class="type-parent">电话：{$item['tle']}</div>
+							</td>
+							<td>
+								<div class="type-parent">年级：{$item['grade']}</div>
+								<div class="type-parent">专业：{$item['zhuanye']}</div>
+								<div class="type-parent">单位：{$item['unit']}</div>
+								<div class="type-parent">职务：{$item['Identity']}</div>
+							</td>
+							<td>
+								<div class="type-parent">单号：{$item['ordernumlist']}</div>
+								<div class="type-parent">金额：{$item['aprice']}</div>
+								<div class="type-parent">时间：{$item['acarttime']}</div>
+							</td>
+							<td>
+								<div class="type-parent {if $item['type']==1}shoudao{else}weishou{/if}">
+									{if $item['type']==1}已收到{else}未收到{/if}
+								</div>
+								<div class="type-parent xianxia" style="margin-top: 20px;">
+									微信打款
+								</div>
+							</td>
+							<!-- <td style="text-align:right;">
+								<a class="btn btn-default btn-sm" href="{url 'site/entry/EditNews',array('id'=>$item['id'],'m'=>'yyf_company')}" title="编辑">改</a>&nbsp;&nbsp;
+								<a class="btn btn-default btn-sm" href="{url 'site/entry/Delete',array('id'=>$item['id'],'m'=>'yyf_company')}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删</a>
+							</td> -->
+						</tr> 
+						{/loop} 
+					</tbody>
+				</table> {$pager}
+			</div>
+		</form>
+	</div>
+</div>
+{template 'common/footer'}

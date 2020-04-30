@@ -1,0 +1,1 @@
+UPDATE `#@__totalorder` set checkinfo = '1' where orderlistnum = 151210921232812717

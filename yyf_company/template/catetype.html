@@ -1,0 +1,44 @@
+{template 'common/header'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            分类列表   <a href="{url 'site/entry/AddCattype',array('m'=>'yyf_company')}" style="margin-left: 10px; color: red;">添加顶级分类</a>
+<!--            {if $isson==false}<a href="{url 'site/entry/AddCat',array('m'=>'yyf_company','son'=>'son')}" style="margin-left: 10px; color: red;">添加子类</a>{/if}-->
+            {if $isson==true}<a href="{url 'site/entry/catetype',array('m'=>'yyf_company')}" style="margin-left: 10px; color: red;">返回</a>{/if}
+        </h3>
+    </div>
+    <div class="panel-body">
+       <form class="form-horizontal" role="form" method="post" action="" name="submit">
+            <div class="table-responsive panel-body">
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                      <th>ID</th>
+                        <th>分类名称</th>
+                        <th>排序</th>
+                        <th style="text-align:right;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="level-list">
+                    {loop $result $index $item}
+                     <tr>
+                     <input type="hidden" class="form-control" style="width:50px"  value="{$item['sortrank']}" name="sortrank[]"/>
+                     <input type="hidden" class="form-control" style="width:50px"  value="{$item['id']}" name="id[]"/>
+                     <input type="hidden" name="token" value="{$_W['token']}">
+                      <td><div class="type-parent">{$item['id']}</div></td>
+                       <td><div class="type-parent">{$item['name']}</div></td>
+                       <td><div class="type-parent">{$item['sorting']}</div></td>
+                        <td style="text-align:right;">
+                        <a class="btn btn-default btn-sm" href="{url 'site/entry/EditCattype',array('id'=>$item['id'],'m'=>'yyf_company')}" title="编辑">编辑</a>
+                        &nbsp;&nbsp;<a class="btn btn-default btn-sm" href="{url 'site/entry/DelCattype',array('id'=>$item['id'],'m'=>'yyf_company')}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删除</a></td>
+                    </tr>
+                    {/loop}
+                    </tbody>
+                </table>
+                    <div class="form-group">
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+{template 'common/footer'}
