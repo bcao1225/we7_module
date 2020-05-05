@@ -25,6 +25,23 @@
 		text-align: center;
 	}
 </style>
+
+<script src="{php echo MODULE_URL.'lib/web_export_1.js'}"></script>
+<button class="btn btn-success export">导出</button>
+<script>
+	$(".export").click(function () {
+		$.ajax({
+			method:'post',
+			url:`{php echo $this->createWebUrl('getWebDakuan')}`,
+			success(res){
+				let json = JSON.parse(res);
+				tableToExcel(json);
+			}
+		})
+	})
+</script>
+
+
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">捐献记录</h3>

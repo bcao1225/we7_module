@@ -1,131 +1,97 @@
 {template 'common/header'}
-<style type="text/css">
-	.shoudao {
-		color: #fff;
-		background-color: green;
-		border-radius: 3px;
-		text-align: center;
-		padding: 2px 5px;
-	}
-	.weishou {
-		color: #fff;
-		background-color: brown;
-		border-radius: 3px;
-		text-align: center;
-		padding: 2px 5px;
-	}
-	.xianshang {
-		color: #fff;
-		background-color: dodgerblue;
-		border-radius: 3px;
-		text-align: center;
-	}
-	.xianxia {
-		color: #fff;
-		background-color: yellowgreen;
-		border-radius: 3px;
-		text-align: center;
-	}
-	.yeqian {
-		background-color: #efefef;
-		padding: 15px 50px;
-		box-sizing: border-box;
-		border-radius: 5px 5px 0 0;
-	}
-	.active {
-		background-color: #fff;
-		box-shadow: #d4d4d4 0px -2px 2px 1px;
-	}
-</style>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">捐献记录</h3>
-	</div>
-	<div class="panel-body">
-		<form action="{url 'site/entry/Xianxiadakuan',array('m'=>'yyf_company')}" method="post"> 
-			<input type="text" name="name" placeholder="请输入姓名" />
-			<button>查询</button>
-		</form>
-		<form action="" method="post" class="form-horizontal form"> <input type="hidden" name="storeid" value="">
-			<div style="margin: 25px 0;">
-				<a href="{url 'site/entry/Xianxiadakuan',array('m'=>'yyf_company',status=>0)}" class="yeqian {if $_GPC['status']==0}active{/if}">未收到</a>
-				<a href="{url 'site/entry/Xianxiadakuan',array('m'=>'yyf_company',status=>1)}" class="yeqian {if $_GPC['status']==1}active{/if}">已收到</a>
-			</div>
-			<div class="table-responsive panel-body">
-				<table class="table table-hover">
-					<thead class="navbar-inner">
-						<tr>
-							<th>id</th>
-							<th>微信头像</th>
-							<th>昵称</th>
-							<th>姓名/电话</th>
-							<!-- <th>个人信息</th> -->
-							<th>支付相关</th>
-							<th>状态</th>
-							<!-- <th style="text-align:right;">操作</th> -->
-						</tr>
-					</thead>
-					<tbody id="level-list"> 
-						{loop $list $index $item} 
-						<tr>
-							<td>
-								<div class="type-parent">{$item['aid']}</div>
-							</td>
-							<td>
-								<div class="type-parent"><img src="{$item['photo']}" style="width: 50px;height: 50px;"></div>
-							</td>
-							<td>
-								<div class="type-parent">{$item['name']}</div>
-							</td>
-							<td>
-								<div class="type-parent">姓名：{$item['nickname']}</div>
-								<div class="type-parent">电话：{$item['tle']}</div>
-							</td>
-							<!-- <td>
-								<div class="type-parent">年级：{$item['grade']}</div>
-								<div class="type-parent">专业：{$item['zhuanye']}</div>
-								<div class="type-parent">单位：{$item['unit']}</div>
-								<div class="type-parent">职务：{$item['Identity']}</div>
-							</td> -->
-							<td>
-								<div class="type-parent">金额：{$item['aprice']}</div>
-								<div class="type-parent">时间：{$item['acarttime']}</div>
-							</td>
-							<td>
-								<a href="javascript:;" data-status="{$item['astatus']}" data-id="{$item['aid']}" class="type-parent {if $item['astatus']==1}shoudao{else}weishou{/if} biangeng">
-									{if $item['astatus']==1}已收到{else}未收到{/if}
-								</a>
-							</td>
-							<!-- <td style="text-align:right;">
-								<a class="btn btn-default btn-sm" href="{url 'site/entry/EditNews',array('id'=>$item['id'],'m'=>'yyf_company')}" title="编辑">改</a>&nbsp;&nbsp;
-								<a class="btn btn-default btn-sm" href="{url 'site/entry/Delete',array('id'=>$item['id'],'m'=>'yyf_company')}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删</a>
-							</td> -->
-						</tr> 
-						{/loop}
-						<script type="text/javascript">
-							$(".biangeng").click(function() {
-								
-								var status = $(this).attr("data-status");
-								var id = $(this).attr("data-id");
-								if (status==1) {
-									var r=confirm("确定更改为未收到吗？");
-								} else{
-									var r=confirm("确定更改为已收到吗？");
-								}
-								if (r==true){
-									$.post('./index.php?c=site&a=entry&do=Shoudao&m=yyf_company',{status:status,id:id},function(res){
-										window.location.reload();				    	
-									});				    
-								}else{				    				    
-								
-								}
-								
-							});
-						</script>
-					</tbody>
-				</table> {$pager}
-			</div>
-		</form>
-	</div>
-</div>
+<script src="{php echo MODULE_URL.'lib/web_export.js'}"></script>
+
+<button class="btn btn-success export">导出</button>
+<script>
+    $(".export").click(function () {
+        tableToExcel(JSON.parse(`{php echo json_encode($copeList)}`));
+    })
+</script>
+<hr>
+
+<table class="we7-table">
+    <thead>
+    <tr>
+        <th>微信信息</th>
+        <th>openid</th>
+        <th>真实信息</th>
+        <th>打款金额</th>
+        <th>用途</th>
+        <th>打款时间</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $list $index $item}
+    <tr>
+
+        <td>
+            <div style="display: flex;flex-direction: column;align-items: center">
+                <img width="50" src="{$item['user']['photo']}" alt="">
+                <p>{$item['user']['nickname']}</p>
+
+            </div>
+        </td>
+        <td>
+            <span class="label label-success">{$item['user']['openid']}</span>
+        </td>
+        <td>
+            <ul>
+                <li>姓名：{$item['name']}</li>
+                <li>电话：{$item['tel']}</li>
+                <li>微信号：{$item['wx']}</li>
+            </ul>
+        </td>
+        <td>
+            {$item['price']}
+        </td>
+        <td>
+            {$item['text']}
+        </td>
+        <td>{$item['acarttime']}</td>
+        <td>
+            {if $item['status']==='1'}
+            <span class="label label-success">已打款</span>
+            {else}
+            <span class="label label-danger">未打款</span>
+            {/if}
+        </td>
+        <td>
+            <div class="btn-group">
+                {if $item['status']==='1'}
+
+                {else}
+                <button class="btn btn-success" data-toggle="modal" data-target="#setDakuan_{$index}">已收到</button>
+                {/if}
+            </div>
+
+            <div class="modal fade" id="setDakuan_{$index}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">设置打款金额</h4>
+                        </div>
+                        <div class="modal-body">
+							<form method="post" action="{php echo $this->createWebUrl('xianxiadakuan')}">
+								<input type="text" name="id" hidden value="{$item['id']}">
+								<div class="form-group">
+									<input type="number" name="price" class="form-control" placeholder="金额">
+								</div>
+								<button type="submit" class="btn btn-success">提交</button>
+							</form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+
 {template 'common/footer'}

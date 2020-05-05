@@ -141,8 +141,8 @@
                             <input type="button" value="绘制海报" class="btn btn-success createhaibao{$index}"/>
                             <script>
                                 $(".createhaibao{$index}").click( function () {
-                                    let c = document.getElementById("im{$index}");
-                                    let ctx=c.getContext("2d");
+                                    const c = document.getElementById("im{$index}");
+                                    const ctx=c.getContext("2d");
                                     let img=new Image();
                                     img.src="{$item['bg_img']}";
 

@@ -225,7 +225,6 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
         $data['pay_type'] = 0;
         $data['price'] = $_GET['money'];
         $data['ordernumlist'] = time() . rand(1000, 9999);
-        pdo_insert('z_order', $data);
         $quereyorder = pdo_get('z_order', array('ordernumlist' => $data['ordernumlist']));
         $move['status'] = 1;
         $move['order'] = $quereyorder;
@@ -233,26 +232,23 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
         return json_encode($move);
     }
 
-
+    /*线下打款生成数据*/
     public function doPageformared()
     {
-        /*
-         * 线下支付生成订单
-         */
-        $openid = $_GET['openid'];
-        $quereyuser = pdo_get('z_user', array('openid' => $_GET['openid']));
-        $data['user_id'] = $quereyuser['id'];
-        $data['carttime'] = time();
-        $data['status'] = 0;
-        $data['wx'] = $_GET['wxh'];
-        $data['text'] = $_GET['text'];
-        $data['tel'] = $_GET['tel'];
-        $data['name'] = $_GET['name'];
-        pdo_insert('z_oredercard', $data);
-        $move['status'] = 1;
-        $move['order'] = $data;
-        $move['type'] = '添加成功';
-        return json_encode($move);
+        global $_GPC,$_W;
+        $user = pdo_get('ims_z_user',['openid'=>$_GPC['openid']]);
+        pdo_insert('ims_z_oredercard',[
+            'user_id'=>$user['id'],
+            'status'=>0,
+            'name'=>$_GPC['name'],
+            'tel'=>$_GPC['tel'],
+            'wx'=>$_GPC['wxh'],
+            'text'=>$_GPC['text'],
+            'price'=>0,
+            'carttime'=>time()
+        ]);
+
+        $this->result(0,'记录成功',pdo_get('ims_z_oredercard',['id'=>pdo_insertid()]));
     }
 
     public function doPageaddform()
@@ -507,34 +503,18 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
 
     }
 
+    /*线上支付接口*/
     public function doPagePay()
     {
         global $_GPC, $_W;
-        //获取订单号，保证在业务模块中唯一即可
-        $orderid = intval($_GPC['orderid']);
-        $quereyorder = pdo_get('z_order', array('ordernumlist' => $orderid));
 
-        $log = array(
-            'uniacid' => $_W['uniacid'],
-            'acid' => $_W['acid'],
-            'openid' => $_GPC['openid'],
-            'module' => 'yyf_company',
-            'tid' => $orderid,
-            'fee' => $quereyorder['price'],
-            'card_fee' => 0,
-            'status' => '0',
-            'is_usecard' => '0',
-            'tag' => iserializer(array('acid' => $_W['acid'], 'uid' => $_W['member']['uid']))
-        );
-        pdo_insert('core_paylog', $log);
         //构造支付参数
         $order = array(
-            'tid' => $orderid,
+            'tid' => intval($_GPC['orderid']), //订单号
             'user' => $_GPC['openid'], //用户OPENID
-            'fee' => $quereyorder['price'], //金额
+            'fee' => $_GPC['money'], //金额
             'title' => '活动募捐',
             'openid' => $_GPC['openid'], //用户OPENID
-
         );
 
         //生成支付参数，返回给小程序端
@@ -542,25 +522,28 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
         if (is_error($pay_params)) {
             return $this->result(1, '支付失败1，请重试', $pay_params);
         }
-        return $this->result(0, '', $pay_params);
+
+        /*获取用户数据*/
+        $user = pdo_get('ims_z_user',['openid'=>$_GPC['openid']]);
+
+        $err = pdo_insert('ims_z_order',[
+            'user_id'=>$user['id'],
+            'carttime'=>time(),
+            'status'=>0,
+            'type'=>0,
+            'price'=>$_GPC['money'],
+            'ordernumlist'=>$_GPC['orderid']
+        ]);
+
+        return $this->result(0, '保存订单成功',$pay_params);
     }
 
-
-    public function doPageNoity()
-    {
-        $quereyorder = pdo_get('z_order', array('ordernumlist' => $_GET['order']));
-
-        if ($quereyorder['type'] == 0) {
-            //此处会处理一些支付成功的业务代码
-            $data['type'] = 1;
-            $res = pdo_update('z_order', $data, array('ordernumlist' => $_GET['order']));
-
-        }
-        $move['status'] = 1;
-        $move['order'] = $quereyorder;
-        $move['type'] = '修改成功';
-        return json_encode($move);
-
+    /*更改线上支付是否支付成功*/
+    public function doPageUpDatePay(){
+        global $_GPC,$_W;
+        $user = pdo_get('ims_z_user',['openid'=>$_GPC['openid']]);
+        pdo_update('ims_z_order',['type'=>1],['user_id'=>$user['id']]);
+        $this->result(0,'支付成功',$user);
     }
 
     public function payResult($params)
