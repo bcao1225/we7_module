@@ -14,7 +14,7 @@ defined('IN_IA') or exit('Access Denied');
 class Yyf_companyModuleSite extends WeModuleSite
 {
     public function doWebGetWebDakuan(){
-        $oureder_list = pdo_getall('ims_z_order');
+        $oureder_list = pdo_fetchall('SELECT * FROM ims_z_order WHERE type=1');
         foreach ($oureder_list as $index=>$item){
             $user = pdo_get('ims_z_user',['id'=>$item['user_id']]);
             $oureder_list[$index]['name'] =$user['name'];
@@ -23,7 +23,7 @@ class Yyf_companyModuleSite extends WeModuleSite
             $oureder_list[$index]['professional'] = $user['professional'];
             $oureder_list[$index]['unit'] = $user['unit'];
             $oureder_list[$index]['Identity'] = $user['Identity'];
-            $oureder_list[$index]['carttime'] = date('Y-m-s',$item['carttime']);
+            $oureder_list[$index]['carttime'] = date('Y-m-d',$item['carttime']);
         }
 
         exit(json_encode($oureder_list));
@@ -109,8 +109,6 @@ class Yyf_companyModuleSite extends WeModuleSite
 
         //var_dump( $user_info);die;
         include $this->template('ditu');
-
-
     }
 
     public function doMobileCaijian($url)
@@ -1772,7 +1770,7 @@ class Yyf_companyModuleSite extends WeModuleSite
             $list = pdo_fetchall("select  *,a.id as aid,a.price as aprice from `ims_z_order` as a left join `ims_z_user` as b on a.user_id=b.id where b.`tle` like '%{$where1}%' and b.`name` like '%{$where0}%'  order by a.id desc");
         } else if (empty($_POST['name']) && empty($_POST['tel'])) {
             $uniacid = $_W['uniacid'];
-            $participators = pdo_fetchall("SELECT `id` FROM " . tablename('z_order') . " where 1 and  a.type = 1 ORDER BY `id` DESC");
+            $participators = pdo_fetchall("SELECT `id` FROM " . tablename('z_order') . " where 1 and  type = 1 ORDER BY `id` DESC");
             $total = count($participators);
             if (!isset($_GPC['page'])) {
                 $pageindex = 1;
@@ -1785,8 +1783,9 @@ class Yyf_companyModuleSite extends WeModuleSite
             $list = pdo_fetchall("select *,a.id as aid,a.price as aprice,a.carttime as acarttime from `ims_z_order` as a left join `ims_z_user` as b on a.user_id=b.id where 1 and  a.type = 1 order by a.id desc limit " . $p . "," . $pagesize);
         }
         foreach ($list as $key => $value) {
-            $list[$key]['acarttime'] = date('Y-m-d H:m:s', $list[$key]['acarttime']);
+            $list[$key]['acarttime'] = date('Y-m-d', $list[$key]['acarttime']);
         }
+
         include $this->template('juanxianjilu');
     }
 

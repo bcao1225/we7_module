@@ -15,7 +15,6 @@ function tableToExcel(json) {
                </tr>`;
     //循环遍历，每行加入tr标签，每个单元格加td标签
     json.forEach(item => {
-
         str += '<tr>';
         str += `<td>${item.name}</td>`;
         str += `<td>${item.tel}</td>`;
@@ -29,7 +28,6 @@ function tableToExcel(json) {
         str += `<td>${item.price}</td>`;
         str += `<td>${item.carttime}</td>`;
         str += '</tr>';
-
     });
     let excelHtml = `
         <html>

@@ -10,6 +10,11 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
         $this->result(0, '获取成功', ['user' => pdo_get('ims_z_user', ['openid' => $_GPC['openid']])]);
     }
 
+    /*屏蔽工艺按钮*/
+    public function doPageShieldBtn(){
+        $this->result(0,'获取成功',1);
+    }
+
     public function doPagewchatLogin()
     {
 
@@ -211,8 +216,10 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
         return json_encode($move);
     }
 
+    //此方法废弃
     public function doPageWchatpay()
     {
+        global $_GPC,$_W;
         /*
          * 线上支付生成订单
          */
@@ -503,7 +510,12 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
 
     }
 
-    /*线上支付接口*/
+    /**
+     * 线上支付接口，只调用这个接口就行
+     * openid
+     * money 金额
+     * orderid 订单号
+     */
     public function doPagePay()
     {
         global $_GPC, $_W;
@@ -535,15 +547,14 @@ class Yyf_companyModuleWxapp extends WeModuleWxapp
             'ordernumlist'=>$_GPC['orderid']
         ]);
 
-        return $this->result(0, '保存订单成功',$pay_params);
+        return $this->result(0, '保存订单成功',[$pay_params,'order_id'=>pdo_insertid()]);
     }
 
     /*更改线上支付是否支付成功*/
     public function doPageUpDatePay(){
         global $_GPC,$_W;
-        $user = pdo_get('ims_z_user',['openid'=>$_GPC['openid']]);
-        pdo_update('ims_z_order',['type'=>1],['user_id'=>$user['id']]);
-        $this->result(0,'支付成功',$user);
+        pdo_update('ims_z_order',['type'=>1],['id'=>$_GPC['orderid']]);
+        $this->result(0,'支付成功',[]);
     }
 
     public function payResult($params)
