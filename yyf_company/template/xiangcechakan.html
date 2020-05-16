@@ -12,11 +12,58 @@
 </style>
 <!--绘制文字-->
 <script>
-    function drawText(ctx,color,size,text,left,top){
+    /**
+     *
+     * @param ctx
+     * @param color
+     * @param size
+     * @param text 文本
+     * @param left 距离做左边的坐标
+     * @param top 距离顶部的坐标
+     * @isType 0表示个人介绍，1表示赠言
+     */
+    function drawText(ctx, color, size, text, left, top, isType) {
         ctx.fillStyle = color;
         ctx.font = `${size}"黑体"`;           //设置字体
         ctx.textAlign = "left";                 //设置字体对齐的方式
-        ctx.fillText( text, left, top );
+
+        /*字符数*/
+        let strNum = text.length;
+
+        if (isType === 1) {
+            /*每行分割的字符*/
+            let lenOfStr = 23;
+            /*总行数*/
+            let countLen = Math.ceil(strNum / lenOfStr);
+            /*存储每段字符串*/
+            let listStr = [];
+            for (let i = 0; i < strNum; i = i + lenOfStr) {
+                listStr.push(text.substring(i, i + lenOfStr));
+            }
+
+            for (let i = 0; i < countLen; i++) {
+                ctx.fillText(listStr[i], left, top);
+                top = top + 35;
+            }
+        } else if (isType === 0) {
+            text = '\xa0\xa0\xa0\xa0'+text;
+            /*每行分割的字符*/
+            let lenOfStr = 40;
+            /*总行数*/
+            let countLen = Math.ceil(strNum / lenOfStr);
+            /*存储每段字符串*/
+            let listStr = [];
+            for (let i = 0; i < strNum; i = i + lenOfStr) {
+                listStr.push(text.substring(i, i + lenOfStr));
+            }
+
+            for (let i = 0; i < countLen; i++) {
+                ctx.fillText(listStr[i], left, top);
+                top = top + 20;
+            }
+        } else {
+            ctx.fillText(text, left, top);
+        }
     }
 </script>
 
@@ -140,49 +187,49 @@
                             <canvas hidden width="867" height="1145" id="im{$index}"></canvas>
                             <input type="button" value="绘制海报" class="btn btn-success createhaibao{$index}"/>
                             <script>
-                                $(".createhaibao{$index}").click( function () {
+                                $(".createhaibao{$index}").click(function () {
                                     const c = document.getElementById("im{$index}");
-                                    const ctx=c.getContext("2d");
-                                    let img=new Image();
-                                    img.src="{$item['bg_img']}";
+                                    const ctx = c.getContext("2d");
+                                    let img = new Image();
+                                    img.src = "{$item['bg_img']}";
 
                                     new Promise(resolve => {
-                                        img.onload = function(){
-                                            ctx.drawImage(img,0,0,img.width,img.height,0,0,867,1145);
-                                            drawText(ctx,'black','25px',"{$item['user']['zengyan']}", 140, 185 ); //赠言
-                                            drawText(ctx,'red','40px',"{$item['id']}", 620, 375 );//旗手排名
-                                            drawText(ctx,'red','20px',"{$item['user']['sum']}km", 630, 325 );/*传递距离*/
-                                            drawText(ctx,'black','15px',"{$item['user']['gerenjieshao']}", 140, 480 );/*个人介绍*/
-                                            drawText(ctx,'yellow','30px',"{$item['user']['name']}", 150, 350 ); //真实姓名
-                                            drawText(ctx,'black','15px',"{$item['user']['tle']}",300,350);//电话
-                                            drawText(ctx,'black','15px',"{$item['user']['zhuanye']}",270,385);//专业
-                                            drawText(ctx,'black','15px',"{$item['user']['grade']}",130,380);//年份
-                                            drawText(ctx,'black','15px',"{$item['user']['unit']}",190,418);//单位
-                                            drawText(ctx,'black','15px',"{$item['user']['Identity']}",190,452);//职位
-                                            drawText(ctx,'black','15px',"{$item['user']['wxh']}",380,452);//微信
-                                            drawText(ctx,'black','15px',"{$item['user']['email']}",560,452);//邮箱
+                                        img.onload = function () {
+                                            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 867, 1145);
+                                            drawText(ctx, 'black', '25px', "{$item['user']['zengyan']}", 145, 190, 1); //赠言
+                                            drawText(ctx, 'red', '40px', "{$item['id']}", 620, 375);//旗手排名
+                                            drawText(ctx, 'red', '20px', "{$item['user']['sum']}km", 630, 325);/*传递距离*/
+                                            drawText(ctx, 'black', '15px', "{$item['user']['gerenjieshao']}", 140, 480, 0);/*个人介绍*/
+                                            drawText(ctx, '#e47400', '20px', "{$item['user']['name']}", 127, 350); //真实姓名
+                                            drawText(ctx, 'black', '15px', "{$item['user']['tle']}", 300, 350);//电话
+                                            drawText(ctx, 'black', '15px', "{$item['user']['zhuanye']}", 270, 385);//专业
+                                            drawText(ctx, 'black', '15px', "{$item['user']['grade']}", 130, 380);//年份
+                                            drawText(ctx, 'black', '15px', "{$item['user']['unit']}", 190, 418);//单位
+                                            drawText(ctx, 'black', '15px', "{$item['user']['Identity']}", 190, 452);//职位
+                                            drawText(ctx, 'black', '15px', "{$item['user']['wxh']}", 380, 452);//微信
+                                            drawText(ctx, 'black', '15px', "{$item['user']['email']}", 560, 452);//邮箱
                                             resolve();
                                         };
-                                    }).then(()=>{
+                                    }).then(() => {
                                         /*绘制头像*/
                                         new Promise(resolve => {
                                             let avatar = new Image();
                                             avatar.setAttribute('crossOrigin', 'anonymous');
                                             avatar.src = "{$item['user']['photo']}";
                                             avatar.onload = () => {
-                                                ctx.drawImage(avatar,0,0,avatar.width,avatar.height,500,330,50,50);
+                                                ctx.drawImage(avatar, 0, 0, avatar.width, avatar.height, 500, 330, 50, 50);
                                                 resolve();
                                             };
-                                        }).then(()=>{
+                                        }).then(() => {
                                             /*绘制图片*/
                                             let back = new Image();
                                             back.setAttribute('crossOrigin', 'anonymous');
                                             back.src = "{php echo tomedia($item['user']['image'])}";
                                             back.onload = () => {
-                                                ctx.drawImage(back,0,0,back.width,back.height,138,538,595,315);
+                                                ctx.drawImage(back, 0, 0, back.width, back.height, 138, 538, 595, 315);
                                                 /*绘制成功后获取base64数据*/
-                                                $("#haibaoBack{$index}").css('background-image',`url(${c.toDataURL()})`);
-                                                $(".createhaibao{$index}").css('display','none');
+                                                $("#haibaoBack{$index}").css('background-image', `url(${c.toDataURL()})`);
+                                                $(".createhaibao{$index}").css('display', 'none');
 
                                                 $(".clickHaibao{$index}").click(function () {
                                                     var html = "";
@@ -195,7 +242,7 @@
                                             };
                                         })
                                     })
-                               })
+                                })
                             </script>
                         </div>
                         <!-- 裁剪图片模态框 -->

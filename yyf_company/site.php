@@ -1736,8 +1736,6 @@ class Yyf_companyModuleSite extends WeModuleSite
         foreach ($list as $index => $item) {
             $list[$index]['user'] = pdo_get('ims_z_user', ['id' => $item['user_id']]);
             $list[$index]['poster'] = $_W['siteroot'] . 'attachment/hb/' . $item['src'];
-            /*旗手传旗名次*/
-            $list[$index]['qishou'] = pdo_get('ims_z_chuanqi', ['jie_id' => $item['user']['id']]);
         }
 
         foreach ($list as $index => $item) {
