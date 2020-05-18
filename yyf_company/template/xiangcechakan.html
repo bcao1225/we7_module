@@ -118,8 +118,6 @@
                 var region = eval('(' + list + ')');
                 var siteroot = $("#siteroot").val();
 
-                console.log(list);
-                console.log(region.length);
                 for (var i = 0; i < region.length; i++) {
                     var src = siteroot + "/attachment/hb/" + region[i]['src'];
                     // src += siteroot + "/attachment/hb/" + region[i].src;
@@ -132,52 +130,10 @@
         </script>
         <form action="" method="post" class="form-horizontal form"><input type="hidden" name="storeid" value="">
             <div class="table-responsive panel-body">
-                <!-- <table class="table table-hover">
-                    <thead class="navbar-inner">
-                        <tr>
-                            <th>id</th>
-                            <th>微信头像</th>
-                            <th>微信昵称</th>
-                            <th>电话</th>
-                            <th>相册</th>
-                            <th style="text-align:right;">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="level-list">
-                        {loop $list $index $item}
-                        <tr>
-                            <td>
-                                <div class="type-parent">{$item['id']}</div>
-                            </td>
-                            <td>
-                                <div class="type-parent"><img src="{$item['photo']}" style="width: 50px;height: 50px;"></div>
-                            </td>
-                            <td>
-                                <div class="type-parent">{$item['nickname']}</div>
-                            </td>
-                            <td>
-                                <div class="type-parent">{$item['tle']}</div>
-                            </td>
-                            <td>
-                                <div class="type-parent">
-                                    <img src="{$item['poster']}" style="width: 50px;height: 50px;">
-                                </div>
-                            </td>
-                            <td style="text-align:right;">
-                                <a class="btn btn-default btn-sm" href="{url 'site/entry/EditNews',array('id'=>$item['id'],'m'=>'yyf_company')}" title="编辑">改</a>&nbsp;&nbsp;
-                                <a class="btn btn-default btn-sm" href="{url 'site/entry/Delete',array('id'=>$item['id'],'m'=>'yyf_company')}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删</a>
-                            </td>
-                        </tr>
-                        {/loop}
-                    </tbody>
-                </table> -->
                 <div style="width: 100%;display: flex;justify-content: flex-start;align-items: center;flex-wrap: wrap;">
                     {loop $list $index $item}
                     <div style="width: 25%;display: flex;justify-content: center;align-items: center;flex-direction: column;padding: 10px;box-sizing: border-box;">
 						<span class="xianzhi " style="width: 100%;">用户名：{php echo $item['user']['nickname']}
-                            <!--裁切图片按钮，不开放-->
-                            <!--<input data-toggle="modal" data-target="#modalCaijian{$index}" type="button"
-                                   class="btn btn-link" value="裁剪图片"/>-->
 						</span>
                         <span style="width: 100%;">时间：{$item['carttime']}</span>
                         <div id="haibaoBack{$index}" class="fangda clickHaibao{$index}" data-src="{$item['poster']}"
@@ -187,7 +143,7 @@
                             <canvas hidden width="867" height="1145" id="im{$index}"></canvas>
                             <input type="button" value="绘制海报" class="btn btn-success createhaibao{$index}"/>
                             <script>
-                                $(".createhaibao{$index}").click(function () {
+                                function setHaibao(){
                                     const c = document.getElementById("im{$index}");
                                     const ctx = c.getContext("2d");
                                     let img = new Image();
@@ -258,54 +214,44 @@
                                             }
                                         })
                                     })
-                                })
-                            </script>
-                        </div>
-<!--                        &lt;!&ndash; 裁剪图片模态框 &ndash;&gt;-->
-<!--                        <div class="modal fade" id="modalCaijian{$index}" tabindex="-1">-->
-<!--                            <div class="modal-dialog" role="document">-->
-<!--                                <div class="modal-content">-->
-<!--                                    <div class="modal-header">-->
-<!--                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                                            <span aria-hidden="true">&times;</span></button>-->
-<!--                                        <h4 class="modal-title" id="myModalLabel">裁剪图片</h4>-->
-<!--                                    </div>-->
-<!--                                    <div class="modal-body">-->
-<!--                                        <img id="xiance{$index}"-->
-<!--                                             src="{$item['poster']}" alt="">-->
-<!--                                    </div>-->
-<!--                                    <script>-->
-<!--                                        require(['https://cdn.bootcss.com/cropperjs/2.0.0-alpha.1/cropper.min.js'], (Cropper) => {-->
-<!--                                            let myCropper = new Cropper(document.getElementById('xiance{$index}'), {-->
-<!--                                                viewMode: 0,-->
-<!--                                                aspectRatio: 1 / 2,-->
-<!--                                                minContainerWidth: 600,-->
-<!--                                                minContainerHeight: 500,-->
-<!--                                            });-->
+                                }
 
-<!--                                            $(".saveCaijian{$index}").click(function () {-->
-<!--                                                let base64 = myCropper.getCroppedCanvas().toDataURL('image/jpeg');-->
-<!--                                                let fileName = "{$item['user']['nickname']}的海报";//下载的文件名称-->
-<!--                                                let a = document.createElement('a');//创建a标签-->
-<!--                                                a.setAttribute('href', base64);-->
-<!--                                                a.setAttribute('download', fileName);-->
-<!--                                                a.setAttribute('target', '_blank');//打开一个新的窗口-->
-<!--                                                a.setAttribute('id', "downLoad");-->
-<!--                                                if (document.getElementById('downLoad')) {-->
-<!--                                                    document.body.removeChild(document.getElementById('downLoad'));-->
-<!--                                                }-->
-<!--                                                document.body.appendChild(a);-->
-<!--                                                a.click();-->
-<!--                                            })-->
-<!--                                        })-->
-<!--                                    </script>-->
-<!--                                    <div class="modal-footer">-->
-<!--                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
-<!--                                        <button type="button" class="btn btn-primary saveCaijian{$index}">下载</button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                                $(".createhaibao{$index}").click(setHaibao())
+                            </script>
+                            <input type="button" value="填写距离" class="btn btn-success" data-toggle="modal" data-target="#tianxiejuli{$index}">
+                            <!-- Modal -->
+                            <div class="modal fade" id="tianxiejuli{$index}" tabindex="-1">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">填写距离</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" id="juliInput{$index}" class="form-control" placeholder="km">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <button type="button" class="btn btn-primary saveJuli{$index}">保存</button>
+                                        </div>
+                                        <script>
+                                            $(".saveJuli{$index}").click(()=>{
+                                                $.ajax({
+                                                    url:`{php echo $this->createWebUrl('setjuli')}`,
+                                                    data:{
+                                                        user_id:`{$item['user']['id']}`,
+                                                        sum:$("#juliInput{$index}").val()
+                                                    },
+                                                    success(res){
+                                                        location.reload();
+                                                    }
+                                                })
+                                            })
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {/loop}
                 </div>

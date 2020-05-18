@@ -13,6 +13,13 @@ defined('IN_IA') or exit('Access Denied');
 
 class Yyf_companyModuleSite extends WeModuleSite
 {
+    /*设置用户的距离*/
+    public function doWebSetjuli(){
+        global $_GPC,$_W;
+        pdo_update('ims_z_user',['sum'=>$_GPC['sum']],['id'=>$_GPC['user_id']]);
+        exit(json_encode(['juli'=>$_GPC['sum']]));
+    }
+
     public function doWebGetWebDakuan()
     {
         $oureder_list = pdo_fetchall('SELECT * FROM ims_z_order WHERE type=1');
