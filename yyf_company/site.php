@@ -13,17 +13,18 @@ defined('IN_IA') or exit('Access Denied');
 
 class Yyf_companyModuleSite extends WeModuleSite
 {
-    public function doWebGetWebDakuan(){
+    public function doWebGetWebDakuan()
+    {
         $oureder_list = pdo_fetchall('SELECT * FROM ims_z_order WHERE type=1');
-        foreach ($oureder_list as $index=>$item){
-            $user = pdo_get('ims_z_user',['id'=>$item['user_id']]);
-            $oureder_list[$index]['name'] =$user['name'];
+        foreach ($oureder_list as $index => $item) {
+            $user = pdo_get('ims_z_user', ['id' => $item['user_id']]);
+            $oureder_list[$index]['name'] = $user['name'];
             $oureder_list[$index]['tel'] = $user['tle'];
             $oureder_list[$index]['grade'] = $user['grade'];
             $oureder_list[$index]['professional'] = $user['professional'];
             $oureder_list[$index]['unit'] = $user['unit'];
             $oureder_list[$index]['Identity'] = $user['Identity'];
-            $oureder_list[$index]['carttime'] = date('Y-m-d',$item['carttime']);
+            $oureder_list[$index]['carttime'] = date('Y-m-d', $item['carttime']);
         }
 
         exit(json_encode($oureder_list));
@@ -1784,6 +1785,12 @@ class Yyf_companyModuleSite extends WeModuleSite
             $list[$key]['acarttime'] = date('Y-m-d', $list[$key]['acarttime']);
         }
 
+        $sum = 0;
+
+        foreach (pdo_fetchall('SELECT * FROM ims_z_order WHERE type=1') as $price) {
+            $sum = $sum + intval($price['price']);
+        }
+
         include $this->template('juanxianjilu');
     }
 
@@ -1857,13 +1864,16 @@ class Yyf_companyModuleSite extends WeModuleSite
             $p = ($pageindex - 1) * 15;
             $list = pdo_fetchall("select  * from `ims_z_user` where 1 order by id desc limit " . $p . "," . $pagesize);
         }
+
         $sum = 0;
+
+        foreach (pdo_getall('ims_z_user') as $mi) {
+            $sum = $sum + intval($mi['sum']);
+        }
+
         foreach ($list as $key => $value) {
-
             $chuan_sum = pdo_fetch("select count(chuan_id) as chuan_sum from ims_z_chuanqi where chuan_id = " . $list[$key]['id']);
-            $sum += $list[$key]['sum'];
             $list[$key]['chuan_sum'] = $chuan_sum['chuan_sum'];
-
         }
         $ren_sum = pdo_fetch("select count(id) as id from ims_z_user where status = 0");
 
@@ -1876,13 +1886,11 @@ class Yyf_companyModuleSite extends WeModuleSite
         global $_W, $_GPC;
         $id = $_GPC['id'];
 
-
         $list_ci = pdo_fetchall("select  * from `ims_z_user` where chuanqi_id = :chuanqi_id order by id desc ", array(":chuanqi_id" => $id));
         foreach ($list_ci as $key => $value) {
             $list_ci[$key]['carttime'] = date('Y-m-d H:m:s', $list_ci[$key]['carttime']);
             $list_ci[$key]['ren_sum_ci'] = count($list_ci);
         }
-
         return json_encode($list_ci);
     }
 }
