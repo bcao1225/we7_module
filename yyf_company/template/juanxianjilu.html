@@ -44,7 +44,7 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">捐献记录（总计：{$sum}元）</h3>
+		<h3 class="panel-title">捐献记录（总计：{$sum}元）捐献人数：{php echo count($user_list)}</h3>
 	</div>
 	<div class="panel-body">
 		<form action="{url 'site/entry/Juanxianjilu',array('m'=>'yyf_company')}" method="post"> 
@@ -59,7 +59,8 @@
 						<tr>
 							<th>id</th>
 							<th>微信头像</th>
-							<th>昵称</th>
+							<th width="200">昵称</th>
+							<th>打款总金额</th>
 							<th>姓名/电话</th>
 							<th>个人信息</th>
 							<th>支付相关</th>
@@ -68,35 +69,37 @@
 						</tr>
 					</thead>
 					<tbody id="level-list"> 
-						{loop $list $index $item} 
+						{loop $user_list $index $item}
 						<tr>
 							<td>
-								<div class="type-parent">{$item['aid']}</div>
+								<div class="type-parent">{$index}</div>
 							</td>
 							<td>
-								<div class="type-parent"><img src="{$item['photo']}" style="width: 50px;height: 50px;"></div>
+								<div class="type-parent"><img src="{$item['user']['photo']}" style="width: 50px;height: 50px;"></div>
 							</td>
 							<td>
-								<div class="type-parent">昵称：{$item['nickname']}</div>
+								<div class="type-parent">{$item['user']['nickname']}</div>
 							</td>
 							<td>
-								<div class="type-parent">姓名：{$item['name']}</div>
-								<div class="type-parent">电话：{$item['tle']}</div>
+								<span class="label label-danger">￥{$item['price']}</span>
 							</td>
 							<td>
-								<div class="type-parent">年级：{$item['grade']}</div>
-								<div class="type-parent">专业：{$item['zhuanye']}</div>
-								<div class="type-parent">单位：{$item['unit']}</div>
-								<div class="type-parent">职务：{$item['Identity']}</div>
+								<div class="type-parent">姓名：{$item['user']['name']}</div>
+								<div class="type-parent">电话：{$item['user']['tle']}</div>
 							</td>
 							<td>
-								<div class="type-parent">单号：{$item['ordernumlist']}</div>
-								<div class="type-parent">金额：{$item['aprice']}</div>
-								<div class="type-parent">时间：{$item['acarttime']}</div>
+								<div class="type-parent">年级：{$item['user']['grade']}</div>
+								<div class="type-parent">专业：{$item['user']['zhuanye']}</div>
+								<div class="type-parent">单位：{$item['user']['unit']}</div>
+								<div class="type-parent">职务：{$item['user']['Identity']}</div>
 							</td>
 							<td>
-								<div class="type-parent {if $item['type']==1}shoudao{else}weishou{/if}">
-									{if $item['type']==='1'}已收到{else}未收到{/if}
+								<div class="type-parent">单号：{$item['order']['ordernumlist']}</div>
+								<div class="type-parent">时间：{$item['order']['carttime']}</div>
+							</td>
+							<td>
+								<div class="type-parent shoudao">
+									已收到
 								</div>
 								<div class="type-parent xianxia" style="margin-top: 20px;">
 									微信打款
@@ -109,7 +112,8 @@
 						</tr> 
 						{/loop} 
 					</tbody>
-				</table> {$pager}
+				</table>
+<!--				{$pager}-->
 			</div>
 		</form>
 	</div>

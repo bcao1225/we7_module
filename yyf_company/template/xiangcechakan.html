@@ -79,53 +79,23 @@
         </form>
         <input type="hidden" name="daochu" value="daochu"/>
         <button onclick="myPrint1()">导出全部</button>
+        <script src="{php echo MODULE_URL.'lib/web_export_2.js'}"></script>
         <script language="javascript" type="text/javascript">
-            function CheckIsInstall() {
-                try {
-                    var LODOP = getLodop();
-                    if (LODOP.VERSION) {
-                        if (LODOP.CVERSION)
-                            alert("当前有WEB打印服务C-Lodop可用!\n C-Lodop版本:" + LODOP.CVERSION + "(内含Lodop" + LODOP.VERSION + ")");
-                        else
-                            alert("本机已成功安装了Lodop控件！\n 版本号:" + LODOP.VERSION);
-
+            function myPrint1(){
+                $.ajax({
+                    url:`{php echo $this->createWebUrl('get_ransmit_all')}`,
+                    success(res){
+                        let list = JSON.parse(res);
+                        tableToExcel(list);
                     }
-                    ;
-                } catch (err) {
-                }
-            };
+                })
+            }
         </script>
         <span id="list" style="display: none !important;">{$list_json}</span>
         <input id="siteroot" value="{$_W['siteroot']}" type="hidden">
 
+        <!--导出全部相册的内容-->
         <script language="javascript" type="text/javascript">
-            var LODOP; //声明为全局变量
-            function CreateImage(src) {
-                LODOP = getLodop();
-                LODOP.PRINT_INIT("打印控件功能演示_Lodop功能_打印图片1");
-                LODOP.ADD_PRINT_IMAGE(0, 0, 3200, 3800, "<img border='0' src='" + src + "' />");
-                // LODOP.ADD_PRINT_IMAGE(0,0,260,150,"<img border='0' src='"+ src +"' />");
-                //LODOP.ADD_PRINT_IMAGE(200,150,260,150,"C:/test.jpg"); //本地图片
-            };
-
-            function myPreview1() {
-                CreateImage();
-                LODOP.PREVIEW();
-            };
-
-            function myPrint1() {
-                var list = $("#list").html();
-                var region = eval('(' + list + ')');
-                var siteroot = $("#siteroot").val();
-
-                for (var i = 0; i < region.length; i++) {
-                    var src = siteroot + "/attachment/hb/" + region[i]['src'];
-                    // src += siteroot + "/attachment/hb/" + region[i].src;
-                    console.log(src);
-                    CreateImage(src);
-                    LODOP.PRINT();
-                }
-            };
 
         </script>
         <form action="" method="post" class="form-horizontal form"><input type="hidden" name="storeid" value="">

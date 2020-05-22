@@ -13,11 +13,23 @@ defined('IN_IA') or exit('Access Denied');
 
 class Yyf_companyModuleSite extends WeModuleSite
 {
+    /*导出查看相册里面的内容*/
+    public function doWebGet_ransmit_all()
+    {
+        $post_all = pdo_getall('ims_z_poster');
+        foreach ($post_all as $index => $post) {
+            $post_all[$index]['user'] = pdo_get('ims_z_user', ['id' => $post['user_id']]);
+        }
+
+        exit(json_encode($post_all));
+    }
+
     /*设置用户的距离*/
-    public function doWebSetjuli(){
-        global $_GPC,$_W;
-        pdo_update('ims_z_user',['sum'=>$_GPC['sum']],['id'=>$_GPC['user_id']]);
-        exit(json_encode(['juli'=>$_GPC['sum']]));
+    public function doWebSetjuli()
+    {
+        global $_GPC, $_W;
+        pdo_update('ims_z_user', ['sum' => $_GPC['sum']], ['id' => $_GPC['user_id']]);
+        exit(json_encode(['juli' => $_GPC['sum']]));
     }
 
     public function doWebGetWebDakuan()
@@ -28,7 +40,7 @@ class Yyf_companyModuleSite extends WeModuleSite
             $oureder_list[$index]['name'] = $user['name'];
             $oureder_list[$index]['tel'] = $user['tle'];
             $oureder_list[$index]['grade'] = $user['grade'];
-            $oureder_list[$index]['professional'] = $user['professional'];
+            $oureder_list[$index]['professional'] = $user['zhuanye'];
             $oureder_list[$index]['unit'] = $user['unit'];
             $oureder_list[$index]['Identity'] = $user['Identity'];
             $oureder_list[$index]['carttime'] = date('Y-m-d', $item['carttime']);
@@ -1792,10 +1804,25 @@ class Yyf_companyModuleSite extends WeModuleSite
             $list[$key]['acarttime'] = date('Y-m-d', $list[$key]['acarttime']);
         }
 
+        /*总计*/
         $sum = 0;
 
-        foreach (pdo_fetchall('SELECT * FROM ims_z_order WHERE type=1') as $price) {
-            $sum = $sum + intval($price['price']);
+        $user_list = [];
+
+        foreach (pdo_fetchall('SELECT * FROM ims_z_order WHERE type=1 ORDER by carttime DESC') as $index => $order) {
+            $sum = $sum + intval($order['price']);
+
+            /*判断数组是否有自动的key*/
+            if (array_key_exists($order['user_id'], $user_list)) {
+                $user_list[$order['user_id']]['price'] = $user_list[$order['user_id']]['price'] + intval($order['price']);
+            } else {
+                /*不存在就初始化*/
+                $user_list[$order['user_id']]['price'] = intval($order['price']);
+
+                $order['carttime'] = date('Y-m-d', $order['carttime']);
+                $user_list[$order['user_id']]['order'] = $order;
+                $user_list[$order['user_id']]['user'] = pdo_get('ims_z_user', ['id' => $order['user_id']]);
+            }
         }
 
         include $this->template('juanxianjilu');
